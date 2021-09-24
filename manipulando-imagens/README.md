@@ -5,10 +5,16 @@ implementar um programa regions.py. Esse programa deverá solicitar ao usuário 
 
 <table>
     <tr>
-        <th>
+        <th align="Center">Imagem original</th>
+        <th align="Center">Imagem manipulada</th>
+    </tr> 
+    <tr>
+        <td>
             <img title="Original" src="resources/imagem.png"/>
+        </td>
+        <td>
             <img title="Manipulada" src="output/regions.png"/>
-        </th>
+        </td>
     </tr>
 </table>
 
@@ -47,10 +53,16 @@ Implementar um programa trocaregioes.cpp. Seu programa deverá trocar os quadran
 
 <table>
     <tr>
-        <th>
+        <th align="Center">Imagem original</th>
+        <th align="Center">Imagem manipulada</th>
+    </tr> 
+    <tr>
+        <td>
             <img title="Original" src="resources/imagem.png"/>
+        </td>
+        <td>
             <img title="Manipulada" src="output/trocaregioes.png"/>
-        </th>
+        </td>
     </tr>
 </table>
 
