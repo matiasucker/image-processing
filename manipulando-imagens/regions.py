@@ -17,6 +17,8 @@ crop_negativa = cv.bitwise_not(crop)
 
 imagem_tratada[linha_inicio:linha_fim, coluna_inicio:coluna_fim] = crop_negativa
 
+cv.imwrite('resources/regions.png', imagem_tratada)
+
 cv.imshow('Imagem original', imagem_original)
 cv.imshow('Imagem tratada', imagem_tratada)
 
