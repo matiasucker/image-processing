@@ -1,7 +1,7 @@
 import cv2 as cv
 
 # Carregando a imagem
-imagem_original = cv.imread('recursos/imagem.png')
+imagem_original = cv.imread('resources/imagem.png')
 imagem_tratada = imagem_original.copy()
 
 print("Informe as coordenadas para a seleção da imagem")
