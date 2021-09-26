@@ -1,7 +1,7 @@
 # Manipulando imagens
 
 ## Regions
-implementar um programa regions.py. Esse programa deverá solicitar ao usuário as coordenadas de dois pontos P1 e P2 localizados dentro dos limites do tamanho da imagem e exibir que lhe for fornecida. Entretanto, a região definida pelo retângulo de vértices opostos definidos pelos pontos P1 e P2 será exibida com o negativo da imagem na região correspondente. O efeito é ilustrado na figura a seguir.
+Implementar um programa regions.py. Esse programa deverá solicitar ao usuário as coordenadas de dois pontos P1 e P2 localizados dentro dos limites do tamanho da imagem e exibir que lhe for fornecida. Entretanto, a região definida pelo retângulo de vértices opostos definidos pelos pontos P1 e P2 será exibida com o negativo da imagem na região correspondente. O efeito é ilustrado na figura a seguir.
 
 <table>
     <tr>
@@ -18,10 +18,18 @@ implementar um programa regions.py. Esse programa deverá solicitar ao usuário 
     </tr>
 </table>
 
+## Funcionamento do código
+
+Importação da biblioteca OpenCV
 ```
 import cv2 as cv
+```
 
-# Carregando a imagem
+Carregando a imagem original para uma variável e realizando uma cópia da mesma.
+O conteúdo da variável "imagem_original" será mantido para exibição posterior.
+O conteúdo da variável "imagem_tratada" será alterado para cumprir com o objetivo do progama.
+
+```
 imagem_original = cv.imread('resources/imagem.png')
 imagem_tratada = imagem_original.copy()
 
