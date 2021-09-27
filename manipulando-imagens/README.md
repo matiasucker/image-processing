@@ -78,7 +78,16 @@ cv.waitKey(0)
 
 ## Exemplo de entrada
 
-
+<table>
+    <tr>
+        <th align="Center">Exemplo de entrada e a saída resultante</th>
+    </tr> 
+    <tr>
+        <td>
+            <img title="Exemplo" src="tmp/exemplo.png"/>
+        </td>
+    </tr>
+</table>
 
 
 ## Troca Regiões
