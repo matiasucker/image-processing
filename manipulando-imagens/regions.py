@@ -1,6 +1,5 @@
 import cv2 as cv
 
-# Carregando a imagem
 imagem_original = cv.imread('resources/imagem.png')
 imagem_tratada = imagem_original.copy()
 
@@ -11,11 +10,11 @@ coluna_inicio = int(input("P1 [coluna] : "))
 linha_fim = int(input("P2 [linha] : "))
 coluna_fim = int(input("P2 [coluna] : "))
 
-crop = imagem_tratada[linha_inicio:linha_fim, coluna_inicio:coluna_fim]
+roi = imagem_tratada[linha_inicio:linha_fim, coluna_inicio:coluna_fim]
 
-crop_negativa = cv.bitwise_not(crop)
+roi_negativa = cv.bitwise_not(roi)
 
-imagem_tratada[linha_inicio:linha_fim, coluna_inicio:coluna_fim] = crop_negativa
+imagem_tratada[linha_inicio:linha_fim, coluna_inicio:coluna_fim] = roi_negativa
 
 cv.imwrite('output/regions.png', imagem_tratada)
 
