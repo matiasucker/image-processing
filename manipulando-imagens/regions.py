@@ -22,3 +22,4 @@ cv.imshow('Imagem original', imagem_original)
 cv.imshow('Imagem tratada', imagem_tratada)
 
 cv.waitKey(0)
+
