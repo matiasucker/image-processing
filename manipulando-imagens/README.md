@@ -86,7 +86,7 @@ O resultado foi transformar a área de interesse selecionada na negativa da imag
     </tr> 
     <tr>
         <td>
-            <img title="Exemplo" src="tmp/exemplo.PNG"/>
+            <img title="Exemplo" src="tmp/exemplo_regions.png"/>
         </td>
     </tr>
 </table>
@@ -170,3 +170,16 @@ Função para o programa aguardar o fim da execução quando uma tecla for press
 ```
 cv.waitKey(0)
 ```
+
+## Exemplo de funcionamento
+
+<table>
+    <tr>
+        <th align="Center">Exemplo de entrada e a saída resultante</th>
+    </tr> 
+    <tr>
+        <td>
+            <img title="Exemplo" src="tmp/exemplo_trocaregioes.png"/>
+        </td>
+    </tr>
+</table>
