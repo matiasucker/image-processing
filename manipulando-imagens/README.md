@@ -32,27 +32,52 @@ O conteúdo da variável "imagem_tratada" será alterado para cumprir com o obje
 ```
 imagem_original = cv.imread('resources/imagem.png')
 imagem_tratada = imagem_original.copy()
+```
 
+Entrada de console para o usuário informar as coordenadas de dois pontos P1 e P2.
+Cada ponto terá duas informações, linha e coluna.
+```
 print("Informe as coordenadas para a seleção da imagem")
 linha_inicio = int(input("P1 [linha] : "))
 coluna_inicio = int(input("P1 [coluna] : "))
 
 linha_fim = int(input("P2 [linha] : "))
 coluna_fim = int(input("P2 [coluna] : "))
+```
 
-crop = imagem_tratada[linha_inicio:linha_fim, coluna_inicio:coluna_fim]
+Com base nos pontos informados, neste ponto é extraída a região de interesse da imagem "roi" (region of interest).
+```
+roi = imagem_tratada[linha_inicio:linha_fim, coluna_inicio:coluna_fim]
+```
 
-crop_negativa = cv.bitwise_not(crop)
+Tendo a região de interessea,  agora realizamos a negativa desta imagem, invertendo os bits "on" em "off", através da função bitwise_not da biblioteca OpenCV.
+```
+roi_negativa = cv.bitwise_not(crop)
+```
 
-imagem_tratada[linha_inicio:linha_fim, coluna_inicio:coluna_fim] = crop_negativa
+Agora com a região de interesse negativa, adicionamos ela na mesma imagem em que foi extraída, utilizando os mesmos pontos informados pelo usuário.
+```
+imagem_tratada[linha_inicio:linha_fim, coluna_inicio:coluna_fim] = roi_negativa
+```
 
+Salvamos a imagem tratada.
+```
 cv.imwrite('output/regions.png', imagem_tratada)
+```
 
+Imprimimos a imagem original e a imagem tratada para comparação.
+```
 cv.imshow('Imagem original', imagem_original)
 cv.imshow('Imagem tratada', imagem_tratada)
+```
 
+Função para o programa aguardar o fim da execução quando uma tecla for pressionada.
+```
 cv.waitKey(0)
 ```
+
+## Exemplo de entrada
+
 
 
 
