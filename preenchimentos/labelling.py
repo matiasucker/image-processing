@@ -46,7 +46,8 @@ for j in range(width):
         seedpoint[1] = height-1
         cv2.floodFill(imagem_tratada, None, seedpoint, 0)
 
-# A imagem em escala de cinza tem o fundo com o tom no valor 0, vamos alterar para 1 para diferenciar na busca por objetos com buracos
+# A imagem em escala de cinza tem o fundo com o tom no valor 0,
+# vamos alterar para 1 para diferenciar na busca por objetos com buracos
 seedpoint[0] = 0
 seedpoint[1] = 0
 cv2.floodFill(imagem_tratada, None, seedpoint, 1)
@@ -61,8 +62,6 @@ for i in range(height):
                 seedpoint[0] = j-1
                 seedpoint[1] = i
                 cv2.floodFill(imagem_tratada, None, seedpoint, 100)
-
-
 
 # Identificando regiões sem buracos
 nobjects_sem_buracos = 0
@@ -96,5 +95,3 @@ print("A figura tem " + str(nobjects_sem_buracos) + " objetos sem buracos que n�
 print("A figura tem " + str(nobjects_com_buracos) + " objetos com buracos que não tocam as bordas da imagem")
 
 cv2.waitKey(0)
-
-
