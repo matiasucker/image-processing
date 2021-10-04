@@ -71,14 +71,14 @@ Análise das bordas esquerda e direita, é realizado um laço ```for``` para ite
 for i in range(height):
 ```
 
-Eliminação de objetos na borda esquerda da cena.
+Eliminação de objetos na borda esquerda da cena, caso o pixel tenha o tom de cinza no valor de 255 (branco), este pixel e os pixels vizinhos são alterados para o tom de cinza no valor 0 (preto).
 ```
     if imagem_tratada[i, 0] == 255:
         seedpoint[0] = 0
         seedpoint[1] = i
         cv2.floodFill(imagem_tratada, None, seedpoint, 0)
 ```
-Eliminação de objetos na borda direita da cena.
+Eliminação de objetos na borda direita da cena, caso o pixel tenha o tom de cinza no valor de 255 (branco), este pixel e os pixels vizinhos são alterados para o tom de cinza no valor 0 (preto).
 ```
     if imagem_tratada[i, width-1] == 255:
         seedpoint[0] = width-1
@@ -90,14 +90,14 @@ Análise das bordas superior e inferior, é realizado um laço ```for``` para it
 ```
 for j in range(width):
 ```
-Eliminação de objetos na borda superior da cena.
+Eliminação de objetos na borda superior da cena, caso o pixel tenha o tom de cinza no valor de 255 (branco), este pixel e os pixels vizinhos são alterados para o tom de cinza no valor 0 (preto).
 ```
     if imagem_tratada[0, j] == 255:
         seedpoint[0] = j
         seedpoint[1] = 0
         cv2.floodFill(imagem_tratada, None, seedpoint, 0)
 ```
-Eliminação de objetos na borda inferior da cena.
+Eliminação de objetos na borda inferior da cena, caso o pixel tenha o tom de cinza no valor de 255 (branco), este pixel e os pixels vizinhos são alterados para o tom de cinza no valor 0 (preto).
 ```
     if imagem_tratada[height-1, j] == 255:
         seedpoint[0] = j
