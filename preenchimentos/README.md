@@ -189,7 +189,7 @@ cv2.waitKey(0)
     </tr> 
     <tr>
         <td>
-            <img title="Saída do programa" src="resources/Saida-do-programa.PNG"/>
+            <img title="Saída do programa" src="output/Saida-do-programa.PNG"/>
         </td>
 
     </tr>
