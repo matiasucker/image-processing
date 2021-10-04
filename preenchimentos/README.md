@@ -182,6 +182,19 @@ cv2.waitKey(0)
     </tr>
 </table>
 
+## Exemplo de execução
+<table>
+    <tr>
+        <th align="Center">Saída do programa</th>
+    </tr> 
+    <tr>
+        <td>
+            <img title="Saída do programa" src="resources/Saida-do-programa.PNG"/>
+        </td>
+
+    </tr>
+</table>
+
 ## Código já aprimorado
 ```
 # importação da biblioteca OpenCV
