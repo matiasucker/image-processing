@@ -39,60 +39,16 @@ Aprimore o algoritmo de contagem apresentado para identificar regiões com ou se
 ## Funcionamento do código
 
 Importação da biblioteca OpenCV
+```buildoutcfg
+import cv2
 ```
-import cv2 as cv
+Leitura da imagem
+```buildoutcfg
+image = cv2.imread('resources/bolhas.png')
 ```
-
-Carregando a imagem original para uma variável e realizando uma cópia da mesma.
-O conteúdo da variável "imagem_original" será mantido para exibição posterior.
-O conteúdo da variável "imagem_tratada" será alterado para cumprir com o objetivo do progama.
-```
-imagem_original = cv.imread('resources/imagem.png')
-imagem_tratada = imagem_original.copy()
-```
-
-Usando a função shape sobre a imagem para extrair a suas features, com essa função é possível extrair em um vetor as informações do tamanho da largura e altura da imagem.
-A primeira posição do vetor (vetor[0]) será a largura da imagem, a segunda posição do vetor (vetor[1]) será a altura da imagem, ambas as informações são salvas nas variáveis "w' e "h".
-Para descobrir o ponto médio, ou seja, o meio da imagem, pode-se dividir os valores das variáveis w e h por dois, e salvar os resultados em outas duas variáveis "x" e "y".
-O ponto médio será essencial para dividir a imagem em quatro quadrantes.
-```
-vetor = imagem_original.shape
-w = int(vetor[0])
-h = int(vetor[1])
-x = int(vetor[0]/2)
-y = int(vetor[1]/2)
-```
-
-Dividindo a imagem em quatro quadrantes, e salvando cada quadrante de imagem. Neste caso é utilizado as variáveis "w", "h", "x" e "y" para selecionar as áreas de interesse em quatro quadrantes.
-```
-cv.imwrite('tmp/quadrante_1.png', imagem_original[0 : x, y : w])
-cv.imwrite('tmp/quadrante_2.png', imagem_original[0 : x, 0 : y])
-cv.imwrite('tmp/quadrante_3.png', imagem_original[x : h, 0 : y])
-cv.imwrite('tmp/quadrante_4.png', imagem_original[x : h, y : w])
-```
-
-Inserindo os quadrantes de imagem trocando as diagonais.
-```
-imagem_tratada[0 : x, y : w] = cv.imread('tmp/quadrante_3.png')
-imagem_tratada[0 : x, 0 : y] = cv.imread('tmp/quadrante_4.png')
-imagem_tratada[x : h, 0 : y] = cv.imread('tmp/quadrante_1.png')
-imagem_tratada[x : h, y : w] = cv.imread('tmp/quadrante_2.png')
-```
-
-Salvamos a imagem tratada, já com as diagonais trocadas.
-```
-cv.imwrite('output/trocaregioes.png', imagem_tratada)
-```
-
-Imprimimos a imagem original e a imagem tratada para comparação.
-```
-cv.imshow('Imagem original', imagem_original)
-cv.imshow('Troca regioes', imagem_tratada)
-```
-
-Função para o programa aguardar o fim da execução quando uma tecla for pressionada.
-```
-cv.waitKey(0)
+Cópia da imagem original
+```buildoutcfg
+imagem_tratada = image_gray.copy()
 ```
 
 ## Exemplo de funcionamento

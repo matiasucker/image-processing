@@ -1,18 +1,14 @@
+# importação da biblioteca OpenCV
 import cv2
-import numpy as np
-import math
-import sys
 
 # Leitura da imagem
 image = cv2.imread('resources/bolhas.png')
 
 # Transformação da imagem para escala de cinza
 image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-imagem_tratada = image_gray.copy()
 
-# Aplicação do desfoque Gaussian Blur na imagem, ajuda a remover algumas das bordas de alta frequência,
-# com as quais não estamos preocupados e nos permite obter uma segmentação mais limpa
-# image_gray_blurred = cv2.GaussianBlur(image_gray, (7, 7), 0)
+# Cópia da imagem original
+imagem_tratada = image_gray.copy()
 
 # Obtendo as dimensões da imagem, altura e largura.
 height, width = image.shape[:2]
@@ -50,13 +46,12 @@ for j in range(width):
         seedpoint[1] = height-1
         cv2.floodFill(imagem_tratada, None, seedpoint, 0)
 
-
-
-
+# A imagem em escala de cinza tem o fundo com o tom no valor 0, vamos alterar para 1 para diferenciar na busca por objetos com buracos
 seedpoint[0] = 0
 seedpoint[1] = 0
 cv2.floodFill(imagem_tratada, None, seedpoint, 1)
 
+# Identificando regiões com buracos
 nobjects_com_buracos = 0
 for i in range(height):
     for j in range(width):
@@ -79,7 +74,7 @@ for i in range(height):
             seedpoint[1] = i
             cv2.floodFill(imagem_tratada, None, seedpoint, 50)
 
-# Saída do programa labeling sem aprimoração
+# Identificando regiões na imagem original, sem aprimoração
 nobjects = 0
 for i in range(height):
     for j in range(width):
@@ -89,14 +84,14 @@ for i in range(height):
             seedpoint[1] = i
             cv2.floodFill(image_gray, None, seedpoint, nobjects)
 
-
+# Impressão da saída normal, sem aprimoração
 cv2.imshow('Saida do programa labeling', image_gray)
 print("A figura tem " + str(nobjects) + " objetos no total")
 
+# Impressão da saída do algoritmo aprimorado
 cv2.imshow('Saida do programa labeling aprimorado', imagem_tratada)
 print("A figura tem " + str(nobjects_sem_buracos) + " objetos sem buracos que não tocam as bordas da imagem")
 print("A figura tem " + str(nobjects_com_buracos) + " objetos com buracos que não tocam as bordas da imagem")
-
 
 cv2.waitKey(0)
 
