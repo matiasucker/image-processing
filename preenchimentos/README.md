@@ -86,7 +86,7 @@ Eliminação de objetos na borda direita da cena.
         cv2.floodFill(imagem_tratada, None, seedpoint, 0)
 ```
 
-Análise das bordas superior e inferior, é realizado um laço ```for````para iterar a largura da imagem, varrendo cada coluna.
+Análise das bordas superior e inferior, é realizado um laço ```for```para iterar a largura da imagem, varrendo cada coluna.
 ```
 for j in range(width):
 ```
