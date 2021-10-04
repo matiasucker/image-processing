@@ -39,62 +39,143 @@ Aprimore o algoritmo de contagem apresentado para identificar regiões com ou se
 ## Funcionamento do código
 
 Importação da biblioteca OpenCV
-```buildoutcfg
+```
 import cv2
 ```
 Leitura da imagem
-```buildoutcfg
+```
 image = cv2.imread('resources/bolhas.png')
 ```
+Transformação da imagem para escala de cinza
+```
+image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+```
 Cópia da imagem original
-```buildoutcfg
+```
 imagem_tratada = image_gray.copy()
 ```
+Obtendo as dimensões da imagem: altura e largura.
+```
+height, width = image.shape[:2]
+```
+Ponto no qual será usdado como semente para utilizar a função floodFill
+```
+seedpoint = [0, 0]
+```
+Análise das bordas esquerda e direita, é realizado um laço ```for````para iterar a altura da imagem, varrendo cada linha.
+```
+for i in range(height):
+```
 
+Eliminação de objetos na borda esquerda da cena.
+```
+    if imagem_tratada[i, 0] == 255:
+        seedpoint[0] = 0
+        seedpoint[1] = i
+        cv2.floodFill(imagem_tratada, None, seedpoint, 0)
+```
+Eliminação de objetos na borda direita da cena.
+```
+    if imagem_tratada[i, width-1] == 255:
+        seedpoint[0] = width-1
+        seedpoint[1] = i
+        cv2.floodFill(imagem_tratada, None, seedpoint, 0)
+```
+
+Análise das bordas superior e inferior, é realizado um laço ```for````para iterar a largura da imagem, varrendo cada coluna.
+```
+for j in range(width):
+```
+Eliminação de objetos na borda superior da cena.
+```
+    if imagem_tratada[0, j] == 255:
+        seedpoint[0] = j
+        seedpoint[1] = 0
+        cv2.floodFill(imagem_tratada, None, seedpoint, 0)
+```
+Eliminação de objetos na borda inferior da cena.
+```
+    if imagem_tratada[height-1, j] == 255:
+        seedpoint[0] = j
+        seedpoint[1] = height-1
+        cv2.floodFill(imagem_tratada, None, seedpoint, 0)
+```
+A imagem em escala de cinza tem o fundo com o tom no valor 0, vamos alterar para 1 para diferenciar na busca por objetos com buracos, a alteração começa na posição (0, 0), para isso precisamos também alterar o seedpoint (semente).
+```
+seedpoint[0] = 0
+seedpoint[1] = 0
+cv2.floodFill(imagem_tratada, None, seedpoint, 1)
+```
+Identificando regiões com buracos, através de dois laçoes for aninhados, a imagem é percorrida, se o valor do pixel for 0, e o valor do pixel anterior for 255, significa que localizamos um objeto com buraco, então é necessário colorir este objeto com buraco e contabilizar nosso contador de objetos com buracos.
+```
+nobjects_com_buracos = 0
+for i in range(height):
+    for j in range(width):
+        if imagem_tratada[i, j] == 0:
+            if imagem_tratada[i, j -1] == 255:
+                nobjects_com_buracos += 1
+                seedpoint[0] = j-1
+                seedpoint[1] = i
+                cv2.floodFill(imagem_tratada, None, seedpoint, 100)
+```
+Identificando regiões sem buracos, através de dois laçoes for aninhados, a imagem é percorrida, se o valor do pixel for 255, significa que localizamos um objeto sem buraco, então é necessário colorir este objeto e contabilizar nosso contador de objetos sem buracos.
+```
+nobjects_sem_buracos = 0
+for i in range(height):
+    for j in range(width):
+        if imagem_tratada[i, j] == 255:
+            nobjects_sem_buracos += 1
+            seedpoint[0] = j
+            seedpoint[1] = i
+            cv2.floodFill(imagem_tratada, None, seedpoint, 50)
+```
+Identificando regiões na imagem original, sem aprimoração. A imagem é percorrida, e caso um pixel for encontrado com valor = 255, os pixels vizinhos serão rotulados conforme o valor da variável contador nobjects.
+```
+nobjects = 0
+for i in range(height):
+    for j in range(width):
+        if image_gray[i, j] == 255:
+            nobjects += 1
+            seedpoint[0] = j
+            seedpoint[1] = i
+            cv2.floodFill(image_gray, None, seedpoint, nobjects)
+```
+Impressão da saída normal, sem aprimoração
+```
+cv2.imwrite('output/Saida-normal.PNG', image_gray)
+cv2.imshow('Saida do programa labeling', image_gray)
+print("A figura tem " + str(nobjects) + " objetos no total")
+```
+Impressão da saída do algoritmo aprimorado
+```
+cv2.imwrite('output/Saida-aprimorada.PNG', imagem_tratada)
+cv2.imshow('Saida do programa labeling aprimorado', imagem_tratada)
+print("A figura tem " + str(nobjects_sem_buracos) + " objetos sem buracos que não tocam as bordas da imagem")
+print("A figura tem " + str(nobjects_com_buracos) + " objetos com buracos que não tocam as bordas da imagem")
+```
+Função para o programa aguardar o fim da execução quando uma tecla for pressionada.
+```
+cv2.waitKey(0)
+```
 ## Exemplo de funcionamento
 
 <table>
     <tr>
-        <th align="Center">Exemplo de entrada e a saída resultante</th>
+        <th align="Center">Saída do programa labeling.py</th>
+        <th align="Center">Saída do programa labeling.py aprimorado</th>
     </tr> 
     <tr>
         <td>
-            <img title="Exemplo" src="tmp/exemplo_trocaregioes.png"/>
+            <img title="Exemplo" src="output/Saida-normal.PNG"/>
+        </td>
+        <td>
+            <img title="Exemplo" src="output/Saida-aprimorada.PNG"/>
         </td>
     </tr>
 </table>
 
 ## Código
-```
-import cv2 as cv
 
-# Carregando a imagem
-imagem_original = cv.imread('resources/imagem.png')
-imagem_tratada = imagem_original.copy()
-
-vetor = imagem_original.shape
-w = int(vetor[0])
-h = int(vetor[1])
-x = int(vetor[0]/2)
-y = int(vetor[1]/2)
-
-cv.imwrite('tmp/quadrante_1.png', imagem_original[0 : x, y : w])
-cv.imwrite('tmp/quadrante_2.png', imagem_original[0 : x, 0 : y])
-cv.imwrite('tmp/quadrante_3.png', imagem_original[x : h, 0 : y])
-cv.imwrite('tmp/quadrante_4.png', imagem_original[x : h, y : w])
-
-imagem_tratada[0 : x, y : w] = cv.imread('tmp/quadrante_3.png')
-imagem_tratada[0 : x, 0 : y] = cv.imread('tmp/quadrante_4.png')
-imagem_tratada[x : h, 0 : y] = cv.imread('tmp/quadrante_1.png')
-imagem_tratada[x : h, y : w] = cv.imread('tmp/quadrante_2.png')
-
-cv.imwrite('output/trocaregioes.png', imagem_tratada)
-
-cv.imshow('Imagem original', imagem_original)
-cv.imshow('Troca regioes', imagem_tratada)
-
-cv.waitKey(0)
-```
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## Código original labeling.cpp em C++ 

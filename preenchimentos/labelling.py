@@ -10,7 +10,7 @@ image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 # Cópia da imagem original
 imagem_tratada = image_gray.copy()
 
-# Obtendo as dimensões da imagem, altura e largura.
+# Obtendo as dimensões da imagem: altura e largura.
 height, width = image.shape[:2]
 
 # Ponto no qual será usdado como semente para utilizar a função floodFill
@@ -85,10 +85,12 @@ for i in range(height):
             cv2.floodFill(image_gray, None, seedpoint, nobjects)
 
 # Impressão da saída normal, sem aprimoração
+cv2.imwrite('output/Saida-normal.PNG', image_gray)
 cv2.imshow('Saida do programa labeling', image_gray)
 print("A figura tem " + str(nobjects) + " objetos no total")
 
 # Impressão da saída do algoritmo aprimorado
+cv2.imwrite('output/Saida-aprimorada.PNG', imagem_tratada)
 cv2.imshow('Saida do programa labeling aprimorado', imagem_tratada)
 print("A figura tem " + str(nobjects_sem_buracos) + " objetos sem buracos que não tocam as bordas da imagem")
 print("A figura tem " + str(nobjects_com_buracos) + " objetos com buracos que não tocam as bordas da imagem")
