@@ -110,7 +110,7 @@ seedpoint[0] = 0
 seedpoint[1] = 0
 cv2.floodFill(imagem_tratada, None, seedpoint, 1)
 ```
-Identificando regiões com buracos, através de dois laçoes for aninhados, a imagem é percorrida, se o valor do pixel for 0, e o valor do pixel anterior for 255, significa que localizamos um objeto com buraco, então é necessário colorir este objeto com buraco e contabilizar nosso contador de objetos com buracos.
+Identificando regiões com buracos, através de dois laçoes for aninhados, a imagem é percorrida, se o valor do pixel for 0, e o valor do pixel anterior for 255, significa que localizamos um objeto com buraco, então é necessário alterar o tom de cinza  deste objeto com buraco com valor 100, e contabilizar nosso contador de objetos com buracos.
 ```
 nobjects_com_buracos = 0
 for i in range(height):
@@ -122,7 +122,7 @@ for i in range(height):
                 seedpoint[1] = i
                 cv2.floodFill(imagem_tratada, None, seedpoint, 100)
 ```
-Identificando regiões sem buracos, através de dois laçoes for aninhados, a imagem é percorrida, se o valor do pixel for 255, significa que localizamos um objeto sem buraco, então é necessário colorir este objeto e contabilizar nosso contador de objetos sem buracos.
+Identificando regiões sem buracos, através de dois laçoes for aninhados, a imagem é percorrida, se o valor do pixel for 255, significa que localizamos um objeto sem buraco, então é necessário alterar o tom de cinza deste objeto sem buracos com valor 50, e contabilizar nosso contador de objetos sem buracos.
 ```
 nobjects_sem_buracos = 0
 for i in range(height):
@@ -133,7 +133,7 @@ for i in range(height):
             seedpoint[1] = i
             cv2.floodFill(imagem_tratada, None, seedpoint, 50)
 ```
-Identificando regiões na imagem original, sem aprimoração. A imagem é percorrida, e caso um pixel for encontrado com valor = 255, os pixels vizinhos serão rotulados conforme o valor da variável contador nobjects.
+Identificando regiões na imagem original, sem aprimoração. A imagem é percorrida, e caso um pixel for encontrado com valor = 255, significa que localizamos um objeto, então é necessário alterar o tom de cinza rotulando cada objeto conforme o valor da variável contador nobjects.
 ```
 nobjects = 0
 for i in range(height):
