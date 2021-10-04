@@ -66,7 +66,7 @@ Ponto no qual será usdado como semente para utilizar a função floodFill
 ```
 seedpoint = [0, 0]
 ```
-Análise das bordas esquerda e direita, é realizado um laço ```for````para iterar a altura da imagem, varrendo cada linha.
+Análise das bordas esquerda e direita, é realizado um laço ```for``` para iterar a altura da imagem, varrendo cada linha.
 ```
 for i in range(height):
 ```
@@ -86,7 +86,7 @@ Eliminação de objetos na borda direita da cena.
         cv2.floodFill(imagem_tratada, None, seedpoint, 0)
 ```
 
-Análise das bordas superior e inferior, é realizado um laço ```for```para iterar a largura da imagem, varrendo cada coluna.
+Análise das bordas superior e inferior, é realizado um laço ```for``` para iterar a largura da imagem, varrendo cada coluna.
 ```
 for j in range(width):
 ```
