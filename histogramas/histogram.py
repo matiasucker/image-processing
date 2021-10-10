@@ -19,8 +19,9 @@ if color == 'rgb':
     ax.set_title('Histograma RGB')
 else:
     ax.set_title('Histograma escala de cinza')
+
 ax.set_xlabel('Bins')
-ax.set_ylabel('Frequency')
+ax.set_ylabel('Frequency (N of Pixels)')
 
 lw = 3
 alpha = 0.5

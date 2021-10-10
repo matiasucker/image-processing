@@ -21,7 +21,7 @@ import cv2
 import time
 ```
 
-Analisador de argumentos por linha de comando, usado para esolher se o vídeo será tratado em rgb ou cinza, e ainda a quantidade de bins para plotar o gráfico do histograma.
+Analisador de argumentos por linha de comando, usado para escolher se o vídeo será tratado em RGB ou CINZA, e ainda a quantidade de bins para plotar no gráfico do histograma.
 ```
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--color', type=str, default='gray',
@@ -39,10 +39,34 @@ Prepara uma figura [fig] e um array de eixos [ax] para plotagem.
 fig, ax = plt.subplots()
 ```
 
+Verifica se o argumento passado por linha de comando será RGB ou CINZA, para cada caso será inserido o título apropriado na plotagem.
+```
+if color == 'rgb':
+    ax.set_title('Histograma RGB')
+else:
+    ax.set_title('Histograma escala de cinza')
+```
+
+Inserção dos labels nos eixos X e Y na plotagem.
+```
+ax.set_xlabel('Bins')
+ax.set_ylabel('Frequency (N of Pixels)')
+```
 
 
+```
+lw = 3
+alpha = 0.5
+if color == 'rgb':
+    lineR, = ax.plot(np.arange(bins), np.zeros((bins,)), c='r', lw=lw, alpha=alpha, label='Red')
+    lineG, = ax.plot(np.arange(bins), np.zeros((bins,)), c='g', lw=lw, alpha=alpha, label='Green')
+    lineB, = ax.plot(np.arange(bins), np.zeros((bins,)), c='b', lw=lw, alpha=alpha, label='Blue')
+else:
+    lineGray, = ax.plot(np.arange(bins), np.zeros((bins,1)), c='k', lw=lw, label='intensity')
+```
 
-## Código completo
+
+## Código completo em Python
 ```
 import cv2
 import numpy as np
