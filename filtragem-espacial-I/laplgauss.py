@@ -84,7 +84,7 @@ while True:
     if cv2.waitKey(1) & 0xFF == ord('x'):
         key = ord('x')
         kernel_reference = gauss
-        print("\nMask Laplaciano do Gaussiano\nMas Gauss\n" + str(gauss) + "\nMask Laplacian\n" + str(laplacian))
+        print("\nMask Laplaciano do Gaussiano\nMask Gauss\n" + str(gauss) + "\nMask Laplacian\n" + str(laplacian))
     if cv2.waitKey(1) & 0xFF == ord('q'):
         print("Exit")
         break
