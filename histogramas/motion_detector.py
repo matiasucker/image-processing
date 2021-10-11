@@ -19,14 +19,13 @@ color = args['color']
 bins = args['bins']
 sim = args['sim']
 
-
 fig, ax = plt.subplots()
 if color == 'rgb':
     ax.set_title('Histograma RGB')
 else:
     ax.set_title('Histograma escala de cinza')
 ax.set_xlabel('Bins')
-ax.set_ylabel('Frequency')
+ax.set_ylabel('Frequency (N of Pixels)')
 
 lw = 3
 alpha = 0.5
@@ -35,14 +34,14 @@ if color == 'rgb':
     lineG, = ax.plot(np.arange(bins), np.zeros((bins,)), c='g', lw=lw, alpha=alpha, label='Green')
     lineB, = ax.plot(np.arange(bins), np.zeros((bins,)), c='b', lw=lw, alpha=alpha, label='Blue')
 
-    image_referenceR = np.zeros((480, 640), dtype="uint8")
-    histogram_referenceR = cv2.calcHist([image_referenceR], [0], None, [bins], [0, 255])
+    canal_referenceR = np.zeros((480, 640), dtype="uint8")
+    histogram_referenceR = cv2.calcHist([canal_referenceR], [0], None, [bins], [0, 255])
 
-    image_referenceG = np.zeros((480, 640), dtype="uint8")
-    histogram_referenceG = cv2.calcHist([image_referenceG], [0], None, [bins], [0, 255])
+    canal_referenceG = np.zeros((480, 640), dtype="uint8")
+    histogram_referenceG = cv2.calcHist([canal_referenceG], [0], None, [bins], [0, 255])
 
-    image_referenceB = np.zeros((480, 640), dtype="uint8")
-    histogram_referenceB = cv2.calcHist([image_referenceB], [0], None, [bins], [0, 255])
+    canal_referenceB = np.zeros((480, 640), dtype="uint8")
+    histogram_referenceB = cv2.calcHist([canal_referenceB], [0], None, [bins], [0, 255])
 
 else:
     lineGray, = ax.plot(np.arange(bins), np.zeros((bins,1)), c='k', lw=lw, label='intensity')
@@ -64,7 +63,6 @@ while True:
     if not existe_frame:
         break
 
-    numPixels = np.prod(frame.shape[:2])
     if color == 'rgb':
         cv2.imshow('RGB', frame)
         (b, g, r) = cv2.split(frame)
