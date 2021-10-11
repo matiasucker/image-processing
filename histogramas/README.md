@@ -357,7 +357,7 @@ Desenvolvido em Python
         </td>
     </tr>
 </table>
-\
+
 <table>
     <tr>
         <th align="Center">Histograma RGB com movimentos detectados</th>
@@ -386,7 +386,7 @@ Desenvolvido em Python
     </tr> 
     <tr>
         <td>
-            <img title="Histograma GRAY com movimentos detectados" src="output/gray_motion_.png"/>
+            <img title="Histograma GRAY com movimentos detectados" src="output/gray_motion.png"/>
         </td>
     </tr>
 </table>
