@@ -7,6 +7,8 @@
 ## 4.2 Exercícios
 Utilizando o programa exemplos/histogram.cpp como referência, implemente um programa equalize.cpp. Este deverá, para cada imagem capturada, realizar a equalização do histogram antes de exibir a imagem. Teste sua implementação apontando a câmera para ambientes com iluminações variadas e observando o efeito gerado. Assuma que as imagens processadas serão em tons de cinza.
 
+Utilizando o programa exemplos/histogram.cpp como referência, implemente um programa motiondetector.cpp. Este deverá continuamente calcular o histograma da imagem (apenas uma componente de cor é suficiente) e compará-lo com o último histograma calculado. Quando a diferença entre estes ultrapassar um limiar pré-estabelecido, ative um alarme. Utilize uma função de comparação que julgar conveniente.
+
 ## Programa Equalize.py
 Desenvolvido em Python
 
@@ -328,6 +330,62 @@ while True:
 capture.release()
 cv2.destroyAllWindows()
 ```
+-------------------------------------------------------------------
+## Programa motion_detector.py
+Desenvolvido em Python
+
+## Exemplos de entrada e saída
+
+<table>
+    <tr>
+        <th align="Center">Histograma RGB sem movimentos</th>
+    </tr> 
+    <tr>
+        <td>
+            <img title="Histograma RGB sem movimentos" src="output/rgb_motionless.png"/>
+        </td>
+    </tr>
+</table>
+\
+<table>
+    <tr>
+        <th align="Center">Histograma RGB com movimentos detectados</th>
+    </tr> 
+    <tr>
+        <td>
+            <img title="Histograma RGB com movimentos detectados" src="output/rgb_motion.png"/>
+        </td>
+    </tr>
+</table>
+
+<table>
+    <tr>
+        <th align="Center">Histograma GRAY sem movimentos</th>
+    </tr> 
+    <tr>
+        <td>
+            <img title="Histograma GRAY sem movimentos" src="output/gray_motionless.png"/>
+        </td>
+    </tr>
+</table>
+
+<table>
+    <tr>
+        <th align="Center">Histograma GRAY com movimentos detectados</th>
+    </tr> 
+    <tr>
+        <td>
+            <img title="Histograma GRAY com movimentos detectados" src="output/gray_motion_.png"/>
+        </td>
+    </tr>
+</table>
+
+## Funcionamento do código
+
+Importação das bibliotecas
+
+
+
 
 ## Código do exemplo em C++
 ```
