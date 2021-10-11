@@ -51,8 +51,10 @@ while True:
     cv2.imshow("Original", frame_gray)
 
     image_filtered = cv2.filter2D(src=frame_gray, ddepth=-1, kernel=kernel_reference)
+
     if key == 120:
         image_filtered = cv2.filter2D(src=image_filtered, ddepth=-1, kernel=laplacian)
+
     cv2.imshow("Filter", image_filtered)
 
     if cv2.waitKey(1) & 0xFF == ord('m'):
