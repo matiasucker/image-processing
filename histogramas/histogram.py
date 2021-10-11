@@ -45,7 +45,6 @@ while True:
     if not grabbed:
         break
 
-    numPixels = np.prod(frame.shape[:2])
     if color == 'rgb':
         cv2.imshow('RGB', frame)
         (b, g, r) = cv2.split(frame)
