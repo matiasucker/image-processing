@@ -22,7 +22,7 @@ Desenvolvido em Python
         </td>
     </tr>
 </table>
-
+\
 <table>
     <tr>
         <th align="Center">Histograma RGB equalizado</th>
@@ -33,7 +33,40 @@ Desenvolvido em Python
         </td>
     </tr>
 </table>
-
+\
+<table>
+    <tr>
+        <th align="Center">Histograma RGB</th>
+    </tr> 
+    <tr>
+        <td>
+            <img title="Histograma RGB" src="output/rgb.png"/>
+        </td>
+    </tr>
+</table>
+\
+\
+<table>
+    <tr>
+        <th align="Center">Histograma GRAY</th>
+    </tr> 
+    <tr>
+        <td>
+            <img title="Histograma GRAY" src="output/gray.png"/>
+        </td>
+    </tr>
+</table>
+\
+<table>
+    <tr>
+        <th align="Center">Histograma GRAY equalizado</th>
+    </tr> 
+    <tr>
+        <td>
+            <img title="Histograma GRAY equalizado" src="output/gray_equalized.png"/>
+        </td>
+    </tr>
+</table>
 
 ## Funcionamento do código
 
