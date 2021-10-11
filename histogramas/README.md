@@ -7,7 +7,7 @@
 ## 4.2 Exercícios
 Utilizando o programa exemplos/histogram.cpp como referência, implemente um programa equalize.cpp. Este deverá, para cada imagem capturada, realizar a equalização do histogram antes de exibir a imagem. Teste sua implementação apontando a câmera para ambientes com iluminações variadas e observando o efeito gerado. Assuma que as imagens processadas serão em tons de cinza.
 
-## Programa Equalize
+## Programa Equalize.py
 Desenvolvido em Python
 
 ## Funcionamento do código
@@ -39,7 +39,7 @@ Prepara uma figura [fig] e um array de eixos [ax] para plotagem.
 fig, ax = plt.subplots()
 ```
 
-Verifica se o argumento passado por linha de comando será RGB ou CINZA, para cada caso será inserido o título apropriado na plotagem.
+Verifica se o argumento passado por linha de comando foi RGB ou CINZA, para cada caso será inserido o título apropriado na plotagem.
 ```
 if color == 'rgb':
     ax.set_title('Histograma RGB')
@@ -53,7 +53,14 @@ ax.set_xlabel('Bins')
 ax.set_ylabel('Frequency (N of Pixels)')
 ```
 
-
+Verifica se o argumento passado por linha de comando foi RGB ou CINZA, se foi RGB é configurado um eixo para cada linha RGB. Se foi CINZA, apenas um eixo é configurado.\
+Os parâmetros para configuração da função plot() são:\
+np.arange(bins) -> um range com o tamanho dos bins\
+np.zeros((bins, )) -> um array preenchido com zeros com o tamanho dos bins\
+c = a cor
+lw = largura da linha\
+alpha = scalar
+label = nome
 ```
 lw = 3
 alpha = 0.5
@@ -65,38 +72,147 @@ else:
     lineGray, = ax.plot(np.arange(bins), np.zeros((bins,1)), c='k', lw=lw, label='intensity')
 ```
 
+Configura os limites dos eixos X e Y
+```
+ax.set_xlim(0, bins)
+ax.set_ylim(0, bins + 50)
+```
+
+Torna a plotagem interativa com o plt.ion()
+Faz a plotagem com o plt.show()
+```
+plt.ion()
+plt.show()
+```
+Captura o vídeo da webcam.
+```
+capture = cv2.VideoCapture(0)
+```
+Início do loop infinito, até que a tecla 'q' seja pressionada.\
+A cada iteração do while, captura cada frame e armazena em 'frame', e também uma condição booleana True ou False se existe frame em 'existe_frame'.\
+Faz o flip do frame para inverter corrigindo a amostragem.\
+Testa se não existir frame, sai do loop infinito e encerra a execução do programa.
+```
+while True:
+    existe_frame, frame = capture.read()
+
+    frame = cv2.flip(frame, 0)
+
+    if not existe_frame:
+        break
+```
+
+Testa se a cor é RGB.\
+Se sim, faz um split do frame, separando em seus respectivos canais R G B.
+```
+    if color == 'rgb':
+        (b, g, r) = cv2.split(frame)
+```
+Para cada canal, faz a equalização.
+```
+        b = cv2.equalizeHist(b)
+        g = cv2.equalizeHist(g)
+        r = cv2.equalizeHist(r)
+```
+Realiza o merge dos canais R G B em um único frame.\
+Mostra o frame RGB equalizado.
+```
+        frame_equalized = cv2.merge((b, g, r))
+        cv2.imshow('RGB equalized', frame_equalized)
+```
+Calcula o histograma para cada canal R G B
+```
+        histogramR = cv2.calcHist([r], [0], None, [bins], [0, 255])
+        histogramG = cv2.calcHist([g], [0], None, [bins], [0, 255])
+        histogramB = cv2.calcHist([b], [0], None, [bins], [0, 255])
+```
+Normaliza cada canal R G B individualmente, para melhorar a visualização da plotagem dos histogramas.
+```
+        cv2.normalize(histogramR, histogramR, 0, 255, cv2.NORM_MINMAX)
+        cv2.normalize(histogramG, histogramG, 0, 255, cv2.NORM_MINMAX)
+        cv2.normalize(histogramB, histogramB, 0, 255, cv2.NORM_MINMAX)
+```
+Para cada linha da plotagem, é carregado o histograma correspondente.
+```
+        lineR.set_ydata(histogramR)
+        lineG.set_ydata(histogramG)
+        lineB.set_ydata(histogramB)
+```
+Caso não for passado a cor de argumento por linha de comando, a execução cairá aqui, para tratamento do frame em escala de cinza.\
+O frame é convertido para escala de cinza.
+```
+    else:
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+```
+O frame em escala de cinza é equalizado e mostrado.
+```
+        frame_equalized = cv2.equalizeHist(gray)
+        cv2.imshow('Grayscale equalized', frame_equalized)
+```
+Calculado o histograma.
+```
+        histogramGRAY = cv2.calcHist([frame_equalized], [0], None, [bins], [0, 255])
+```
+Normaliza o canal cinza, para melhorar a visualização da plotagem.
+```
+        cv2.normalize(histogramGRAY, histogramGRAY, 0, 255, cv2.NORM_MINMAX)
+```
+
+Para a linha em escala de cinza, é carregado o seu histograma.
+```
+        lineGray.set_ydata(histogramGRAY)
+```
+
+Atualiza a plotagem automaticamente e limpa a plotagem antiga.
+```
+    fig.canvas.draw()
+    fig.canvas.flush_events()
+```
+
+Aguarda um tempo para a próxima leitura.
+```
+    time.sleep(0.1)
+```
+
+Testa se a tecla pressionada foi 'q', se for encerra o loop infinito e o programa encerra sua execução.
+```
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+```
+
+Libera todos os recursos utilizados, fecha as janelas abertas e encerra o programa.
+```
+capture.release()
+cv2.destroyAllWindows()
+```
 
 ## Código completo em Python
 ```
-import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-from datetime import datetime
 import argparse
+import cv2
 import time
-
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--color', type=str, default='gray',
     help='Color space: "gray" (default), "rgb"')
 parser.add_argument('-b', '--bins', type=int, default=256,
     help='Number of bins per channel (default 256)')
-parser.add_argument('-s', '--sim', type=float, default=0.995,
-    help='Similarity of histograms (default 0.995)')
 args = vars(parser.parse_args())
 
 color = args['color']
 bins = args['bins']
-sim = args['sim']
-
 
 fig, ax = plt.subplots()
+
 if color == 'rgb':
-    ax.set_title('Histograma RGB')
+    ax.set_title('Histograma RGB equalizado')
 else:
-    ax.set_title('Histograma escala de cinza')
+    ax.set_title('Histograma escala de cinza equalizado')
+
 ax.set_xlabel('Bins')
-ax.set_ylabel('Frequency')
+ax.set_ylabel('Frequency (N of Pixels)')
 
 lw = 3
 alpha = 0.5
@@ -104,24 +220,11 @@ if color == 'rgb':
     lineR, = ax.plot(np.arange(bins), np.zeros((bins,)), c='r', lw=lw, alpha=alpha, label='Red')
     lineG, = ax.plot(np.arange(bins), np.zeros((bins,)), c='g', lw=lw, alpha=alpha, label='Green')
     lineB, = ax.plot(np.arange(bins), np.zeros((bins,)), c='b', lw=lw, alpha=alpha, label='Blue')
-
-    image_referenceR = np.zeros((480, 640), dtype="uint8")
-    histogram_referenceR = cv2.calcHist([image_referenceR], [0], None, [bins], [0, 255])
-
-    image_referenceG = np.zeros((480, 640), dtype="uint8")
-    histogram_referenceG = cv2.calcHist([image_referenceG], [0], None, [bins], [0, 255])
-
-    image_referenceB = np.zeros((480, 640), dtype="uint8")
-    histogram_referenceB = cv2.calcHist([image_referenceB], [0], None, [bins], [0, 255])
-
 else:
     lineGray, = ax.plot(np.arange(bins), np.zeros((bins,1)), c='k', lw=lw, label='intensity')
 
-    image_referenceGRAY = np.zeros((480, 640), dtype="uint8")
-    histogram_referenceGRAY = cv2.calcHist([image_referenceGRAY], [0], None, [bins], [0, 255])
-
 ax.set_xlim(0, bins)
-ax.set_ylim(0, bins + 50)
+ax.set_ylim(0, 0.03)
 ax.legend()
 plt.ion()
 plt.show()
@@ -129,6 +232,7 @@ plt.show()
 capture = cv2.VideoCapture(0)
 while True:
     existe_frame, frame = capture.read()
+
     frame = cv2.flip(frame, 0)
 
     if not existe_frame:
@@ -136,54 +240,29 @@ while True:
 
     numPixels = np.prod(frame.shape[:2])
     if color == 'rgb':
-        cv2.imshow('RGB', frame)
         (b, g, r) = cv2.split(frame)
-        histogramR = cv2.calcHist([r], [0], None, [bins], [0, 255])
-        histogramG = cv2.calcHist([g], [0], None, [bins], [0, 255])
-        histogramB = cv2.calcHist([b], [0], None, [bins], [0, 255])
-
-        cv2.normalize(histogramR, histogramR, 0, 255, cv2.NORM_MINMAX)
-        cv2.normalize(histogramG, histogramG, 0, 255, cv2.NORM_MINMAX)
-        cv2.normalize(histogramB, histogramB, 0, 255, cv2.NORM_MINMAX)
-
+        b = cv2.equalizeHist(b)
+        g = cv2.equalizeHist(g)
+        r = cv2.equalizeHist(r)
+        frame_equalized = cv2.merge((b, g, r))
+        cv2.imshow('RGB equalized', frame_equalized)
+        histogramR = cv2.calcHist([r], [0], None, [bins], [0, 255]) / numPixels
+        histogramG = cv2.calcHist([g], [0], None, [bins], [0, 255]) / numPixels
+        histogramB = cv2.calcHist([b], [0], None, [bins], [0, 255]) / numPixels
         lineR.set_ydata(histogramR)
         lineG.set_ydata(histogramG)
         lineB.set_ydata(histogramB)
 
-        similarityR = cv2.compareHist(histogram_referenceR, histogramR, cv2.HISTCMP_CORREL)
-        similarityG = cv2.compareHist(histogram_referenceG, histogramG, cv2.HISTCMP_CORREL)
-        similarityB = cv2.compareHist(histogram_referenceB, histogramB, cv2.HISTCMP_CORREL)
-
-        similarity = (similarityR + similarityG + similarityB) / 3
-        print(similarity)
-
-        if (similarityR < sim) or (similarityG < sim) or (similarityB < sim):
-            print("[INFO] ALARME: movimento detectado " + datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-
-        histogram_referenceR = histogramR.copy()
-        histogram_referenceG = histogramG.copy()
-        histogram_referenceB = histogramB.copy()
-
     else:
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        cv2.imshow('Grayscale', gray)
-        histogramGRAY = cv2.calcHist([gray], [0], None, [bins], [0, 255])
-
-        cv2.normalize(histogramGRAY, histogramGRAY, 0, 255, cv2.NORM_MINMAX)
-
-        lineGray.set_ydata(histogramGRAY)
-
-        similarityGRAY = cv2.compareHist(histogram_referenceGRAY, histogramGRAY, cv2.HISTCMP_CORREL)
-
-        print(similarityGRAY)
-
-        if similarityGRAY < sim:
-            print("[INFO] ALARME: movimento detectado " + datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-
-        histogram_referenceGRAY = histogramGRAY.copy()
+        frame_equalized = cv2.equalizeHist(gray)
+        cv2.imshow('Grayscale equalized', frame_equalized)
+        histogram = cv2.calcHist([frame_equalized], [0], None, [bins], [0, 255]) / numPixels
+        lineGray.set_ydata(histogram)
 
     fig.canvas.draw()
     fig.canvas.flush_events()
+
     time.sleep(0.1)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):

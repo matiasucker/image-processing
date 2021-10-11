@@ -49,17 +49,27 @@ while True:
     if color == 'rgb':
         cv2.imshow('RGB', frame)
         (b, g, r) = cv2.split(frame)
-        histogramR = cv2.calcHist([r], [0], None, [bins], [0, 255]) / numPixels
-        histogramG = cv2.calcHist([g], [0], None, [bins], [0, 255]) / numPixels
-        histogramB = cv2.calcHist([b], [0], None, [bins], [0, 255]) / numPixels
+
+        histogramR = cv2.calcHist([r], [0], None, [bins], [0, 255])
+        histogramG = cv2.calcHist([g], [0], None, [bins], [0, 255])
+        histogramB = cv2.calcHist([b], [0], None, [bins], [0, 255])
+
+        cv2.normalize(histogramR, histogramR, 0, 255, cv2.NORM_MINMAX)
+        cv2.normalize(histogramG, histogramG, 0, 255, cv2.NORM_MINMAX)
+        cv2.normalize(histogramB, histogramB, 0, 255, cv2.NORM_MINMAX)
+
         lineR.set_ydata(histogramR)
         lineG.set_ydata(histogramG)
         lineB.set_ydata(histogramB)
     else:
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         cv2.imshow('Grayscale', gray)
-        histogram = cv2.calcHist([gray], [0], None, [bins], [0, 255]) / numPixels
-        lineGray.set_ydata(histogram)
+
+        histogramGRAY = cv2.calcHist([gray], [0], None, [bins], [0, 255])
+
+        cv2.normalize(histogramGRAY, histogramGRAY, 0, 255, cv2.NORM_MINMAX)
+
+        lineGray.set_ydata(histogramGRAY)
 
     fig.canvas.draw()
     fig.canvas.flush_events()
