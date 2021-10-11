@@ -10,6 +10,34 @@ Utilizando o programa exemplos/histogram.cpp como referência, implemente um pro
 ## Programa Equalize.py
 Desenvolvido em Python
 
+## Exemplos de entrada e saída
+
+<table>
+    <tr>
+        <th align="Center">Histograma RGB</th>
+    </tr> 
+    <tr>
+        <td>
+            <img title="Histograma RGB" src="output/rgb.png"/>
+        </td>
+    </tr>
+</table>
+
+<table>
+    <tr>
+        <th align="Center">Histograma RGB</th>
+    </tr> 
+    <tr>
+        <td>
+            <img title="Histograma RGB" src="output/rgb.png"/>
+        </td>
+        <td>
+            <img title="Histograma RGB equalizado" src="output/rgb_equalized.png"/>
+        </td>
+    </tr>
+</table>
+
+
 ## Funcionamento do código
 
 Importação das bibliotecas
@@ -20,7 +48,7 @@ import argparse
 import cv2
 import time
 ```
-
+\
 Analisador de argumentos por linha de comando, usado para escolher se o vídeo será tratado em RGB ou CINZA, e ainda a quantidade de bins para plotar no gráfico do histograma.
 ```
 parser = argparse.ArgumentParser()
@@ -33,12 +61,12 @@ args = vars(parser.parse_args())
 color = args['color']
 bins = args['bins']
 ```
-
+\
 Prepara uma figura [fig] e um array de eixos [ax] para plotagem.
 ```
 fig, ax = plt.subplots()
 ```
-
+\
 Verifica se o argumento passado por linha de comando foi RGB ou CINZA, para cada caso será inserido o título apropriado na plotagem.
 ```
 if color == 'rgb':
@@ -46,13 +74,13 @@ if color == 'rgb':
 else:
     ax.set_title('Histograma escala de cinza')
 ```
-
+\
 Inserção dos labels nos eixos X e Y na plotagem.
 ```
 ax.set_xlabel('Bins')
 ax.set_ylabel('Frequency (N of Pixels)')
 ```
-
+\
 Verifica se o argumento passado por linha de comando foi RGB ou CINZA, se foi RGB é configurado um eixo para cada linha RGB. Se foi CINZA, apenas um eixo é configurado.\
 Os parâmetros para configuração da função plot() são:\
 np.arange(bins) -> um range com o tamanho dos bins\
@@ -71,23 +99,25 @@ if color == 'rgb':
 else:
     lineGray, = ax.plot(np.arange(bins), np.zeros((bins,1)), c='k', lw=lw, label='intensity')
 ```
-
+\
 Configura os limites dos eixos X e Y
 ```
 ax.set_xlim(0, bins)
 ax.set_ylim(0, bins + 50)
 ```
-
+\
 Torna a plotagem interativa com o plt.ion()
 Faz a plotagem com o plt.show()
 ```
 plt.ion()
 plt.show()
 ```
+\
 Captura o vídeo da webcam.
 ```
 capture = cv2.VideoCapture(0)
 ```
+\
 Início do loop infinito, até que a tecla 'q' seja pressionada.\
 A cada iteração do while, captura cada frame e armazena em 'frame', e também uma condição booleana True ou False se existe frame em 'existe_frame'.\
 Faz o flip do frame para inverter corrigindo a amostragem.\
@@ -101,85 +131,94 @@ while True:
     if not existe_frame:
         break
 ```
-
+\
 Testa se a cor é RGB.\
 Se sim, faz um split do frame, separando em seus respectivos canais R G B.
 ```
     if color == 'rgb':
         (b, g, r) = cv2.split(frame)
 ```
+\
 Para cada canal, faz a equalização.
 ```
         b = cv2.equalizeHist(b)
         g = cv2.equalizeHist(g)
         r = cv2.equalizeHist(r)
 ```
+\
 Realiza o merge dos canais R G B em um único frame.\
 Mostra o frame RGB equalizado.
 ```
         frame_equalized = cv2.merge((b, g, r))
         cv2.imshow('RGB equalized', frame_equalized)
 ```
+\
 Calcula o histograma para cada canal R G B
 ```
         histogramR = cv2.calcHist([r], [0], None, [bins], [0, 255])
         histogramG = cv2.calcHist([g], [0], None, [bins], [0, 255])
         histogramB = cv2.calcHist([b], [0], None, [bins], [0, 255])
 ```
+\
 Normaliza cada canal R G B individualmente, para melhorar a visualização da plotagem dos histogramas.
 ```
         cv2.normalize(histogramR, histogramR, 0, 255, cv2.NORM_MINMAX)
         cv2.normalize(histogramG, histogramG, 0, 255, cv2.NORM_MINMAX)
         cv2.normalize(histogramB, histogramB, 0, 255, cv2.NORM_MINMAX)
 ```
+\
 Para cada linha da plotagem, é carregado o histograma correspondente.
 ```
         lineR.set_ydata(histogramR)
         lineG.set_ydata(histogramG)
         lineB.set_ydata(histogramB)
 ```
+\
 Caso não for passado a cor de argumento por linha de comando, a execução cairá aqui, para tratamento do frame em escala de cinza.\
 O frame é convertido para escala de cinza.
 ```
     else:
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 ```
+\
 O frame em escala de cinza é equalizado e mostrado.
 ```
         frame_equalized = cv2.equalizeHist(gray)
         cv2.imshow('Grayscale equalized', frame_equalized)
 ```
+\
 Calculado o histograma.
 ```
         histogramGRAY = cv2.calcHist([frame_equalized], [0], None, [bins], [0, 255])
 ```
+\
 Normaliza o canal cinza, para melhorar a visualização da plotagem.
 ```
         cv2.normalize(histogramGRAY, histogramGRAY, 0, 255, cv2.NORM_MINMAX)
 ```
-
+\
 Para a linha em escala de cinza, é carregado o seu histograma.
 ```
         lineGray.set_ydata(histogramGRAY)
 ```
-
+\
 Atualiza a plotagem automaticamente e limpa a plotagem antiga.
 ```
     fig.canvas.draw()
     fig.canvas.flush_events()
 ```
-
+\
 Aguarda um tempo para a próxima leitura.
 ```
     time.sleep(0.1)
 ```
-
+\
 Testa se a tecla pressionada foi 'q', se for encerra o loop infinito e o programa encerra sua execução.
 ```
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 ```
-
+\
 Libera todos os recursos utilizados, fecha as janelas abertas e encerra o programa.
 ```
 capture.release()
