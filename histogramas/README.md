@@ -25,12 +25,9 @@ Desenvolvido em Python
 
 <table>
     <tr>
-        <th align="Center">Histograma RGB</th>
+        <th align="Center">Histograma RGB equalizado</th>
     </tr> 
     <tr>
-        <td>
-            <img title="Histograma RGB" src="output/rgb.png"/>
-        </td>
         <td>
             <img title="Histograma RGB equalizado" src="output/rgb_equalized.png"/>
         </td>
