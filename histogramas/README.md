@@ -103,10 +103,10 @@ Verifica se o argumento passado por linha de comando foi RGB ou CINZA, se foi RG
 Os parâmetros para configuração da função plot() são:\
 np.arange(bins) -> um range com o tamanho dos bins\
 np.zeros((bins, )) -> um array preenchido com zeros com o tamanho dos bins\
-c = a cor
-lw = largura da linha\
-alpha = scalar
-label = nome
+c -> a cor
+lw -> largura da linha\
+alpha -> scalar\
+label -> nome
 ```
 lw = 3
 alpha = 0.5
