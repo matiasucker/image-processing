@@ -1,7 +1,18 @@
 import cv2
 import numpy as np
+import argparse
 
-image = cv2.imread('resources/image.png', cv2.IMREAD_COLOR)
+parser = argparse.ArgumentParser()
+parser.add_argument('-c', '--color', type=str, default='gray',
+    help='Color space: "gray" (default), "rgb"')
+args = vars(parser.parse_args())
+
+image = cv2.imread('resources/image.png')
+if args['color'] == 'gray':
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+elif args['color'] == 'rgb':
+    image = cv2.cvtColor(image, cv2.IMREAD_COLOR)
+
 height, weigth = image.shape[:2]
 
 cv2.namedWindow('Original')
