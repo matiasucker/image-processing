@@ -7,18 +7,13 @@ parser.add_argument('-c', '--color', type=str, default='rgb',
     help='Color space: "rgb" (default), "gray"')
 args = vars(parser.parse_args())
 
-image = cv2.imread('resources/image.png')
-if args['color'] == 'rgb':
-    image = cv2.cvtColor(image, cv2.IMREAD_COLOR)
-elif args['color'] == 'gray':
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+capture = cv2.VideoCapture('resources/video.wmv')
+exist_frame, frame = capture.read()
 
-height, weigth = image.shape[:2]
+height, weigth = frame.shape[:2]
 
 cv2.namedWindow('Original')
-cv2.imshow('Original', image)
-
-cv2.namedWindow('Tiltshift')
+cv2.namedWindow('Tiltshift', cv2.WINDOW_NORMAL)
 
 cv2.createTrackbar('center', 'Tiltshift', int(height / 2), height, (lambda a: None))
 cv2.createTrackbar('d', 'Tiltshift', 50, 100, (lambda a: None))
@@ -26,6 +21,17 @@ cv2.createTrackbar('vertical', 'Tiltshift', int(height / 2), height, (lambda a: 
 cv2.createTrackbar('gauss', 'Tiltshift', 50, 100, (lambda a: None))
 
 while True:
+    exist_frame, frame = capture.read()
+    if not exist_frame:
+        break
+
+    if args['color'] == 'rgb':
+        frame = cv2.cvtColor(frame, cv2.IMREAD_COLOR)
+    elif args['color'] == 'gray':
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+    cv2.imshow('Original', frame)
+
     center = cv2.getTrackbarPos('center', 'Tiltshift')
     d = cv2.getTrackbarPos('d', 'Tiltshift')
     vertical = cv2.getTrackbarPos('vertical', 'Tiltshift')
@@ -44,13 +50,13 @@ while True:
     else:
         alpha_x = (np.tanh((x - l1) / d) - np.tanh((x - l2) / d)) / 2
 
-    mask = np.repeat(alpha_x, weigth).reshape(image.shape[:2])
+    mask = np.repeat(alpha_x, weigth).reshape(frame.shape[:2])
 
-    image_blur = cv2.GaussianBlur(image, (gauss * 2 + 1, gauss * 2 + 1), 0)
-    if len(image.shape) == 3:
+    image_blur = cv2.GaussianBlur(frame, (gauss * 2 + 1, gauss * 2 + 1), 0)
+    if len(frame.shape) == 3:
         mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
 
-    output = cv2.convertScaleAbs(image * mask + image_blur * (1 - mask))
+    output = cv2.convertScaleAbs(frame * mask + image_blur * (1 - mask))
 
     cv2.imshow('Tiltshift', output)
 
@@ -58,4 +64,5 @@ while True:
         print("Exit")
         break
 
+capture.release()
 cv2.destroyAllWindows()
