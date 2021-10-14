@@ -13,7 +13,7 @@ exist_frame, frame = capture.read()
 height, weigth = frame.shape[:2]
 
 cv2.namedWindow('Original')
-cv2.namedWindow('Tiltshift', cv2.WINDOW_NORMAL)
+cv2.namedWindow('Tiltshift', cv2.WINDOW_KEEPRATIO)
 
 cv2.createTrackbar('center', 'Tiltshift', int(height / 2), height, (lambda a: None))
 cv2.createTrackbar('d', 'Tiltshift', 50, 100, (lambda a: None))
