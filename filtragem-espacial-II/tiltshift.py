@@ -3,15 +3,15 @@ import numpy as np
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-c', '--color', type=str, default='gray',
-    help='Color space: "gray" (default), "rgb"')
+parser.add_argument('-c', '--color', type=str, default='rgb',
+    help='Color space: "rgb" (default), "gray"')
 args = vars(parser.parse_args())
 
 image = cv2.imread('resources/image.png')
-if args['color'] == 'gray':
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-elif args['color'] == 'rgb':
+if args['color'] == 'rgb':
     image = cv2.cvtColor(image, cv2.IMREAD_COLOR)
+elif args['color'] == 'gray':
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 height, weigth = image.shape[:2]
 
