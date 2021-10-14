@@ -1,11 +1,6 @@
 import cv2
 import numpy as np
 
-
-def nothing():
-    pass
-
-
 image = cv2.imread('resources/image.png', cv2.IMREAD_COLOR)
 height, weigth = image.shape[:2]
 
@@ -14,10 +9,10 @@ cv2.imshow('Original', image)
 
 cv2.namedWindow('Tiltshift')
 
-cv2.createTrackbar('center', 'Tiltshift', int(height / 2), height, nothing)
-cv2.createTrackbar('d', 'Tiltshift', 50, 100, nothing)
-cv2.createTrackbar('vertical', 'Tiltshift', int(height / 2), height, nothing)
-cv2.createTrackbar('gauss', 'Tiltshift', 50, 100, nothing)
+cv2.createTrackbar('center', 'Tiltshift', int(height / 2), height, (lambda a: None))
+cv2.createTrackbar('d', 'Tiltshift', 50, 100, (lambda a: None))
+cv2.createTrackbar('vertical', 'Tiltshift', int(height / 2), height, (lambda a: None))
+cv2.createTrackbar('gauss', 'Tiltshift', 50, 100, (lambda a: None))
 
 while True:
     center = cv2.getTrackbarPos('center', 'Tiltshift')
@@ -45,7 +40,6 @@ while True:
         mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
 
     output = cv2.convertScaleAbs(image * mask + image_blur * (1 - mask))
-#    output2 = cv2.multiply(image, image_blur)
 
     cv2.imshow('Tiltshift', output)
 
