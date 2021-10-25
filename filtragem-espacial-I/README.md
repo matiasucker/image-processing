@@ -1,10 +1,11 @@
-# Histogramas
+# Filtragem Espacial I
 
 ## Requisitos
 - Python 3.8
 - OpenCV 4.5.3
+- Numpy
 
-## 4.2 Exercícios
+## 5.2 Exercícios
 Utilizando o programa exemplos/filtroespacial.cpp como referência, implemente um programa laplgauss.cpp. O programa deverá acrescentar mais uma funcionalidade ao exemplo fornecido, permitindo que seja calculado o laplaciano do gaussiano das imagens capturadas. Compare o resultado desse filtro com a simples aplicação do filtro laplaciano.
 
 # Programa laplgauss.py
@@ -25,7 +26,7 @@ Desenvolvido em Python
 <br>
 <table>
     <tr>
-        <th align="Center">Media Filter</th>
+        <th align="Center">Media Filter utilizando a matriz kernel</th>
     </tr> 
     <tr>
         <td>
@@ -36,7 +37,7 @@ Desenvolvido em Python
 <br>
 <table>
     <tr>
-        <th align="Center">Gauss Filter</th>
+        <th align="Center">Gauss Filter utilizando a matriz kernel</th>
     </tr> 
     <tr>
         <td>
@@ -47,7 +48,7 @@ Desenvolvido em Python
 <br>
 <table>
     <tr>
-        <th align="Center">Horizontal filter</th>
+        <th align="Center">Horizontal filter utilizando a matriz kernel</th>
     </tr> 
     <tr>
         <td>
@@ -58,7 +59,7 @@ Desenvolvido em Python
 <br>
 <table>
     <tr>
-        <th align="Center">Vertical filter</th>
+        <th align="Center">Vertical filter utilizando a matriz kernel</th>
     </tr> 
     <tr>
         <td>
@@ -69,7 +70,7 @@ Desenvolvido em Python
 <br>
 <table>
     <tr>
-        <th align="Center">Laplacian filter with Mask</th>
+        <th align="Center">Laplacian filter utilizando a matriz kernel</th>
     </tr> 
     <tr>
         <td>
@@ -80,7 +81,7 @@ Desenvolvido em Python
 <br>
 <table>
     <tr>
-        <th align="Center">Boost filter</th>
+        <th align="Center">Boost filter utilizando a matriz kernel</th>
     </tr> 
     <tr>
         <td>
@@ -91,7 +92,7 @@ Desenvolvido em Python
 <br>
 <table>
     <tr>
-        <th align="Center">Laplaciano do Gaussiano</th>
+        <th align="Center">Laplaciano do Gaussiano utilizando a matriz kernel</th>
     </tr> 
     <tr>
         <td>
@@ -100,6 +101,7 @@ Desenvolvido em Python
     </tr>
 </table>
 <br>
+Utilizando a função pronta do OpenCV cv2.gaussianBlur().
 <table>
     <tr>
         <th align="Center">Gauss Filter with cv2.gaussianBlur function</th>
@@ -111,6 +113,7 @@ Desenvolvido em Python
     </tr>
 </table>
 <br>
+Utilizando a função pronta do OpenCV cv2.Laplacian(), foi observado uma maior detecção de bordas do que utilizar a matriz kernel.
 <table>
     <tr>
         <th align="Center">Laplacian Filter with cv2.Laplacian function with low light</th>
@@ -122,6 +125,7 @@ Desenvolvido em Python
     </tr>
 </table>
 <br>
+Utilizando a função pronta do OpenCV cv2.Laplacian(), foi observado uma maior detecção de bordas do que utilizar a matriz kernel.
 <table>
     <tr>
         <th align="Center">Laplacian Filter with cv2.Laplacian function with high light</th>
@@ -133,6 +137,7 @@ Desenvolvido em Python
     </tr>
 </table>
 <br>
+Utilizando a função pronta do OpenCV cv2.Laplacian() e cv2.gaussianBlur(), foi observado uma maior detecção de bordas e uma maior diminuição de ruídos próximos às bordas, do que utilizar a matriz kernel.
 <table>
     <tr>
         <th align="Center">Laplacian Gaussian Filter with cv2.gaussianBlur and cv2.Laplacian function with low light</th>
@@ -144,6 +149,7 @@ Desenvolvido em Python
     </tr>
 </table>
 <br>
+Utilizando a função pronta do OpenCV cv2.Laplacian() e cv2.gaussianBlur(), foi observado uma maior detecção de bordas e uma maior diminuição de ruídos próximos às bordas, do que utilizar a matriz kernel.
 <table>
     <tr>
         <th align="Center">Laplacian Gaussian Filter with cv2.gaussianBlur and cv2.Laplacian function with high light</th>
@@ -155,187 +161,202 @@ Desenvolvido em Python
     </tr>
 </table>
 <br>
+Uma pequena parte do código está comentada, porque os melhores resultados foram obtidos utilizando as funções prontas do OpenCV, como as funções cv2.gaussianBlur() e cv2.Laplacian(). Os exemplos acima mostram uso das matrizes kernel com resultado inferior, e usando as funções com resultado superior.\
 
 ## Funcionamento do código
 
 Importação das bibliotecas
 ```
-import numpy as np
-import matplotlib.pyplot as plt
-import argparse
 import cv2
-import time
+import numpy as np
 ```
 \
-Analisador de argumentos por linha de comando, usado para escolher se o vídeo será tratado em RGB ou CINZA, e ainda a quantidade de bins para plotar no gráfico do histograma.
+Criação do kernel para o filtro de média, um filtro de média pega uma área de pixels ao redor de um pixel central, faz a média de todos esses pixels juntos e substitui o pixel central pela média.
+Pegando a média da região ao redor de um pixel, estamos suavizando-o e substituindo-o pelo valor de sua vizinhança local. Isso nos permite reduzir o ruído e o nível de detalhe, simplesmente contando com a média.
 ```
-parser = argparse.ArgumentParser()
-parser.add_argument('-c', '--color', type=str, default='gray',
-    help='Color space: "gray" (default), "rgb"')
-parser.add_argument('-b', '--bins', type=int, default=256,
-    help='Number of bins per channel (default 256)')
-args = vars(parser.parse_args())
-
-color = args['color']
-bins = args['bins']
+media = np.array([[0.1111, 0.1111, 0.1111],
+                  [0.1111, 0.1111, 0.1111],
+                  [0.1111, 0.1111, 0.1111]])
 ```
 \
-Prepara uma figura [fig] e um array de eixos [ax] para plotagem.
+Criação do kernel para o filtro de gauss, o filtro gaussiano é semelhante ao filtro de média, mas em vez de usar uma média simples, estamos agora usando uma média ponderada, onde os pixels da vizinhança que estão mais próximos do pixel central contribuem com mais “peso” para a média.
 ```
-fig, ax = plt.subplots()
-```
-\
-Verifica se o argumento passado por linha de comando foi RGB ou CINZA, para cada caso será inserido o título apropriado na plotagem.
-```
-if color == 'rgb':
-    ax.set_title('Histograma RGB')
-else:
-    ax.set_title('Histograma escala de cinza')
+gauss = np.array([[0.0625, 0.125, 0.0625],
+                  [0.125, 0.25, 0.125],
+                  [0.0625, 0.125, 0.0625]])
 ```
 \
-Inserção dos labels nos eixos X e Y na plotagem.
+Criação do kernel para o filtro horizontal, é usado para detectar mudanças horizontais no gradiente de imagem.
 ```
-ax.set_xlabel('Bins')
-ax.set_ylabel('Frequency (N of Pixels)')
-```
-\
-Verifica se o argumento passado por linha de comando foi RGB ou CINZA, se foi RGB é configurado um eixo para cada linha RGB. Se foi CINZA, apenas um eixo é configurado.\
-Os parâmetros para configuração da função plot() são:\
-np.arange(bins) -> um range com o tamanho dos bins\
-np.zeros((bins, )) -> um array preenchido com zeros com o tamanho dos bins\
-c -> a cor
-lw -> largura da linha\
-alpha -> scalar\
-label -> nome
-```
-lw = 3
-alpha = 0.5
-if color == 'rgb':
-    lineR, = ax.plot(np.arange(bins), np.zeros((bins,)), c='r', lw=lw, alpha=alpha, label='Red')
-    lineG, = ax.plot(np.arange(bins), np.zeros((bins,)), c='g', lw=lw, alpha=alpha, label='Green')
-    lineB, = ax.plot(np.arange(bins), np.zeros((bins,)), c='b', lw=lw, alpha=alpha, label='Blue')
-else:
-    lineGray, = ax.plot(np.arange(bins), np.zeros((bins,1)), c='k', lw=lw, label='intensity')
+horizontal = np.array([[-1, 0, 1],
+                       [-2, 0, 2],
+                       [-1, 0, 1]])
 ```
 \
-Configura os limites dos eixos X e Y
+Criação do kernel para o filtro vertical, é usado para detectar mudanças verticais no gradiente de imagem.
 ```
-ax.set_xlim(0, bins)
-ax.set_ylim(0, bins + 50)
-```
-\
-Habilita a legenda.\
-Torna a plotagem interativa com o plt.ion()\
-Faz a plotagem com o plt.show()
-```
-ax.legend()
-plt.ion()
-plt.show()
+vertical = np.array([[-1, -2, -1],
+                     [0, 0, 0],
+                     [1, 2, 1]])
 ```
 \
+Criação do kernel para o filtro laplacian, que pode ser usado como uma forma de detecção de borda nas imagens.
+```
+laplacian = np.array([[0, 1, 0],
+                      [1, -4, 1],
+                      [0, 1, 0]])
+```
+\
+Criação do kernel para o filtro boost.
+```
+boost = np.array([[0, -1, 0],
+                  [-1, 5.2, -1],
+                  [0, -1, 0]])
+```
+\
+Menu onde o usuário escolhe o tipo de filtro que deseja aplicar nas imagens capturadas pela câmera. O filtro de média já é por padrão aplicado no programa.
+```
+def menu():
+    print("Select Filter Function:")
+    print("m - media")
+    print("g - gauss")
+    print("h - horizontal")
+    print("v - vertical")
+    print("l - laplacian")
+    print("b - boost")
+    print("x - laplaciano do gaussiano")
+```
+\
+Chamada à função menu() para mostrar ao usuário as opções de filtros disponíveis.\
+Variável key=0, será usada para capturar a escolha de filtro pelo usuário.\
+Variável kernel_reference recebe o kernel do filtro de média, para ser aplicado por padrão no programa.\
 Captura o vídeo da webcam.
 ```
+menu()
+key = 0
+kernel_reference = media
 capture = cv2.VideoCapture(0)
 ```
 \
 Início do loop infinito, até que a tecla 'q' seja pressionada.\
-A cada iteração do while, captura cada frame e armazena em 'frame', e também uma condição booleana True ou False se existe frame em 'existe_frame'.\
+A cada iteração do while, captura cada frame e armazena em 'frame', e também uma condição booleana True ou False se existe frame em 'exist_frame'.\
 Faz o flip do frame para inverter corrigindo a amostragem.\
+Converte o frame para tons de cinza.\
 Testa se não existir frame, sai do loop infinito e encerra a execução do programa.
 ```
 while True:
-    existe_frame, frame = capture.read()
-
+    exist_frame, frame = capture.read()
     frame = cv2.flip(frame, 0)
-
-    if not existe_frame:
+    frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    if not exist_frame:
         break
 ```
 \
-Testa se a cor é RGB.\
-Se sim, faz um split do frame, separando em seus respectivos canais R G B.
+Mostra a sequência de frames originais em tons de cinza.
 ```
-    if color == 'rgb':
-        (b, g, r) = cv2.split(frame)
+    cv2.imshow("Original", frame_gray)
 ```
 \
-Para cada canal, faz a equalização.
+Se a tecla pressionada for 103 ou 120 (teclas 'g' e 'x' respectivamente da tabela ASCII), o programa entra nesta condição e executa a função aplicando o filtro de Gaussiano para cada frame.\
+A tecla 103 'g' equivale ao usuário selecionar o filtro Gauss.\
+A tecla 120 'x' equivale ao usuário selecionar o filtro laplaciano do gaussiano, primeiramente nesta chamada o programa fará a aplicação do filtro gaussiano, para depois aplicar o filtro laplaciano em outra chamada de função.
 ```
-        b = cv2.equalizeHist(b)
-        g = cv2.equalizeHist(g)
-        r = cv2.equalizeHist(r)
-```
-\
-Realiza o merge dos canais R G B em um único frame.\
-Mostra o frame RGB equalizado.
-```
-        frame_equalized = cv2.merge((b, g, r))
-        cv2.imshow('RGB equalized', frame_equalized)
+    if key == 103 or key == 120:
+        image_filtered = cv2.GaussianBlur(frame_gray, (3, 3), 0)
 ```
 \
-Calcula o histograma para cada canal R G B
-```
-        histogramR = cv2.calcHist([r], [0], None, [bins], [0, 255])
-        histogramG = cv2.calcHist([g], [0], None, [bins], [0, 255])
-        histogramB = cv2.calcHist([b], [0], None, [bins], [0, 255])
-```
-\
-Normaliza cada canal R G B individualmente, para melhorar a visualização da plotagem dos histogramas.
-```
-        cv2.normalize(histogramR, histogramR, 0, 255, cv2.NORM_MINMAX)
-        cv2.normalize(histogramG, histogramG, 0, 255, cv2.NORM_MINMAX)
-        cv2.normalize(histogramB, histogramB, 0, 255, cv2.NORM_MINMAX)
-```
-\
-Para cada linha da plotagem, é carregado o histograma correspondente.
-```
-        lineR.set_ydata(histogramR)
-        lineG.set_ydata(histogramG)
-        lineB.set_ydata(histogramB)
-```
-\
-Caso não for passado a cor de argumento por linha de comando, a execução cairá aqui, para tratamento do frame em escala de cinza.\
-O frame é convertido para escala de cinza.
+Se não for as teclas 'g' ou 'x', o programa entra nesta condição e executa a função de convolução filter2d, onde basicamente é passado como argumento da função o frame em tons de cinza e o kernel de referência escolhido pelo usuário.
 ```
     else:
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        image_filtered = cv2.filter2D(src=frame_gray, ddepth=-1, kernel=kernel_reference)
 ```
 \
-O frame em escala de cinza é equalizado e mostrado.
+Se a tecla pressionada for 108 ou 120 (teclas 'l' e 'x' respectivamente da tabela ASCII), o programa entra nesta condição e executa a função aplicando o filtro Laplaciano para cada frame.\
+A tecla 108 'l' equivale ao usuário selecionar o filtro Laplacian.\
+A tecla 120 'x' equivale ao usuário selecionar o filtro laplaciano do gaussiano, o filtro gaussiano já foi aplicado em uma chamada de função anterior, agora irá aplicar a função Laplacian para detecção de bordas.
 ```
-        frame_equalized = cv2.equalizeHist(gray)
-        cv2.imshow('Grayscale equalized', frame_equalized)
-```
-\
-Calculado o histograma.
-```
-        histogramGRAY = cv2.calcHist([frame_equalized], [0], None, [bins], [0, 255])
+    if key == 108 or key == 120:
+        # image_filtered = cv2.filter2D(src=image_filtered, ddepth=-1, kernel=laplacian, borderType=cv2.BORDER_DEFAULT)
+        image_filtered = cv2.Laplacian(src=image_filtered, ddepth=-1, ksize=3)
 ```
 \
-Normaliza o canal cinza, para melhorar a visualização da plotagem.
+A função convertScaleAbs pega o valor absoluto das imagens de gradiente e , emseguida, comprime os valores de volta para o intervalo [0, 255], inteiros, sem sinal de 8 bits.
 ```
-        cv2.normalize(histogramGRAY, histogramGRAY, 0, 255, cv2.NORM_MINMAX)
-```
-\
-Para a linha em escala de cinza, é carregado o seu histograma.
-```
-        lineGray.set_ydata(histogramGRAY)
+    image_filtered = cv2.convertScaleAbs(image_filtered)
 ```
 \
-Atualiza a plotagem automaticamente e limpa a plotagem antiga.
+Mostra a sequência de frames com o filtro aplicado conforme o usuários selecionou.
 ```
-    fig.canvas.draw()
-    fig.canvas.flush_events()
-```
-\
-Aguarda um tempo para a próxima leitura.
-```
-    time.sleep(0.1)
+    cv2.imshow("Filter", image_filtered)
 ```
 \
-Testa se a tecla pressionada foi 'q', se for encerra o loop infinito e o programa encerra sua execução.
+Testa se a tecla pressionada for 'm', carregando o kernel escolhido para a variável kernel_reference, que será usado como argumento da função filter2d, e imprime o kernel no terminal.\
+Filtro de Média.
+```
+    if cv2.waitKey(1) & 0xFF == ord('m'):
+        key = ord('m')
+        kernel_reference = media
+        print("\nMask Media\n" + str(media))
+```
+\
+Testa se a tecla pressionada for 'g', carregando o kernel escolhido para a variável kernel_reference, que será usado como argumento da função filter2d, e imprime o kernel no terminal.\
+Filtro de Gauss.
+```
+    if cv2.waitKey(1) & 0xFF == ord('g'):
+        key = ord('g')
+        kernel_reference = gauss
+        print("\nMask Gauss\n" + str(gauss))
+```
+\
+Testa se a tecla pressionada for 'h', carregando o kernel escolhido para a variável kernel_reference, que será usado como argumento da função filter2d, e imprime o kernel no terminal.\
+Filtro Horizontal.
+```
+    if cv2.waitKey(1) & 0xFF == ord('h'):
+        key = ord('h')
+        kernel_reference = horizontal
+        print("\nMask Horizontal\n" + str(horizontal))
+```
+\
+Testa se a tecla pressionada for 'v', carregando o kernel escolhido para a variável kernel_reference, que será usado como argumento da função filter2d, e imprime o kernel no terminal.\
+Filtro Vertical.
+```
+    if cv2.waitKey(1) & 0xFF == ord('v'):
+        key = ord('v')
+        kernel_reference = vertical
+        print("\nMask Vertical\n" + str(vertical))
+```
+\
+Testa se a tecla pressionada for 'l', carregando o kernel escolhido para a variável kernel_reference, que será usado como argumento da função filter2d, e imprime o kernel no terminal.\
+Filtro Laplacian.
+```
+    if cv2.waitKey(1) & 0xFF == ord('l'):
+        key = ord('l')
+        kernel_reference = laplacian
+        print("\nMask Laplacian\n" + str(laplacian))
+```
+\
+Testa se a tecla pressionada for 'b', carregando o kernel escolhido para a variável kernel_reference, que será usado como argumento da função filter2d, e imprime o kernel no terminal.\
+Filtro Boost.
+```
+    if cv2.waitKey(1) & 0xFF == ord('b'):
+        key = ord('b')
+        kernel_reference = boost
+        print("\nMask Boost\n" + str(boost))
+```
+\
+Testa se a tecla pressionada for 'x', carregando o kernel escolhido para a variável kernel_reference, que será usado como argumento da função filter2d, e imprime o kernel no terminal.\
+Filtro Laplaciano do Gaussiano.
+```
+    if cv2.waitKey(1) & 0xFF == ord('x'):
+        key = ord('x')
+        kernel_reference = gauss
+        print("\nMask Laplaciano do Gaussiano\nMask Gauss\n" + str(gauss) + "\nMask Laplacian\n" + str(laplacian))
+```
+\
+Testa se a tecla pressionada for 'q', se for encerra o loop infinito e o programa encerra sua execução.
 ```
     if cv2.waitKey(1) & 0xFF == ord('q'):
+        print("Exit")
         break
 ```
 \
@@ -345,515 +366,103 @@ capture.release()
 cv2.destroyAllWindows()
 ```
 
-## Código completo em Python
-```
-import numpy as np
-import matplotlib.pyplot as plt
-import argparse
-import cv2
-import time
-
-parser = argparse.ArgumentParser()
-parser.add_argument('-c', '--color', type=str, default='gray',
-    help='Color space: "gray" (default), "rgb"')
-parser.add_argument('-b', '--bins', type=int, default=256,
-    help='Number of bins per channel (default 256)')
-args = vars(parser.parse_args())
-
-color = args['color']
-bins = args['bins']
-
-fig, ax = plt.subplots()
-
-if color == 'rgb':
-    ax.set_title('Histograma RGB equalizado')
-else:
-    ax.set_title('Histograma escala de cinza equalizado')
-
-ax.set_xlabel('Bins')
-ax.set_ylabel('Frequency (N of Pixels)')
-
-lw = 3
-alpha = 0.5
-if color == 'rgb':
-    lineR, = ax.plot(np.arange(bins), np.zeros((bins,)), c='r', lw=lw, alpha=alpha, label='Red')
-    lineG, = ax.plot(np.arange(bins), np.zeros((bins,)), c='g', lw=lw, alpha=alpha, label='Green')
-    lineB, = ax.plot(np.arange(bins), np.zeros((bins,)), c='b', lw=lw, alpha=alpha, label='Blue')
-else:
-    lineGray, = ax.plot(np.arange(bins), np.zeros((bins,1)), c='k', lw=lw, label='intensity')
-
-ax.set_xlim(0, bins)
-ax.set_ylim(0, bins + 50)
-ax.legend()
-plt.ion()
-plt.show()
-
-capture = cv2.VideoCapture(0)
-while True:
-    existe_frame, frame = capture.read()
-
-    frame = cv2.flip(frame, 0)
-
-    if not existe_frame:
-        break
-
-    if color == 'rgb':
-        (b, g, r) = cv2.split(frame)
-        b = cv2.equalizeHist(b)
-        g = cv2.equalizeHist(g)
-        r = cv2.equalizeHist(r)
-        frame_equalized = cv2.merge((b, g, r))
-        cv2.imshow('RGB equalized', frame_equalized)
-
-        histogramR = cv2.calcHist([r], [0], None, [bins], [0, 255])
-        histogramG = cv2.calcHist([g], [0], None, [bins], [0, 255])
-        histogramB = cv2.calcHist([b], [0], None, [bins], [0, 255])
-
-        cv2.normalize(histogramR, histogramR, 0, 255, cv2.NORM_MINMAX)
-        cv2.normalize(histogramG, histogramG, 0, 255, cv2.NORM_MINMAX)
-        cv2.normalize(histogramB, histogramB, 0, 255, cv2.NORM_MINMAX)
-
-        lineR.set_ydata(histogramR)
-        lineG.set_ydata(histogramG)
-        lineB.set_ydata(histogramB)
-
-    else:
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        frame_equalized = cv2.equalizeHist(gray)
-        cv2.imshow('Grayscale equalized', frame_equalized)
-
-        histogramGRAY = cv2.calcHist([frame_equalized], [0], None, [bins], [0, 255])
-
-        cv2.normalize(histogramGRAY, histogramGRAY, 0, 255, cv2.NORM_MINMAX)
-
-        lineGray.set_ydata(histogramGRAY)
-
-    fig.canvas.draw()
-    fig.canvas.flush_events()
-
-    time.sleep(0.1)
-
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-capture.release()
-cv2.destroyAllWindows()
-```
--------------------------------------------------------------------
-# Programa motion_detector.py
-Desenvolvido em Python
-
-## Exemplos de entrada e saída
-
-<table>
-    <tr>
-        <th align="Center">Histograma RGB sem movimentos</th>
-    </tr> 
-    <tr>
-        <td>
-            <img title="Histograma RGB sem movimentos" src="output/rgb_motionless.png"/>
-        </td>
-    </tr>
-</table>
-
-<table>
-    <tr>
-        <th align="Center">Histograma RGB com movimentos detectados</th>
-    </tr> 
-    <tr>
-        <td>
-            <img title="Histograma RGB com movimentos detectados" src="output/rgb_motion.png"/>
-        </td>
-    </tr>
-</table>
-
-<table>
-    <tr>
-        <th align="Center">Histograma GRAY sem movimentos</th>
-    </tr> 
-    <tr>
-        <td>
-            <img title="Histograma GRAY sem movimentos" src="output/gray_motionless.png"/>
-        </td>
-    </tr>
-</table>
-
-<table>
-    <tr>
-        <th align="Center">Histograma GRAY com movimentos detectados</th>
-    </tr> 
-    <tr>
-        <td>
-            <img title="Histograma GRAY com movimentos detectados" src="output/gray_motion.png"/>
-        </td>
-    </tr>
-</table>
-
-## Funcionamento do código
-
-Importação das bibliotecas
+## Código final completo em Python
 ```
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
-from datetime import datetime
-import argparse
-import time
-```
-\
-Analisador de argumentos por linha de comando, usado para escolher se o vídeo será tratado em RGB ou CINZA, e ainda a quantidade de bins para plotar no gráfico do histograma.
-```
-parser = argparse.ArgumentParser()
-parser.add_argument('-c', '--color', type=str, default='gray',
-    help='Color space: "gray" (default), "rgb"')
-parser.add_argument('-b', '--bins', type=int, default=256,
-    help='Number of bins per channel (default 256)')
-parser.add_argument('-s', '--sim', type=float, default=0.995,
-    help='Similarity of histograms (default 0.995)')
-args = vars(parser.parse_args())
 
-color = args['color']
-bins = args['bins']
-sim = args['sim']
-```
-\
-Prepara uma figura [fig] e um array de eixos [ax] para plotagem.
-```
-fig, ax = plt.subplots()
-```
-\
-Verifica se o argumento passado por linha de comando foi RGB ou CINZA, para cada caso será inserido o título apropriado na plotagem.
-```
-if color == 'rgb':
-    ax.set_title('Histograma RGB')
-else:
-    ax.set_title('Histograma escala de cinza')
-```
-\
-Inserção dos labels nos eixos X e Y na plotagem.
-```
-ax.set_xlabel('Bins')
-ax.set_ylabel('Frequency (N of Pixels)')
-```
-\
-Verifica se o argumento passado por linha de comando foi RGB ou CINZA, se foi RGB é configurado um eixo para cada linha RGB. Se foi CINZA, apenas um eixo é configurado.\
-Os parâmetros para configuração da função plot() são:\
-np.arange(bins) -> um range com o tamanho dos bins\
-np.zeros((bins, )) -> um array preenchido com zeros com o tamanho dos bins\
-c -> a cor
-lw -> largura da linha\
-alpha -> scalar\
-label -> nome
-```
-lw = 3
-alpha = 0.5
-if color == 'rgb':
-    lineR, = ax.plot(np.arange(bins), np.zeros((bins,)), c='r', lw=lw, alpha=alpha, label='Red')
-    lineG, = ax.plot(np.arange(bins), np.zeros((bins,)), c='g', lw=lw, alpha=alpha, label='Green')
-    lineB, = ax.plot(np.arange(bins), np.zeros((bins,)), c='b', lw=lw, alpha=alpha, label='Blue')
-```
-\
-Cria três canais R G B através do np.zeros e calcula o histograma de cada canal, será utilizado como comparação posterior para ativação do alarme.
-```
-    image_referenceR = np.zeros((480, 640), dtype="uint8")
-    histogram_referenceR = cv2.calcHist([image_referenceR], [0], None, [bins], [0, 255])
+media = np.array([[0.1111, 0.1111, 0.1111],
+                  [0.1111, 0.1111, 0.1111],
+                  [0.1111, 0.1111, 0.1111]])
 
-    image_referenceG = np.zeros((480, 640), dtype="uint8")
-    histogram_referenceG = cv2.calcHist([image_referenceG], [0], None, [bins], [0, 255])
+gauss = np.array([[0.0625, 0.125, 0.0625],
+                  [0.125, 0.25, 0.125],
+                  [0.0625, 0.125, 0.0625]])
 
-    image_referenceB = np.zeros((480, 640), dtype="uint8")
-    histogram_referenceB = cv2.calcHist([image_referenceB], [0], None, [bins], [0, 255])
-```
-\
-Caso o frame não for RGB, será então em escala de CINZA.\
-Os parâmetros para configuração da função plot() são:\
-np.arange(bins) -> um range com o tamanho dos bins\
-np.zeros((bins, )) -> um array preenchido com zeros com o tamanho dos bins\
-c -> a cor
-lw -> largura da linha\
-alpha -> scalar\
-label -> nome
-```
-else:
-    lineGray, = ax.plot(np.arange(bins), np.zeros((bins,1)), c='k', lw=lw, label='intensity')
-```
-\
-Cria um canal cinza através do np.zeros e calcula o histograma deste canal, será utilizado como comparação posterior para ativação do alarme.
-```
-    image_referenceGRAY = np.zeros((480, 640), dtype="uint8")
-    histogram_referenceGRAY = cv2.calcHist([image_referenceGRAY], [0], None, [bins], [0, 255])
-```
+horizontal = np.array([[-1, 0, 1],
+                       [-2, 0, 2],
+                       [-1, 0, 1]])
+
+vertical = np.array([[-1, -2, -1],
+                     [0, 0, 0],
+                     [1, 2, 1]])
+
+laplacian = np.array([[0, 1, 0],
+                      [1, -4, 1],
+                      [0, 1, 0]])
+
+boost = np.array([[0, -1, 0],
+                  [-1, 5.2, -1],
+                  [0, -1, 0]])
 
 
-\
-Configura os limites dos eixos X e Y
-```
-ax.set_xlim(0, bins)
-ax.set_ylim(0, bins + 50)
-```
-\
-Habilita a legenda.\
-Torna a plotagem interativa com o plt.ion()\
-Faz a plotagem com o plt.show()
-```
-ax.legend()
-plt.ion()
-plt.show()
-```
-\
-Captura o vídeo da webcam.
-```
-capture = cv2.VideoCapture(0)
-```
-\
-Início do loop infinito, até que a tecla 'q' seja pressionada.\
-A cada iteração do while, captura cada frame e armazena em 'frame', e também uma condição booleana True ou False se existe frame em 'existe_frame'.\
-Faz o flip do frame para inverter corrigindo a amostragem.\
-Testa se não existir frame, sai do loop infinito e encerra a execução do programa.
-```
-while True:
-    existe_frame, frame = capture.read()
-
-    frame = cv2.flip(frame, 0)
-
-    if not existe_frame:
-        break
-```
-\
-Testa se a cor é RGB.\
-Se sim, mostra o frame e faz um split do frame, separando em seus respectivos canais R G B.
-```
-    if color == 'rgb':
-        cv2.imshow('RGB', frame)
-        (b, g, r) = cv2.split(frame)
-```
-\
-Calcula o histograma de cada canal R G B.
-```
-        histogramR = cv2.calcHist([r], [0], None, [bins], [0, 255])
-        histogramG = cv2.calcHist([g], [0], None, [bins], [0, 255])
-        histogramB = cv2.calcHist([b], [0], None, [bins], [0, 255])
-```
-\
-Normaliza cada canal R G B individualmente, para melhorar a visualização da plotagem dos histogramas.
-```
-        cv2.normalize(histogramR, histogramR, 0, 255, cv2.NORM_MINMAX)
-        cv2.normalize(histogramG, histogramG, 0, 255, cv2.NORM_MINMAX)
-        cv2.normalize(histogramB, histogramB, 0, 255, cv2.NORM_MINMAX)
-```
-\
-Para cada linha da plotagem, é carregado o histograma correspondente.
-```
-        lineR.set_ydata(histogramR)
-        lineG.set_ydata(histogramG)
-        lineB.set_ydata(histogramB)
-```
-\
-Para cada canal R G B é realizada a comparação do respectivo histograma atual com o histograma anterior armazenado.
-```
-        similarityR = cv2.compareHist(histogram_referenceR, histogramR, cv2.HISTCMP_CORREL)
-        similarityG = cv2.compareHist(histogram_referenceG, histogramG, cv2.HISTCMP_CORREL)
-        similarityB = cv2.compareHist(histogram_referenceB, histogramB, cv2.HISTCMP_CORREL)
-```
-\
-É calculada a média das similaridades dos canais R G B e impresso esta média.
-```
-        similarity = (similarityR + similarityG + similarityB) / 3
-        print(similarity)
-```
-\
-É testado se a similaridade calculada for menor que um valor estipulado, se sim, significa que os frames são diferentes, e um alarme deve ser acionado.
-```
-        if (similarityR < sim) or (similarityG < sim) or (similarityB < sim):
-            print("[INFO] ALARME: movimento detectado " + datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-```
-\
-É realizada a cópia do histograma de cada canal para ser usado como referência para a próxima iteração do laço 'while'.
-```
-        histogram_referenceR = histogramR.copy()
-        histogram_referenceG = histogramG.copy()
-        histogram_referenceB = histogramB.copy()
-```
-\
-Caso o frame não for RGB, será em escala de cinza.
-```
-    else:
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        cv2.imshow('Grayscale', gray)
-```
-\
-Calcula o histograma do canal cinza.
-```
-histogramGRAY = cv2.calcHist([gray], [0], None, [bins], [0, 255])
-```
-\
-Normaliza o canal cinza, para melhorar a visualização da plotagem.
-```
-cv2.normalize(histogramGRAY, histogramGRAY, 0, 255, cv2.NORM_MINMAX)
-```
-\
-Calcula a similaridade do histograma atual com o histograma anterior armazenado como referência.
-```
-similarityGRAY = cv2.compareHist(histogram_referenceGRAY, histogramGRAY, cv2.HISTCMP_CORREL)
-```
-\
-Imprime a similaridade.
-```
-print(similarityGRAY)
-```
-\
-É testado se a similaridade calculada for menor que um valor estipulado, se sim, significa que os frames são diferentes, e um alarme deve ser acionado.
-```
-        if similarityGRAY < sim:
-            print("[INFO] ALARME: movimento detectado " + datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-```
-\
-É realizada a cópia do histograma do canal cinza para ser usado como referência para a próxima iteração do laço 'while'.
-```
-histogram_referenceGRAY = histogramGRAY.copy()
-```
-\
-Atualiza a plotagem automaticamente e limpa a plotagem antiga.
-```
-    fig.canvas.draw()
-    fig.canvas.flush_events()
-```
-\
-Aguarda um tempo para a próxima leitura.
-```
-    time.sleep(0.1)
-```
-\
-Testa se a tecla pressionada foi 'q', se for encerra o loop infinito e o programa encerra sua execução.
-```
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-```
-\
-Libera todos os recursos utilizados, fecha as janelas abertas e encerra o programa.
-```
-capture.release()
-cv2.destroyAllWindows()
-```
-## Código completo em Python
-```
-import cv2
-import numpy as np
-import matplotlib.pyplot as plt
-from datetime import datetime
-import argparse
-import time
+def menu():
+    print("Select Filter Function:")
+    print("m - media")
+    print("g - gauss")
+    print("h - horizontal")
+    print("v - vertical")
+    print("l - laplacian")
+    print("b - boost")
+    print("x - laplaciano do gaussiano")
 
 
-parser = argparse.ArgumentParser()
-parser.add_argument('-c', '--color', type=str, default='gray',
-    help='Color space: "gray" (default), "rgb"')
-parser.add_argument('-b', '--bins', type=int, default=256,
-    help='Number of bins per channel (default 256)')
-parser.add_argument('-s', '--sim', type=float, default=0.995,
-    help='Similarity of histograms (default 0.995)')
-args = vars(parser.parse_args())
-
-color = args['color']
-bins = args['bins']
-sim = args['sim']
-
-fig, ax = plt.subplots()
-if color == 'rgb':
-    ax.set_title('Histograma RGB')
-else:
-    ax.set_title('Histograma escala de cinza')
-ax.set_xlabel('Bins')
-ax.set_ylabel('Frequency (N of Pixels)')
-
-lw = 3
-alpha = 0.5
-if color == 'rgb':
-    lineR, = ax.plot(np.arange(bins), np.zeros((bins,)), c='r', lw=lw, alpha=alpha, label='Red')
-    lineG, = ax.plot(np.arange(bins), np.zeros((bins,)), c='g', lw=lw, alpha=alpha, label='Green')
-    lineB, = ax.plot(np.arange(bins), np.zeros((bins,)), c='b', lw=lw, alpha=alpha, label='Blue')
-
-    canal_referenceR = np.zeros((480, 640), dtype="uint8")
-    histogram_referenceR = cv2.calcHist([canal_referenceR], [0], None, [bins], [0, 255])
-
-    canal_referenceG = np.zeros((480, 640), dtype="uint8")
-    histogram_referenceG = cv2.calcHist([canal_referenceG], [0], None, [bins], [0, 255])
-
-    canal_referenceB = np.zeros((480, 640), dtype="uint8")
-    histogram_referenceB = cv2.calcHist([canal_referenceB], [0], None, [bins], [0, 255])
-
-else:
-    lineGray, = ax.plot(np.arange(bins), np.zeros((bins,1)), c='k', lw=lw, label='intensity')
-
-    image_referenceGRAY = np.zeros((480, 640), dtype="uint8")
-    histogram_referenceGRAY = cv2.calcHist([image_referenceGRAY], [0], None, [bins], [0, 255])
-
-ax.set_xlim(0, bins)
-ax.set_ylim(0, bins + 50)
-ax.legend()
-plt.ion()
-plt.show()
-
+menu()
+key = 0
+kernel_reference = media
 capture = cv2.VideoCapture(0)
 while True:
-    existe_frame, frame = capture.read()
+    exist_frame, frame = capture.read()
     frame = cv2.flip(frame, 0)
-
-    if not existe_frame:
+    frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    if not exist_frame:
         break
 
-    if color == 'rgb':
-        cv2.imshow('RGB', frame)
-        (b, g, r) = cv2.split(frame)
-        histogramR = cv2.calcHist([r], [0], None, [bins], [0, 255])
-        histogramG = cv2.calcHist([g], [0], None, [bins], [0, 255])
-        histogramB = cv2.calcHist([b], [0], None, [bins], [0, 255])
+    cv2.imshow("Original", frame_gray)
 
-        cv2.normalize(histogramR, histogramR, 0, 255, cv2.NORM_MINMAX)
-        cv2.normalize(histogramG, histogramG, 0, 255, cv2.NORM_MINMAX)
-        cv2.normalize(histogramB, histogramB, 0, 255, cv2.NORM_MINMAX)
-
-        lineR.set_ydata(histogramR)
-        lineG.set_ydata(histogramG)
-        lineB.set_ydata(histogramB)
-
-        similarityR = cv2.compareHist(histogram_referenceR, histogramR, cv2.HISTCMP_CORREL)
-        similarityG = cv2.compareHist(histogram_referenceG, histogramG, cv2.HISTCMP_CORREL)
-        similarityB = cv2.compareHist(histogram_referenceB, histogramB, cv2.HISTCMP_CORREL)
-
-        similarity = (similarityR + similarityG + similarityB) / 3
-        print(similarity)
-
-        if (similarityR < sim) or (similarityG < sim) or (similarityB < sim):
-            print("[INFO] ALARME: movimento detectado " + datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-
-        histogram_referenceR = histogramR.copy()
-        histogram_referenceG = histogramG.copy()
-        histogram_referenceB = histogramB.copy()
-
+    if key == 103 or key == 120:
+        image_filtered = cv2.GaussianBlur(frame_gray, (3, 3), 0)
     else:
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        cv2.imshow('Grayscale', gray)
-        histogramGRAY = cv2.calcHist([gray], [0], None, [bins], [0, 255])
+        image_filtered = cv2.filter2D(src=frame_gray, ddepth=-1, kernel=kernel_reference)
 
-        cv2.normalize(histogramGRAY, histogramGRAY, 0, 255, cv2.NORM_MINMAX)
+    if key == 108 or key == 120:
+        # image_filtered = cv2.filter2D(src=image_filtered, ddepth=-1, kernel=laplacian, borderType=cv2.BORDER_DEFAULT)
+        image_filtered = cv2.Laplacian(src=image_filtered, ddepth=-1, ksize=3)
 
-        lineGray.set_ydata(histogramGRAY)
+    image_filtered = cv2.convertScaleAbs(image_filtered)
 
-        similarityGRAY = cv2.compareHist(histogram_referenceGRAY, histogramGRAY, cv2.HISTCMP_CORREL)
+    cv2.imshow("Filter", image_filtered)
 
-        print(similarityGRAY)
-
-        if similarityGRAY < sim:
-            print("[INFO] ALARME: movimento detectado " + datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-
-        histogram_referenceGRAY = histogramGRAY.copy()
-
-    fig.canvas.draw()
-    fig.canvas.flush_events()
-    time.sleep(0.1)
-
+    if cv2.waitKey(1) & 0xFF == ord('m'):
+        key = ord('m')
+        kernel_reference = media
+        print("\nMask Media\n" + str(media))
+    if cv2.waitKey(1) & 0xFF == ord('g'):
+        key = ord('g')
+        kernel_reference = gauss
+        print("\nMask Gauss\n" + str(gauss))
+    if cv2.waitKey(1) & 0xFF == ord('h'):
+        key = ord('h')
+        kernel_reference = horizontal
+        print("\nMask Horizontal\n" + str(horizontal))
+    if cv2.waitKey(1) & 0xFF == ord('v'):
+        key = ord('v')
+        kernel_reference = vertical
+        print("\nMask Vertical\n" + str(vertical))
+    if cv2.waitKey(1) & 0xFF == ord('l'):
+        key = ord('l')
+        kernel_reference = laplacian
+        print("\nMask Laplacian\n" + str(laplacian))
+    if cv2.waitKey(1) & 0xFF == ord('b'):
+        key = ord('b')
+        kernel_reference = boost
+        print("\nMask Boost\n" + str(boost))
+    if cv2.waitKey(1) & 0xFF == ord('x'):
+        key = ord('x')
+        kernel_reference = gauss
+        print("\nMask Laplaciano do Gaussiano\nMask Gauss\n" + str(gauss) + "\nMask Laplacian\n" + str(laplacian))
     if cv2.waitKey(1) & 0xFF == ord('q'):
+        print("Exit")
         break
 
 capture.release()
@@ -865,80 +474,104 @@ cv2.destroyAllWindows()
 #include <iostream>
 #include <opencv2/opencv.hpp>
 
-int main(int argc, char** argv){
-  cv::Mat image;
-  int width, height;
-  cv::VideoCapture cap;
-  std::vector<cv::Mat> planes;
-  cv::Mat histR, histG, histB;
-  int nbins = 64;
-  float range[] = {0, 255};
-  const float *histrange = { range };
-  bool uniform = true;
-  bool acummulate = false;
-  int key;
-
-	cap.open(2);
-
-  if(!cap.isOpened()){
-    std::cout << "cameras indisponiveis";
-    return -1;
+void printmask(cv::Mat &m) {
+  for (int i = 0; i < m.size().height; i++) {
+    for (int j = 0; j < m.size().width; j++) {
+      std::cout << m.at<float>(i, j) << ",";
+    }
+    std::cout << "\n";
   }
+}
+
+int main(int, char **) {
+  cv::VideoCapture cap;  // open the default camera
+  float media[] = {0.1111, 0.1111, 0.1111, 0.1111, 0.1111,
+                   0.1111, 0.1111, 0.1111, 0.1111};
+  float gauss[] = {0.0625, 0.125,  0.0625, 0.125, 0.25,
+                   0.125,  0.0625, 0.125,  0.0625};
+  float horizontal[] = {-1, 0, 1, -2, 0, 2, -1, 0, 1};
+  float vertical[] = {-1, -2, -1, 0, 0, 0, 1, 2, 1};
+  float laplacian[] = {0, -1, 0, -1, 4, -1, 0, -1, 0};
+  float boost[] = {0, -1, 0, -1, 5.2, -1, 0, -1, 0};
+
+  cv::Mat frame, framegray, frame32f, frameFiltered;
+  cv::Mat mask(3, 3, CV_32F);
+  cv::Mat result;
+  double width, height;
+  int absolut;
+  char key;
+
+  cap.open(0);
+
+  if (!cap.isOpened())  // check if we succeeded
+    return -1;
 
   cap.set(cv::CAP_PROP_FRAME_WIDTH, 640);
   cap.set(cv::CAP_PROP_FRAME_HEIGHT, 480);
   width = cap.get(cv::CAP_PROP_FRAME_WIDTH);
   height = cap.get(cv::CAP_PROP_FRAME_HEIGHT);
+  std::cout << "largura=" << width << "\n";
+  ;
+  std::cout << "altura =" << height << "\n";
+  ;
+  std::cout << "fps    =" << cap.get(cv::CAP_PROP_FPS) << "\n";
+  std::cout << "format =" << cap.get(cv::CAP_PROP_FORMAT) << "\n";
 
-  std::cout << "largura = " << width << std::endl;
-  std::cout << "altura  = " << height << std::endl;
+  cv::namedWindow("filtroespacial", cv::WINDOW_NORMAL);
+  cv::namedWindow("original", cv::WINDOW_NORMAL);
 
-  int histw = nbins, histh = nbins/2;
-  cv::Mat histImgR(histh, histw, CV_8UC3, cv::Scalar(0,0,0));
-  cv::Mat histImgG(histh, histw, CV_8UC3, cv::Scalar(0,0,0));
-  cv::Mat histImgB(histh, histw, CV_8UC3, cv::Scalar(0,0,0));
+  mask = cv::Mat(3, 3, CV_32F, media);
 
-  while(1){
-    cap >> image;
-    cv::split (image, planes);
-    cv::calcHist(&planes[0], 1, 0, cv::Mat(), histR, 1,
-                 &nbins, &histrange,
-                 uniform, acummulate);
-    cv::calcHist(&planes[1], 1, 0, cv::Mat(), histG, 1,
-                 &nbins, &histrange,
-                 uniform, acummulate);
-    cv::calcHist(&planes[2], 1, 0, cv::Mat(), histB, 1,
-                 &nbins, &histrange,
-                 uniform, acummulate);
+  absolut = 1;  // calcs abs of the image
 
-    cv::normalize(histR, histR, 0, histImgR.rows, cv::NORM_MINMAX, -1, cv::Mat());
-    cv::normalize(histG, histG, 0, histImgG.rows, cv::NORM_MINMAX, -1, cv::Mat());
-    cv::normalize(histB, histB, 0, histImgB.rows, cv::NORM_MINMAX, -1, cv::Mat());
-
-    histImgR.setTo(cv::Scalar(0));
-    histImgG.setTo(cv::Scalar(0));
-    histImgB.setTo(cv::Scalar(0));
-
-    for(int i=0; i<nbins; i++){
-      cv::line(histImgR,
-               cv::Point(i, histh),
-               cv::Point(i, histh-cvRound(histR.at<float>(i))),
-               cv::Scalar(0, 0, 255), 1, 8, 0);
-      cv::line(histImgG,
-               cv::Point(i, histh),
-               cv::Point(i, histh-cvRound(histG.at<float>(i))),
-               cv::Scalar(0, 255, 0), 1, 8, 0);
-      cv::line(histImgB,
-               cv::Point(i, histh),
-               cv::Point(i, histh-cvRound(histB.at<float>(i))),
-               cv::Scalar(255, 0, 0), 1, 8, 0);
+  for (;;) {
+    cap >> frame;  // get a new frame from camera
+    cv::cvtColor(frame, framegray, cv::COLOR_BGR2GRAY);
+    cv::flip(framegray, framegray, 1);
+    cv::imshow("original", framegray);
+    framegray.convertTo(frame32f, CV_32F);
+    cv::filter2D(frame32f, frameFiltered, frame32f.depth(), mask,
+                 cv::Point(1, 1), 0);
+    if (absolut) {
+      frameFiltered = cv::abs(frameFiltered);
     }
-    histImgR.copyTo(image(cv::Rect(0, 0       ,nbins, histh)));
-    histImgG.copyTo(image(cv::Rect(0, histh   ,nbins, histh)));
-    histImgB.copyTo(image(cv::Rect(0, 2*histh ,nbins, histh)));
-    cv::imshow("image", image);
-    key = cv::waitKey(30);
-    if(key == 27) break;
+
+    frameFiltered.convertTo(result, CV_8U);
+
+    cv::imshow("filtroespacial", result);
+
+    key = (char)cv::waitKey(10);
+    if (key == 27) break;  // esc pressed!
+    switch (key) {
+      case 'a':
+        absolut = !absolut;
+        break;
+      case 'm':
+        mask = cv::Mat(3, 3, CV_32F, media);
+        printmask(mask);
+        break;
+      case 'g':
+        mask = cv::Mat(3, 3, CV_32F, gauss);
+        printmask(mask);
+        break;
+      case 'h':
+        mask = cv::Mat(3, 3, CV_32F, horizontal);
+        printmask(mask);
+        break;
+      case 'v':
+        mask = cv::Mat(3, 3, CV_32F, vertical);
+        printmask(mask);
+        break;
+      case 'l':
+        mask = cv::Mat(3, 3, CV_32F, laplacian);
+        printmask(mask);
+        break;
+      case 'b':
+        mask = cv::Mat(3, 3, CV_32F, boost);
+        break;
+      default:
+        break;
+    }
   }
   return 0;
 }
