@@ -55,6 +55,7 @@ while True:
     cv2.imshow('Tiltshift', output)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
+        cv2.imwrite('output/output.png', output)
         print("Exit")
         break
 
