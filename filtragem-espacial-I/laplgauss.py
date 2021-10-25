@@ -50,14 +50,16 @@ while True:
 
     cv2.imshow("Original", frame_gray)
 
-    image_filtered = cv2.filter2D(src=frame_gray, ddepth=-1, kernel=kernel_reference)
-    #image_filtered = cv2.GaussianBlur(frame_gray, (3, 3), 0)
+    if key == 103 or key == 120:
+        image_filtered = cv2.GaussianBlur(frame_gray, (3, 3), 0)
+    else:
+        image_filtered = cv2.filter2D(src=frame_gray, ddepth=-1, kernel=kernel_reference)
 
-    if key == 120:
-        image_filtered = cv2.filter2D(src=image_filtered, ddepth=-1, kernel=laplacian, borderType=cv2.BORDER_DEFAULT)
-        #image_filtered = cv2.Laplacian(src=image_filtered, ddepth=-1, ksize=3)
+    if key == 108 or key == 120:
+        # image_filtered = cv2.filter2D(src=image_filtered, ddepth=-1, kernel=laplacian, borderType=cv2.BORDER_DEFAULT)
+        image_filtered = cv2.Laplacian(src=image_filtered, ddepth=-1, ksize=3)
 
-    #image_filtered = cv2.convertScaleAbs(image_filtered)
+    image_filtered = cv2.convertScaleAbs(image_filtered)
 
     cv2.imshow("Filter", image_filtered)
 
