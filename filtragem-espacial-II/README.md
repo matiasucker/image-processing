@@ -30,7 +30,9 @@ Desenvolvido em Python
             <img title="Entrada: Imagem de teste" src="resources/image.png"/>
         </td>
     </tr>
-    <tr>Imagem de entrada para o programa, sem edições.</tr>
+    <tr>
+        <td>Imagem de entrada para o programa, sem edições.</td>
+    </tr>
 </table>
 <br>
 <table>
