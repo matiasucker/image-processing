@@ -20,7 +20,7 @@
 Desenvolvido em Python
 
 ## Exemplos de entrada e saída
-<img src='resources/image.png' />
+<img text='Entrada' src='resources/image.png'/>
 <table>
     <tr>
         <th align="Center">Iniciando a execução</th>
