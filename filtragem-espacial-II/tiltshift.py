@@ -20,14 +20,14 @@ cv2.imshow('Original', image)
 
 cv2.namedWindow('Tiltshift')
 
-cv2.createTrackbar('center', 'Tiltshift', int(height / 2), height, (lambda a: None))
-cv2.createTrackbar('d', 'Tiltshift', 50, 100, (lambda a: None))
+cv2.createTrackbar('height', 'Tiltshift', int(height / 2), height, (lambda a: None))
+cv2.createTrackbar('decay', 'Tiltshift', 50, 100, (lambda a: None))
 cv2.createTrackbar('vertical', 'Tiltshift', int(height / 2), height, (lambda a: None))
 cv2.createTrackbar('gauss', 'Tiltshift', 50, 100, (lambda a: None))
 
 while True:
-    center = cv2.getTrackbarPos('center', 'Tiltshift')
-    d = cv2.getTrackbarPos('d', 'Tiltshift')
+    center = cv2.getTrackbarPos('height', 'Tiltshift')
+    d = cv2.getTrackbarPos('decay', 'Tiltshift')
     vertical = cv2.getTrackbarPos('vertical', 'Tiltshift')
     gauss = cv2.getTrackbarPos('gauss', 'Tiltshift')
 
