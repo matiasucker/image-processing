@@ -23,7 +23,7 @@ Desenvolvido em Python
 
 <table>
     <tr>
-        <th align="Center">Entrada: Imagem de teste</th>
+        <th align="Center">Imagem como exemplo de entrada</th>
     </tr> 
     <tr>
         <td>
@@ -37,142 +37,46 @@ Desenvolvido em Python
 <br>
 <table>
     <tr>
-        <th align="Center">Media Filter utilizando a matriz kernel</th>
+        <th align="Center">Iniciando o programa</th>
     </tr> 
     <tr>
         <td>
-            <img title="Media Filter" src="output/media-filter.png"/>
+            <img title="Entrada: Imagem de teste" src="output/tiltshift-input.png"/>
         </td>
+    </tr>
+    <tr>
+        <td>Início da execução do programa, imagem carregada colorida</td>
     </tr>
 </table>
 <br>
 <table>
     <tr>
-        <th align="Center">Gauss Filter utilizando a matriz kernel</th>
+        <th align="Center">Programa carregado</th>
     </tr> 
     <tr>
         <td>
-            <img title="Gauss Filter" src="output/gauss-filter.png"/>
+            <img title="Entrada: Imagem de teste" src="output/tiltshift-output.png"/>
         </td>
+    </tr>
+    <tr>
+        <td>Início do tratamento da imagem, todas as opções de configuração estão exatamente na metade, já é possível notar os efeitos produzidos.</td>
     </tr>
 </table>
 <br>
 <table>
     <tr>
-        <th align="Center">Horizontal filter utilizando a matriz kernel</th>
+        <th align="Center">Execução: Iniciando o programa</th>
     </tr> 
     <tr>
         <td>
-            <img title="Horizontal Filter" src="output/horizontal-filter.png"/>
+            <img title="Entrada: Imagem de teste" src="output/tiltshift-input.png"/>
         </td>
+    </tr>
+    <tr>
+        <td>Início da execução do programa, imagem carregada colorida</td>
     </tr>
 </table>
 <br>
-<table>
-    <tr>
-        <th align="Center">Vertical filter utilizando a matriz kernel</th>
-    </tr> 
-    <tr>
-        <td>
-            <img title="Vertical Filter" src="output/vertical-filter.png"/>
-        </td>
-    </tr>
-</table>
-<br>
-<table>
-    <tr>
-        <th align="Center">Laplacian filter utilizando a matriz kernel</th>
-    </tr> 
-    <tr>
-        <td>
-            <img title="Laplacian filter with Mask" src="output/laplacian-filter_high-light.png"/>
-        </td>
-    </tr>
-</table>
-<br>
-<table>
-    <tr>
-        <th align="Center">Boost filter utilizando a matriz kernel</th>
-    </tr> 
-    <tr>
-        <td>
-            <img title="Boost filter" src="output/boost-filter.png"/>
-        </td>
-    </tr>
-</table>
-<br>
-<table>
-    <tr>
-        <th align="Center">Laplaciano do Gaussiano utilizando a matriz kernel</th>
-    </tr> 
-    <tr>
-        <td>
-            <img title="Laplaciano do Gaussiano" src="output/laplaciano-gaussiano-filter_high-light.png"/>
-        </td>
-    </tr>
-</table>
-<br>
-Utilizando a função pronta do OpenCV cv2.gaussianBlur().
-<table>
-    <tr>
-        <th align="Center">Gauss Filter with cv2.gaussianBlur function</th>
-    </tr> 
-    <tr>
-        <td>
-            <img title="Gauss Filter with cv2.gaussianBlur function" src="output/gauss-filter-OPENCV_function.png"/>
-        </td>
-    </tr>
-</table>
-<br>
-Utilizando a função pronta do OpenCV cv2.Laplacian(), foi observado uma maior detecção de bordas do que utilizar a matriz kernel.
-<table>
-    <tr>
-        <th align="Center">Laplacian Filter with cv2.Laplacian function with low light</th>
-    </tr> 
-    <tr>
-        <td>
-            <img title="Laplacian Filter with cv2.Laplacian function with low light" src="output/laplacian-filter-OPENCV_function_low-light.png"/>
-        </td>
-    </tr>
-</table>
-<br>
-Utilizando a função pronta do OpenCV cv2.Laplacian(), foi observado uma maior detecção de bordas do que utilizar a matriz kernel.
-<table>
-    <tr>
-        <th align="Center">Laplacian Filter with cv2.Laplacian function with high light</th>
-    </tr> 
-    <tr>
-        <td>
-            <img title="Laplacian Filter with cv2.Laplacian function with high light" src="output/laplacian-filter-OPENCV_function_high-light.png"/>
-        </td>
-    </tr>
-</table>
-<br>
-Utilizando a função pronta do OpenCV cv2.Laplacian() e cv2.gaussianBlur(), foi observado uma maior detecção de bordas e uma maior diminuição de ruídos próximos às bordas, do que utilizar a matriz kernel.
-<table>
-    <tr>
-        <th align="Center">Laplacian Gaussian Filter with cv2.gaussianBlur and cv2.Laplacian function with low light</th>
-    </tr> 
-    <tr>
-        <td>
-            <img title="Laplacian Gaussian Filter with cv2.gaussianBlur and cv2.Laplacian function with low light" src="output/laplaciano-gaussiano-filter-OPENCV_function_low-light.png"/>
-        </td>
-    </tr>
-</table>
-<br>
-Utilizando a função pronta do OpenCV cv2.Laplacian() e cv2.gaussianBlur(), foi observado uma maior detecção de bordas e uma maior diminuição de ruídos próximos às bordas, do que utilizar a matriz kernel.
-<table>
-    <tr>
-        <th align="Center">Laplacian Gaussian Filter with cv2.gaussianBlur and cv2.Laplacian function with high light</th>
-    </tr> 
-    <tr>
-        <td>
-            <img title="Laplacian Gaussian Filter with cv2.gaussianBlur and cv2.Laplacian function with high light" src="output/laplaciano-gaussiano-filter-OPENCV_function_high-light.png"/>
-        </td>
-    </tr>
-</table>
-<br>
-Uma pequena parte do código está comentada, porque os melhores resultados foram obtidos utilizando as funções prontas do OpenCV, como as funções cv2.gaussianBlur() e cv2.Laplacian(). Os exemplos acima mostram uso das matrizes kernel com resultado inferior, e usando as funções com resultado superior.\
 
 ## Funcionamento do código
 
