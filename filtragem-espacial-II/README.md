@@ -214,7 +214,7 @@ Recebe como argumentos:
 - A janela para o qual será inserida este Trackbar
 - O valor inicial sendo que o valor mínimo é zero
 - O valor máximo
-- Uma função lambda implementada com nenhum corpo, pois não há aplicação neste caso, é necessário declarar a assinatura da função pois se não gera-se um erro.
+- Uma função lambda implementada com nenhum corpo, pois não há aplicação neste caso, é necessário declarar a assinatura da função pois se não gera-se um erro.\
 O Trackbar 'height' é um ajuste para regular a altura da região central que entrará em foco.\
 O Trackbar 'decay' é um ajuste para regular a força de decaimento da região borrada.\
 O Trackbar 'vertical' é um ajuste para regular a posição vertical do centro da região que entrará em foco.\
@@ -299,7 +299,7 @@ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 cv2.destroyAllWindows()
 ```
-\
+
 
 ## Código final completo em Python
 ```
