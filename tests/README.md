@@ -1,26 +1,18 @@
-# Filtragem Espacial II
+# Filtragem Espacial I
 
 ## Requisitos
 - Python 3.8
 - OpenCV 4.5.3
 - Numpy
 
-## 6.1 Exercícios
-- Utilizando o programa exemplos/addweighted.cpp como referência, implemente um programa tiltshift.cpp. Três ajustes deverão ser providos na tela da interface:
+## 5.2 Exercícios
 
-  - um ajuste para regular a altura da região central que entrará em foco;
 
-  - um ajuste para regular a força de decaimento da região borrada;
-
-  - um ajuste para regular a posição vertical do centro da região que entrará em foco. Finalizado o programa, a imagem produzida deverá ser salva em arquivo.
-
-- Utilizando o programa exemplos/addweighted.cpp como referência, implemente um programa tiltshiftvideo.cpp. Tal programa deverá ser capaz de processar um arquivo de vídeo, produzir o efeito de tilt-shift nos quadros presentes e escrever o resultado em outro arquivo de vídeo. A ideia é criar um efeito de miniaturização de cenas. Descarte quadros em uma taxa que julgar conveniente para evidenciar o efeito de stop motion, comum em vídeos desse tipo.
-
-# Programa tiltshift.py
+# Programa 
 Desenvolvido em Python
 
 ## Exemplos de entrada e saída
-<img src='resources/image.png' />
+
 <table>
     <tr>
         <th align="Center">Iniciando a execução</th>
