@@ -20,16 +20,17 @@
 Desenvolvido em Python
 
 ## Exemplos de entrada e saída
-<img text='Entrada' src='resources/image.png'/>
+
 <table>
     <tr>
-        <th align="Center">Iniciando a execução</th>
+        <th align="Center">Entrada: Imagem de teste</th>
     </tr> 
     <tr>
         <td>
-            <img title="Iniciando a execução" src="output/run.png"/>
+            <img title="Entrada: Imagem de teste" src="resources/image.png"/>
         </td>
     </tr>
+    <tr>Imagem de entrada para o programa, sem edições.</tr>
 </table>
 <br>
 <table>
