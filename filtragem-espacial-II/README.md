@@ -27,7 +27,7 @@ Desenvolvido em Python
     </tr> 
     <tr>
         <td>
-            <img title="Entrada: Imagem de teste" src="resources/image.png"/>
+            <img title="image.png" src="resources/image.png"/>
         </td>
     </tr>
     <tr>
@@ -41,7 +41,7 @@ Desenvolvido em Python
     </tr> 
     <tr>
         <td>
-            <img title="Entrada: Imagem de teste" src="output/tiltshift-input.png"/>
+            <img title="tiltshift-input.png" src="output/tiltshift-input.png"/>
         </td>
     </tr>
     <tr>
@@ -55,7 +55,7 @@ Desenvolvido em Python
     </tr> 
     <tr>
         <td>
-            <img title="Entrada: Imagem de teste" src="output/tiltshift-output.png"/>
+            <img title="tiltshift-output.png" src="output/tiltshift-output.png"/>
         </td>
     </tr>
     <tr>
@@ -65,15 +65,99 @@ Desenvolvido em Python
 <br>
 <table>
     <tr>
-        <th align="Center">Execução: Iniciando o programa</th>
+        <th align="Center">Ajuste para regular a altura da região central que entrará em foco</th>
     </tr> 
     <tr>
         <td>
-            <img title="Entrada: Imagem de teste" src="output/tiltshift-input.png"/>
+            <img title="tiltshift-height-low.png" src="output/tiltshift-height-low.png"/>
         </td>
     </tr>
     <tr>
-        <td>Início da execução do programa, imagem carregada colorida</td>
+        <td>Diminuição da altura da região central que entrará em foco.</td>
+    </tr>
+</table>
+<br>
+<table>
+    <tr>
+        <th align="Center">Ajuste para regular a altura da região central que entrará em foco</th>
+    </tr> 
+    <tr>
+        <td>
+            <img title="tiltshift-height-high.png" src="output/tiltshift-height-high.png"/>
+        </td>
+    </tr>
+    <tr>
+        <td>Aumento da altura da região central que entrará em foco.</td>
+    </tr>
+</table>
+<br>
+<table>
+    <tr>
+        <th align="Center">Ajuste para regular a força de decaimento da região borrada</th>
+    </tr> 
+    <tr>
+        <td>
+            <img title="tiltshift-decay-low.png" src="output/tiltshift-decay-low.png"/>
+        </td>
+    </tr>
+    <tr>
+        <td>Diminuição da força de decaimento da região borrada.</td>
+    </tr>
+</table>
+<br>
+<table>
+    <tr>
+        <th align="Center">Ajuste para regular a força de decaimento da região borrada</th>
+    </tr> 
+    <tr>
+        <td>
+            <img title="tiltshift-decay-high.png" src="output/tiltshift-decay-high.png"/>
+        </td>
+    </tr>
+    <tr>
+        <td>Aumento da força de decaimento da região borrada.</td>
+    </tr>
+</table>
+<br>
+<table>
+    <tr>
+        <th align="Center">Ajuste para regular a posição vertical do centro da região que entrará em foco</th>
+    </tr> 
+    <tr>
+        <td>
+            <img title="tiltshift-vertical-low.png" src="output/tiltshift-vertical-low.png"/>
+        </td>
+    </tr>
+    <tr>
+        <td>Diminuição da posição vertical do centro da região que entrará em foco..</td>
+    </tr>
+</table>
+<br>
+<table>
+    <tr>
+        <th align="Center">Ajuste para regular a posição vertical do centro da região que entrará em foco</th>
+    </tr> 
+    <tr>
+        <td>
+            <img title="tiltshift-vertical-high.png" src="output/tiltshift-vertical-high.png"/>
+        </td>
+    </tr>
+    <tr>
+        <td>Aumento da posição vertical do centro da região que entrará em foco..</td>
+    </tr>
+</table>
+<br>
+<table>
+    <tr>
+        <th align="Center">Imagem produzida salva em arquivo</th>
+    </tr> 
+    <tr>
+        <td>
+            <img title="output.png" src="output/output.png"/>
+        </td>
+    </tr>
+    <tr>
+        <td>Aumento da posição vertical do centro da região que entrará em foco..</td>
     </tr>
 </table>
 <br>
