@@ -22,7 +22,7 @@ height, weigth = frame.shape[:2]
 cv2.namedWindow('Original')
 cv2.namedWindow('Tiltshift')
 
-cv2.createTrackbar('center', 'Tiltshift', int(height / 2), height, (lambda a: None))
+cv2.createTrackbar('height', 'Tiltshift', int(height / 2), height, (lambda a: None))
 cv2.createTrackbar('d', 'Tiltshift', 50, 100, (lambda a: None))
 cv2.createTrackbar('vertical', 'Tiltshift', int(height / 2), height, (lambda a: None))
 cv2.createTrackbar('gauss', 'Tiltshift', 50, 100, (lambda a: None))
@@ -47,8 +47,8 @@ while True:
     cv2.imshow('Original', frame)
 
     if discard_frames == 0:
-        center = cv2.getTrackbarPos('center', 'Tiltshift')
-        d = cv2.getTrackbarPos('d', 'Tiltshift')
+        center = cv2.getTrackbarPos('height', 'Tiltshift')
+        decay = cv2.getTrackbarPos('d', 'Tiltshift')
         vertical = cv2.getTrackbarPos('vertical', 'Tiltshift')
         gauss = cv2.getTrackbarPos('gauss', 'Tiltshift')
 
@@ -57,13 +57,13 @@ while True:
 
         x = np.arange(height, dtype=np.float32)
 
-        if d == 0:
-            d = 1
-            alpha_x = np.sign((np.tanh((x - l1) / d) - np.tanh((x - l2) / d)) - 1)
+        if decay == 0:
+            decay = 1
+            alpha_x = np.sign((np.tanh((x - l1) / decay) - np.tanh((x - l2) / decay)) - 1)
             alpha_x[alpha_x < 0] = 0
             alpha_x[alpha_x > 1] = 1
         else:
-            alpha_x = (np.tanh((x - l1) / d) - np.tanh((x - l2) / d)) / 2
+            alpha_x = (np.tanh((x - l1) / decay) - np.tanh((x - l2) / decay)) / 2
 
         mask = np.repeat(alpha_x, weigth).reshape(frame.shape[:2])
 
