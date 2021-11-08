@@ -248,7 +248,7 @@ while True:
 \
 Função que pega o valor de cada Trackbar e armazena na variável sua correspondente.
 ```
-    height = cv2.getTrackbarPos('height', 'Tiltshift')
+    center = cv2.getTrackbarPos('height', 'Tiltshift')
     decay = cv2.getTrackbarPos('decay', 'Tiltshift')
     vertical = cv2.getTrackbarPos('vertical', 'Tiltshift')
     gauss = cv2.getTrackbarPos('gauss', 'Tiltshift')
@@ -256,8 +256,8 @@ Função que pega o valor de cada Trackbar e armazena na variável sua correspon
 \
 Definição dos limites superiores e inferiores para a região que entrará em foco, através das variáveis l1 e l2, e que são as linhas cujo valor de 'alpha' assume valor em torno de 0.5.
 ```
-    l1 = height - (vertical / 2)
-    l2 = height + (vertical / 2)
+    l1 = center - (vertical / 2)
+    l2 = center + (vertical / 2)
 ```
 \
 Cria um vetor com valores de 0 a altura da imagem (height), este vetor será usado em seguida para calcular a região do desfoque.
