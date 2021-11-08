@@ -157,7 +157,21 @@ Desenvolvido em Python
         </td>
     </tr>
     <tr>
-        <td>Aumento da posição vertical do centro da região que entrará em foco..</td>
+        <td>Aumento da posição vertical do centro da região que entrará em foco.</td>
+    </tr>
+</table>
+<br>
+<table>
+    <tr>
+        <th align="Center">Exemplo dos efeitos em uma imagem com tons de cinza</th>
+    </tr> 
+    <tr>
+        <td>
+            <img title="tiltshift-output-gray.png" src="output/tiltshift-output-gray.png"/>
+        </td>
+    </tr>
+    <tr>
+        <td>usando a linha de comando 'python tiltshift.py --color gray' sem as aspas.</td>
     </tr>
 </table>
 <br>
