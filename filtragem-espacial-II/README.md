@@ -240,18 +240,20 @@ Função que pega o valor de cada Trackbar e armazena na variável sua correspon
     gauss = cv2.getTrackbarPos('gauss', 'Tiltshift')
 ```
 \
-Definição dos limites superiores e inferiores para a região que entrará em foco, através das variáveis l1 e l2.
+Definição dos limites superiores e inferiores para a região que entrará em foco, através das variáveis l1 e l2, e que são as linhas cujo valor de 'alpha' assume valor em torno de 0.5.
 ```
     l1 = height - (vertical / 2)
     l2 = height + (vertical / 2)
 ```
 \
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Cria um vetor com valores de 0 a altura da imagem (height), este vetor será usado em seguida para calcular a região do desfoque.
 ```
     x = np.arange(height, dtype=np.float32)
 ```
 \
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Precisamos inserir um tratamento de erro por divisão por 0, pois a função faz usa o 'decay' como divisor da função , e ele poderá assumir valor 0, gerando um erro de divisão por zero. 
+Então é realizado um teste para verificar se o 'decay' é igual a 0, se for, é atribuído o valor 1 ao 'decay', e é aplicado a função que define a região de desfoque ao longo do eixo vertical da imagem. O resultado é armazenado na variável 'alpha_x', como pode haver valores negativos, é aplicado uma função para que se 'alpha_x' for negativo, então é atribuído 0, se for maior que 1, então é atribuído o valor 1.\
+Se o valor de 'decay' não for 0, então é aplicado a função normalmente, que define a região de desfoque ao longo do eixo vertical da imagem.
 ```
     if decay == 0:
         decay = 1
@@ -262,33 +264,33 @@ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         alpha_x = (np.tanh((x - l1) / decay) - np.tanh((x - l2) / decay)) / 2
 ```
 \
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Precisamos criar uma máscara utilizando o Numpy, para quando a imagem for colorida, então o vetor 'alpha_x' 1D é transformado através da repetição de seus valores, em uma matriz 2D.
 ```
     mask = np.repeat(alpha_x, weigth).reshape(image.shape[:2])
 ```
 \
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Cria uma imagem borrada a partir da original, utilizando a função ```cv2.GaussianBlur()```, gerando sempre valores ímpares, porque a mtriz gerada precisa ter um centro.
 ```
     image_blur = cv2.GaussianBlur(image, (gauss * 2 + 1, gauss * 2 + 1), 0)
 ```
 \
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Se a imagem for colorida, a máscara é transformada em uma matriz colorida.
 ```
     if len(image.shape) == 3:
         mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
 ```
 \
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+A função ```cv2.convertScaleAbs()``` aplica a máscara na imagem original (image * mask) unindo (+) com o inverso da máscara aplicado na imagem borrada (img_blur * (1 - mask)).
 ```
     output = cv2.convertScaleAbs(image * mask + image_blur * (1 - mask))
 ```
 \
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Mostra a imagem e seus efeitos conforme os valores nas Trackbar.
 ```
     cv2.imshow('Tiltshift', output)
 ```
 \
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Verifica se a tecla 'q' foi pressionada, se não for, o programa segue executando através do loop 'while' infinito. Se for pressionada a tecla 'q', o programa salva a imagem em arquivo e encerra o loop infinito.
 ```
     if cv2.waitKey(1) & 0xFF == ord('q'):
         cv2.imwrite('output/output.png', output)
@@ -296,7 +298,7 @@ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         break
 ```
 \
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Fecha todas as janelas que foram abertas durante a execução do programa.
 ```
 cv2.destroyAllWindows()
 ```
