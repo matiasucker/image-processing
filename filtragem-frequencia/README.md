@@ -91,20 +91,9 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     for u in range(dft_M):
         for v in range(dft_N):
             du[u, v] = sqrt((u - dft_M / 2.0) * (u - dft_M / 2.0) + (v - dft_N / 2.0) * (v - dft_N / 2.0))
-```
-\
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-```
+
     du2 = cv2.multiply(du, du) / (d0 * d0)
-```
-\
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-```
     re = np.exp(- c * du2)
-```
-\
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-```
     H = (yh - yl) * (1 - re) + yl
 ```
 \
