@@ -2,33 +2,32 @@ import cv2
 import numpy as np
 from math import exp, sqrt
 
-image = cv2.imread("resources/image3.png", 0)
+image = cv2.imread("../filtragem-frequencia/resources/image.png", 0)
 height, width = image.shape[:2]
 
 dft_M = cv2.getOptimalDFTSize(height)
 dft_N = cv2.getOptimalDFTSize(width)
 
-
-yh, yl, c, d0 = 0, 0, 0, 0
-
+# Inicialização de parâmetros globais da formula
+yh, yl, c, d0, = 0, 0, 0, 0
+# Inicialização de parâmetros globais setados pelo usuáro
 y_track, d0_track, c_track = 0, 0, 0
-
-complex_image = 0
+complex = 0
 
 
 def homomorphic():
-    global yh, yl, c, d0, complex_image
-    d = np.zeros(complex_image.shape, dtype=np.float32)
+    global yh, yl, c, d0, complex
+    du = np.zeros(complex.shape, dtype=np.float32)
     # H(u, v)
     for u in range(dft_M):
         for v in range(dft_N):
-            d[u, v] = sqrt((u - dft_M / 2.0) * (u - dft_M / 2.0) + (v - dft_N / 2.0) * (v - dft_N / 2.0))
+            du[u, v] = sqrt((u - dft_M / 2.0) * (u - dft_M / 2.0) + (v - dft_N / 2.0) * (v - dft_N / 2.0))
 
-    d2 = cv2.multiply(d, d) / (d0 * d0)
-    re = np.exp(- c * d2)
-    h = (yh - yl) * (1 - re) + yl
+    du2 = cv2.multiply(du, du) / (d0 * d0)
+    re = np.exp(- c * du2)
+    H = (yh - yl) * (1 - re) + yl
     # S(u, v)
-    filtered = cv2.mulSpectrums(complex_image, h, 0)
+    filtered = cv2.mulSpectrums(complex, H, 0)
     # inverse DFT (does the shift back first)
     filtered = np.fft.ifftshift(filtered)
     filtered = cv2.idft(filtered)
@@ -36,12 +35,12 @@ def homomorphic():
     filtered = cv2.magnitude(filtered[:, :, 0], filtered[:, :, 1])
     cv2.normalize(filtered, filtered, 0, 1, cv2.NORM_MINMAX)
     # g(x, y) = exp(s(x, y))
-    filtered = np.exp(filtered - 1.0)
+    filtered = np.exp(filtered)
     cv2.normalize(filtered, filtered, 0, 1, cv2.NORM_MINMAX)
 
-    cv2.namedWindow('homomorphic', cv2.WINDOW_AUTOSIZE)
+    cv2.namedWindow('homomorphic', cv2.WINDOW_NORMAL)
     cv2.imshow("homomorphic", filtered)
-    # cv2.resizeWindow("homomorphic", 600, 550)
+    cv2.resizeWindow("homomorphic", 600, 550)
 
 
 def setyl(y_track):
@@ -84,27 +83,22 @@ def main():
     # copyMakeBorder(src, top, bottom, left, right, borderType[, dst[, value]])
     # BORDER_CONSTANT = Pad the image with a constant value (i.e. black or 0)
     padded = cv2.copyMakeBorder(image, 0, dft_M - height, 0, dft_N - width, cv2.BORDER_CONSTANT, 0)
-
-    padded = np.log(padded + 1.0)
-
-    global complex_image
-    complex_image = cv2.dft(np.float32(padded), flags=cv2.DFT_COMPLEX_OUTPUT)
-    # complex_image = np.fft.fft2(padded)
-
-    complex_image = np.fft.fftshift(complex_image)
-
-    magnitude_spectrum = 15 * np.log(cv2.magnitude(complex_image[:, :, 0], complex_image[:, :, 1]))
-    # magnitude_spectrum = 15 * np.log(np.abs(complex_image))
+    # +1 pra tratar log(0)
+    padded = np.log(padded + 1)
+    global complex
+    complex = cv2.dft(np.float32(padded) / 255.0, flags=cv2.DFT_COMPLEX_OUTPUT)
+    complex = np.fft.fftshift(complex)
+    img = 20 * np.log(cv2.magnitude(complex[:, :, 0], complex[:, :, 1]))
 
     cv2.namedWindow('Image', cv2.WINDOW_NORMAL)
     cv2.imshow("Image", image)
-    cv2.imwrite("original-gray.png", image)
-    cv2.resizeWindow("Image", 600, 600)
+    cv2.imwrite("teste2.jpg", image)
+    cv2.resizeWindow("Image", 400, 400)
 
     cv2.namedWindow('DFT', cv2.WINDOW_NORMAL)
-    cv2.imshow("DFT", np.uint8(magnitude_spectrum))
-    cv2.imwrite("dft.jpg", np.uint8(magnitude_spectrum))
-    cv2.resizeWindow("DFT", 600, 600)
+    cv2.imshow("DFT", np.uint8(img))
+    cv2.imwrite("../filtragem-frequencia/dft.jpg", np.uint8(img))
+    cv2.resizeWindow("DFT", 250, 250)
 
     cv2.createTrackbar("YL", "Image", y_track, 100, setyl)
     cv2.createTrackbar("YH", "Image", y_track, 100, setyh)
