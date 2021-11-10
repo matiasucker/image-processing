@@ -10,8 +10,27 @@
 Crie uma cena mal iluminada e ajuste os parâmetros do filtro homomórfico para corrigir a iluminação da melhor forma possível. 
 Assuma que a imagem fornecida é em tons de cinza.
 
-# Programa homomorphic-filter.py
+## Programa homomorphic-filter.py
 Desenvolvido em Python
+
+
+# Diagrama do filtro homomórfico
+<img src="resources/diagrama-homomorfico-livro.png" align=center>
+
+## LOG
+<img src="resources/LOG.png" align=center>
+
+## DFT
+<img src="resources/DFT.png" align=center>
+
+## H(u,v)
+<img src="resources/HUV.png" align=center>
+
+## DFT^-1
+<img src="resources/IDFT.png" align=center>
+
+## EXP
+<img src="resources/EXP.png" align=center>
 
 ## Exemplos de entrada e saída
 
@@ -86,7 +105,9 @@ Cria um array conforme o shape e o tipo passado como argumento.
 ```
 \
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-![](resources/Huv.png)
+\
+<img src="resources/Huv.png" height=80px align=center >
+
 ```
     # H(u, v)
     for u in range(dft_M):
