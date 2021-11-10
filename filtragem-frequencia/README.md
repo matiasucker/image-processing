@@ -97,15 +97,14 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     H = (yh - yl) * (1 - re) + yl
 ```
 \
-xxxxxxxxxxxxxxxxx
+Multiplicação por elemento das duas matrizes complexas.
 ```
     # S(u, v)
     filtered = cv2.mulSpectrums(complex, H, 0)
 ```
 \
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Transformada discreta de Fourier através da biblioteca Numpy, utilizando a função ```np.fft```. Primeiramente é realizado o deslocamento da componente de frequência zero para o centro do espectro usando a função do Numpy ```np.fft.fftshift()```, porém ainda precisamos fazer a inversão, então finalizamos usando a função do Numpy ```np.fft.ifftshift()```.
 ```
-    # inverse DFT (does the shift back first)
     filtered = np.fft.ifftshift(filtered)
     filtered = cv2.idft(filtered)
 ```
