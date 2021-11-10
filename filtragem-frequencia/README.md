@@ -86,6 +86,7 @@ Cria um array conforme o shape e o tipo passado como argumento.
 ```
 \
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+![](resources/Huv.png)
 ```
     # H(u, v)
     for u in range(dft_M):
