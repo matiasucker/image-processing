@@ -15,22 +15,53 @@ Desenvolvido em Python
 
 
 # Diagrama do filtro homomórfico
-<img src="resources/diagrama-homomorfico-livro.png" align=center>
+![](resources/diagrama-homomorfico-livro.png)
 
 ## LOG
-<img src="resources/LOG.png" align=center>
+![](resources/LOG.png)\
+Código:
+```
+    padded = np.log(padded + 1.0)
+```
 
 ## DFT
-<img src="resources/DFT.png" align=center>
+![](resources/DFT.png)\
+Código:
+```
+    complex_image = cv2.dft(np.float32(padded), flags=cv2.DFT_COMPLEX_OUTPUT)
+```
+
 
 ## H(u,v)
-<img src="resources/HUV.png" align=center>
+![](resources/HUV.png)
 
-## DFT^-1
-<img src="resources/IDFT.png" align=center>
+## H(u,v) fórmula
+![](resources/Huv-formula.png)\
+Código:
+```
+    for u in range(dft_M):
+        for v in range(dft_N):
+            d[u, v] = sqrt((u - dft_M / 2.0) * (u - dft_M / 2.0) + (v - dft_N / 2.0) * (v - dft_N / 2.0))
+
+    d2 = cv2.multiply(d, d) / (d0 * d0)
+    re = np.exp(- c * d2)
+    h = (yh - yl) * (1 - re) + yl
+```
+
+## D(u,v) fórmula
+![](resources/Duv-formula.png)\
+Código:
+```
+    for u in range(dft_M):
+        for v in range(dft_N):
+            d[u, v] = sqrt((u - dft_M / 2.0) * (u - dft_M / 2.0) + (v - dft_N / 2.0) * (v - dft_N / 2.0))
+```
+
+## DFT inversa
+![](resources/IDFT.png)
 
 ## EXP
-<img src="resources/EXP.png" align=center>
+![](resources/EXP.png)
 
 ## Exemplos de entrada e saída
 
