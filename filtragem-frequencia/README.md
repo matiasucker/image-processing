@@ -19,25 +19,21 @@ Desenvolvido em Python
 
 ## LOG
 ![](resources/LOG.png)\
-Código:
+Código equivalente:
 ```
     padded = np.log(padded + 1.0)
 ```
 
 ## DFT
 ![](resources/DFT.png)\
-Código:
+Código equivalente:
 ```
     complex_image = cv2.dft(np.float32(padded), flags=cv2.DFT_COMPLEX_OUTPUT)
 ```
 
-
 ## H(u,v)
-![](resources/HUV.png)
-
-## H(u,v) fórmula
 ![](resources/Huv-formula.png)\
-Código:
+Código equivalente:
 ```
     for u in range(dft_M):
         for v in range(dft_N):
@@ -48,20 +44,35 @@ Código:
     h = (yh - yl) * (1 - re) + yl
 ```
 
-## D(u,v) fórmula
+## D(u,v)
 ![](resources/Duv-formula.png)\
-Código:
+Código equivalente:
 ```
     for u in range(dft_M):
         for v in range(dft_N):
             d[u, v] = sqrt((u - dft_M / 2.0) * (u - dft_M / 2.0) + (v - dft_N / 2.0) * (v - dft_N / 2.0))
 ```
+## S(u,v)
+![](resources/HUV.png)\
+Código equivalente:
+```
+    filtered = cv2.mulSpectrums(complex_image, h, 0)
+```
+
 
 ## DFT inversa
-![](resources/IDFT.png)
+![](resources/IDFT.png)\
+Código equivalente:
+```
+    filtered = cv2.idft(filtered)
+```
 
 ## EXP
-![](resources/EXP.png)
+![](resources/EXP.png)\
+Código equivalente:
+```
+    filtered = np.exp(filtered - 1.0)
+```
 
 ## Exemplos de entrada e saída
 
