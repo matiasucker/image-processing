@@ -19,7 +19,7 @@ complex_image = 0
 def homomorphic():
     global yh, yl, c, d0, complex_image
     d = np.zeros(complex_image.shape, dtype=np.float32)
-    # H(u, v)
+
     for u in range(dft_M):
         for v in range(dft_N):
             d[u, v] = sqrt((u - dft_M / 2.0) * (u - dft_M / 2.0) + (v - dft_N / 2.0) * (v - dft_N / 2.0))
@@ -74,7 +74,7 @@ def setc(c_track):
 
 def setd0(d0_track):
     global d0
-    d0 = d0_track / 100.0
+    d0 = d0_track
     if d0 == 0:
         d0 = 1
     homomorphic()
