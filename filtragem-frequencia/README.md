@@ -80,21 +80,30 @@ Código equivalente:
     <tr>
         <th align="Center">Imagem original</th>
         <th align="Center">DFT</th>
-        <th align="Center">Aplicação do filtro homomórfico</th>
+        <th align="Center">Filtro homomórfico</th>
     </tr> 
     <tr>
-        <td>
-            <img width="300" title="image1.png" src="resources/output/dft-image1.jpg"/>
-        </td
-        <td>
-            <img width="300" title="image2.png" src="resources/output/image1.png"/>
-        </td>
-        <td>
-            <img width="300" title="image3.png" src="resources/output/output-image1.png"/>
-        </td>
+        <td><img align="justify" width="200" title="image1.png" src="output/image1.png"/></td
+        <td><img align="justify" width="200" title="image2.png" src="output/dft-image1.png"/></td>
+        <td><img align="justify" width="200" title="image3.png" src="output/output-image1.png"/></td>
     </tr>
 </table>
 <br>
+
+<p>
+    <img align="Center" width="200" title="image1.png" src="output/image1.png"/>
+    <img align="Center" width="200" title="image2.png" src="output/dft-image1.png"/>
+    <img align="Center" width="200" title="image3.png" src="output/output-image1.png"/>
+</p>
+
+
+Imagem original      |     DFT      |    Filtro homomórfico
+:-------------------:|:------------:|:-----------------------:
+![](output/image1.png)| ![](output/dft-image1.png)| ![](output/output-image1.png)
+
+Imagem original      |     DFT      |    Filtro homomórfico
+:-------------------:|:------------:|:-----------------------:
+![](output/image2.png)| ![](output/dft-image2.png)| ![](output/output-image2.png)
 
 
 
@@ -153,7 +162,7 @@ Cria um array conforme o shape e o tipo passado como argumento.
 \
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 \
-<img src="resources/Huv.png" height=80px align=center >
+<img align="Center" title="image1.png" src="resources/output/dft-image1.png"/>
 
 ```
     # H(u, v)
