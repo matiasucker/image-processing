@@ -85,7 +85,11 @@ Código equivalente:
     <tr>
         <td>
             <img title="image.png" src="resources/output/dft-image1.png"/>
+        </td
+        <td>
             <img title="image.png" src="resources/output/image1.png"/>
+        </td>
+        <td>
             <img title="image.png" src="resources/output/output-image1.png"/>
         </td>
     </tr>
