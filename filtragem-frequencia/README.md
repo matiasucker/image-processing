@@ -14,6 +14,39 @@ Assuma que a imagem fornecida é em tons de cinza.
 Desenvolvido em Python
 
 
+
+## Exemplos de entrada e saída
+
+Imagem original      |     DFT      |    Filtro homomórfico
+:-------------------:|:------------:|:-----------------------:
+![](output/image1.png)| ![](output/dft-image1.png)| ![](output/output-image1.png)
+
+Imagem original      |     DFT      |    Filtro homomórfico
+:-------------------:|:------------:|:-----------------------:
+![](output/image2.png)| ![](output/dft-image2.png)| ![](output/output-image2.png)
+
+Imagem original      |     DFT      |    Filtro homomórfico
+:-------------------:|:------------:|:-----------------------:
+![](output/image3.png)| ![](output/dft-image3.png)| ![](output/output-image3.png)
+
+Imagem original      |     DFT      |    Filtro homomórfico
+:-------------------:|:------------:|:-----------------------:
+![](output/image4.png)| ![](output/dft-image4.png)| ![](output/output-image4.png)
+
+Imagem original      |     DFT      |    Filtro homomórfico
+:-------------------:|:------------:|:-----------------------:
+![](output/image5.png)| ![](output/dft-image5.png)| ![](output/output-image5.png)
+
+Imagem original      |     DFT      |    Filtro homomórfico
+:-------------------:|:------------:|:-----------------------:
+![](output/image6.png)| ![](output/dft-image6.png)| ![](output/output-image6.png)
+
+Imagem original      |     DFT      |    Filtro homomórfico
+:-------------------:|:------------:|:-----------------------:
+![](output/image7.png)| ![](output/dft-image7.png)| ![](output/output-image7.png)
+
+
+
 # Diagrama do filtro homomórfico
 ![](resources/pdi-book/diagrama-homomorfico-livro.png)
 
@@ -73,38 +106,6 @@ Código equivalente:
 ```
     filtered = np.exp(filtered - 1.0)
 ```
-
-## Exemplos de entrada e saída
-
-
-
-Imagem original      |     DFT      |    Filtro homomórfico
-:-------------------:|:------------:|:-----------------------:
-![](output/image1.png)| ![](output/dft-image1.png)| ![](output/output-image1.png)
-
-Imagem original      |     DFT      |    Filtro homomórfico
-:-------------------:|:------------:|:-----------------------:
-![](output/image2.png)| ![](output/dft-image2.png)| ![](output/output-image2.png)
-
-Imagem original      |     DFT      |    Filtro homomórfico
-:-------------------:|:------------:|:-----------------------:
-![](output/image3.png)| ![](output/dft-image3.png)| ![](output/output-image3.png)
-
-Imagem original      |     DFT      |    Filtro homomórfico
-:-------------------:|:------------:|:-----------------------:
-![](output/image4.png)| ![](output/dft-image4.png)| ![](output/output-image4.png)
-
-Imagem original      |     DFT      |    Filtro homomórfico
-:-------------------:|:------------:|:-----------------------:
-![](output/image5.png)| ![](output/dft-image5.png)| ![](output/output-image5.png)
-
-Imagem original      |     DFT      |    Filtro homomórfico
-:-------------------:|:------------:|:-----------------------:
-![](output/image6.png)| ![](output/dft-image6.png)| ![](output/output-image6.png)
-
-Imagem original      |     DFT      |    Filtro homomórfico
-:-------------------:|:------------:|:-----------------------:
-![](output/image7.png)| ![](output/dft-image7.png)| ![](output/output-image7.png)
 
 
 
