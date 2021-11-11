@@ -102,6 +102,10 @@ Imagem original      |     DFT      |    Filtro homomórfico
 :-------------------:|:------------:|:-----------------------:
 ![](output/image6.png)| ![](output/dft-image6.png)| ![](output/output-image6.png)
 
+Imagem original      |     DFT      |    Filtro homomórfico
+:-------------------:|:------------:|:-----------------------:
+![](output/image7.png)| ![](output/dft-image7.png)| ![](output/output-image7.png)
+
 
 
 ## Funcionamento do código
