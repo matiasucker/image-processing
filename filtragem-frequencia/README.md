@@ -15,24 +15,24 @@ Desenvolvido em Python
 
 
 # Diagrama do filtro homomórfico
-![](resources/diagrama-homomorfico-livro.png)
+![](resources/pdi-book/diagrama-homomorfico-livro.png)
 
 ## LOG
-![](resources/LOG.png)\
+![](resources/pdi-book/LOG.png)\
 Código equivalente:
 ```
     padded = np.log(padded + 1.0)
 ```
 
 ## DFT
-![](resources/DFT.png)\
+![](resources/pdi-book/DFT.png)\
 Código equivalente:
 ```
     complex_image = cv2.dft(np.float32(padded), flags=cv2.DFT_COMPLEX_OUTPUT)
 ```
 
 ## H(u,v)
-![](resources/Huv-formula.png)\
+![](resources/pdi-book/Huv-formula.png)\
 Código equivalente:
 ```
     for u in range(dft_M):
@@ -45,7 +45,7 @@ Código equivalente:
 ```
 
 ## D(u,v)
-![](resources/Duv-formula.png)\
+![](resources/pdi-book/Duv-formula.png)\
 Código equivalente:
 ```
     for u in range(dft_M):
@@ -53,7 +53,7 @@ Código equivalente:
             d[u, v] = sqrt((u - dft_M / 2.0) * (u - dft_M / 2.0) + (v - dft_N / 2.0) * (v - dft_N / 2.0))
 ```
 ## S(u,v)
-![](resources/HUV.png)\
+![](resources/pdi-book/HUV.png)\
 Código equivalente:
 ```
     filtered = cv2.mulSpectrums(complex_image, h, 0)
@@ -61,14 +61,14 @@ Código equivalente:
 
 
 ## DFT inversa
-![](resources/IDFT.png)\
+![](resources/pdi-book/IDFT.png)\
 Código equivalente:
 ```
     filtered = cv2.idft(filtered)
 ```
 
 ## EXP
-![](resources/EXP.png)\
+![](resources/pdi-book/EXP.png)\
 Código equivalente:
 ```
     filtered = np.exp(filtered - 1.0)
@@ -84,13 +84,13 @@ Código equivalente:
     </tr> 
     <tr>
         <td>
-            <img title="image.png" src="resources/output/dft-image1.png"/>
+            <img width="300" title="image1.png" src="resources/output/dft-image1.jpg"/>
         </td
         <td>
-            <img title="image.png" src="resources/output/image1.png"/>
+            <img width="300" title="image2.png" src="resources/output/image1.png"/>
         </td>
         <td>
-            <img title="image.png" src="resources/output/output-image1.png"/>
+            <img width="300" title="image3.png" src="resources/output/output-image1.png"/>
         </td>
     </tr>
 </table>
