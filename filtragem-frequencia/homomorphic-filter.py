@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from math import exp, sqrt
 
-image = cv2.imread("resources/pred1.png", 0)
+image = cv2.imread("resources/image1.png", 0)
 height, width = image.shape[:2]
 
 dft_M = cv2.getOptimalDFTSize(height)
@@ -27,15 +27,15 @@ def homomorphic():
     d2 = cv2.multiply(d, d) / (d0 * d0)
     re = np.exp(- c * d2)
     h = (yh - yl) * (1 - re) + yl
-    # S(u, v)
+
     filtered = cv2.mulSpectrums(complex_image, h, 0)
-    # inverse DFT (does the shift back first)
+
     filtered = np.fft.ifftshift(filtered)
     filtered = cv2.idft(filtered)
-    # normalization to be representable
+
     filtered = cv2.magnitude(filtered[:, :, 0], filtered[:, :, 1])
     cv2.normalize(filtered, filtered, 0, 1, cv2.NORM_MINMAX)
-    # g(x, y) = exp(s(x, y))
+
     filtered = np.exp(filtered - 1.0)
     cv2.normalize(filtered, filtered, 0, 1, cv2.NORM_MINMAX)
 
