@@ -103,7 +103,7 @@ def main():
 
     cv2.namedWindow('DFT', cv2.WINDOW_NORMAL)
     cv2.imshow("DFT", np.uint8(magnitude_spectrum))
-    cv2.imwrite("output/dft.jpg", np.uint8(magnitude_spectrum))
+    cv2.imwrite("output/dft.png", np.uint8(magnitude_spectrum))
     cv2.resizeWindow("DFT", 600, 600)
 
     cv2.createTrackbar("YL", "Image", y_track, 100, setyl)
