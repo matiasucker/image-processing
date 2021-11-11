@@ -76,25 +76,6 @@ Código equivalente:
 
 ## Exemplos de entrada e saída
 
-<table>
-    <tr>
-        <th align="Center">Imagem original</th>
-        <th align="Center">DFT</th>
-        <th align="Center">Filtro homomórfico</th>
-    </tr> 
-    <tr>
-        <td><img align="justify" width="200" title="image1.png" src="output/image1.png"/></td
-        <td><img align="justify" width="200" title="image2.png" src="output/dft-image1.png"/></td>
-        <td><img align="justify" width="200" title="image3.png" src="output/output-image1.png"/></td>
-    </tr>
-</table>
-<br>
-
-<p>
-    <img align="Center" width="200" title="image1.png" src="output/image1.png"/>
-    <img align="Center" width="200" title="image2.png" src="output/dft-image1.png"/>
-    <img align="Center" width="200" title="image3.png" src="output/output-image1.png"/>
-</p>
 
 
 Imagem original      |     DFT      |    Filtro homomórfico
@@ -105,6 +86,9 @@ Imagem original      |     DFT      |    Filtro homomórfico
 :-------------------:|:------------:|:-----------------------:
 ![](output/image2.png)| ![](output/dft-image2.png)| ![](output/output-image2.png)
 
+Imagem original      |     DFT      |    Filtro homomórfico
+:-------------------:|:------------:|:-----------------------:
+![](output/image3.png)| ![](output/dft-image3.png)| ![](output/output-image3.png)
 
 
 ## Funcionamento do código
