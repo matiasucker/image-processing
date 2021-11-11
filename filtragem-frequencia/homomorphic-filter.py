@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from math import exp, sqrt
 
-image = cv2.imread("resources/image3.png", 0)
+image = cv2.imread("resources/image1.png", 0)
 height, width = image.shape[:2]
 
 dft_M = cv2.getOptimalDFTSize(height)
@@ -41,7 +41,7 @@ def homomorphic():
 
     cv2.namedWindow('homomorphic', cv2.WINDOW_AUTOSIZE)
     cv2.imshow("homomorphic", filtered)
-    # cv2.resizeWindow("homomorphic", 600, 550)
+    cv2.imwrite("output/output.png", filtered * 255)
 
 
 def setyl(y_track):
@@ -98,12 +98,12 @@ def main():
 
     cv2.namedWindow('Image', cv2.WINDOW_NORMAL)
     cv2.imshow("Image", image)
-    cv2.imwrite("original-gray.png", image)
+    cv2.imwrite("output/original-gray.png", image)
     cv2.resizeWindow("Image", 600, 600)
 
     cv2.namedWindow('DFT', cv2.WINDOW_NORMAL)
     cv2.imshow("DFT", np.uint8(magnitude_spectrum))
-    cv2.imwrite("dft.jpg", np.uint8(magnitude_spectrum))
+    cv2.imwrite("output/dft.jpg", np.uint8(magnitude_spectrum))
     cv2.resizeWindow("DFT", 600, 600)
 
     cv2.createTrackbar("YL", "Image", y_track, 100, setyl)
