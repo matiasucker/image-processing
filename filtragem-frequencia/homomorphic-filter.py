@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from math import exp, sqrt
 
-image = cv2.imread("resources/exo2.png", 0)
+image = cv2.imread("resources/exo6.png", 0)
 height, width = image.shape[:2]
 
 dft_M = cv2.getOptimalDFTSize(height)
@@ -46,9 +46,9 @@ def homomorphic():
 
 def setyl(y_track):
     global yl
-    yl = y_track
+    yl = y_track / 100.0
     if yl == 0:
-        yl = 1
+        yl = 0.1
     if yl > yh:
         yl = yh - 1
     homomorphic()
@@ -56,9 +56,9 @@ def setyl(y_track):
 
 def setyh(y_track):
     global yh
-    yh = y_track
+    yh = y_track / 100.0
     if yh == 0:
-        yh = 1
+        yh = 0.1
     if yl > yh:
         yh = yl + 1
     homomorphic()
@@ -74,7 +74,7 @@ def setc(c_track):
 
 def setd0(d0_track):
     global d0
-    d0 = d0_track
+    d0 = d0_track / 100.0
     if d0 == 0:
         d0 = 1
     homomorphic()
