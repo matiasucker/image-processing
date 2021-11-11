@@ -78,15 +78,16 @@ Código equivalente:
 
 <table>
     <tr>
-        <th align="Center">Imagem como exemplo de entrada</th>
+        <th align="Center">Imagem original</th>
+        <th align="Center">DFT</th>
+        <th align="Center">Aplicação do filtro homomórfico</th>
     </tr> 
     <tr>
         <td>
-            <img title="image.png" src="resources/image.png"/>
+            <img title="image.png" src="resources/output/dft-image1.png"/>
+            <img title="image.png" src="resources/output/image1.png"/>
+            <img title="image.png" src="resources/output/output-image1.png"/>
         </td>
-    </tr>
-    <tr>
-        <td>Imagem de entrada para o programa, sem edições.</td>
     </tr>
 </table>
 <br>
