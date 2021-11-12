@@ -79,6 +79,7 @@ Código equivalente:
 
 ## D(u,v)
 ![](resources/pdi-book/Duv-formula.png)\
+D(u, v) é a distância entre um ponto (u, v) no domínio da frequência e o centro do retângulo de frequência
 Código equivalente:
 ```
     for u in range(dft_M):
@@ -144,7 +145,7 @@ y_track, d0_track, c_track = 0, 0, 0
 \
 Declaração e inicialização da variável global, usada para criar a matriz complexa.
 ```
-complexImage = 0
+complex_image = 0
 ```
 \
 Declaração da função que representa o filtro homomórfico.
@@ -154,87 +155,85 @@ def homomorphic():
 \
 Configuração para usar as variáveis globais dentro do escopo desta função.
 ```
-    global yh, yl, c, d0, complexImage
+    global yh, yl, c, d0, complex_image
 ```
 \
 Cria um array conforme o shape e o tipo passado como argumento.
 ```
-    du = np.zeros(complexImage.shape, dtype=np.float32)
+    d = np.zeros(complex_image.shape, dtype=np.float32)
 ```
 \
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-\
-<img align="Center" title="image1.png" src="resources/output/dft-image1.png"/>
 
 ```
-    # H(u, v)
     for u in range(dft_M):
         for v in range(dft_N):
-            du[u, v] = sqrt((u - dft_M / 2.0) * (u - dft_M / 2.0) + (v - dft_N / 2.0) * (v - dft_N / 2.0))
+            d[u, v] = sqrt((u - dft_M / 2.0) * (u - dft_M / 2.0) + (v - dft_N / 2.0) * (v - dft_N / 2.0))
 
-    du2 = cv2.multiply(du, du) / (d0 * d0)
-    re = np.exp(- c * du2)
-    H = (yh - yl) * (1 - re) + yl
+    d2 = cv2.multiply(d, d) / (d0 * d0)
+    re = np.exp(- c * d2)
+    h = (yh - yl) * (1 - re) + yl
 ```
 \
 Multiplicação por elemento das duas matrizes complexas.
 ```
-    # S(u, v)
-    filtered = cv2.mulSpectrums(complex, H, 0)
+    filtered = cv2.mulSpectrums(complex, h, 0)
 ```
 \
-Transformada discreta de Fourier através da biblioteca Numpy, utilizando a função ```np.fft```. Primeiramente é realizado o deslocamento da componente de frequência zero para o centro do espectro usando a função do Numpy ```np.fft.fftshift()```, porém ainda precisamos fazer a inversão, então finalizamos usando a função do Numpy ```np.fft.ifftshift()```.
+Função do Numpy que posiciona os quadrantes das imagens nas suas posições originais.
 ```
     filtered = np.fft.ifftshift(filtered)
+```
+\
+Realiza a Transformada Discreta de Fourier Inversa
+```
     filtered = cv2.idft(filtered)
 ```
 \
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Calcula a magnitude do vetor 2D (filtered) formado pelos elementos correspondetes x e y do array. Após realiza a normalização.
 ```
-    # normalization to be representable
     filtered = cv2.magnitude(filtered[:, :, 0], filtered[:, :, 1])
     cv2.normalize(filtered, filtered, 0, 1, cv2.NORM_MINMAX)
 ```
 \
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Como o resultado filtrado foi formado pelo cálculo do logaritmo natural da imagem de entrada, revertemos o processo calculando o exponencial do resultado filtrado para formar a imagem de saída, subtraindo o valor '1.0' adicionado anteriormente para evitar log(0). Após realiza a normalização.
 ```
-    # g(x, y) = exp(s(x, y))
-    filtered = np.exp(filtered)
+    filtered = np.exp(filtered - 1.0)
     cv2.normalize(filtered, filtered, 0, 1, cv2.NORM_MINMAX)
 ```
 \
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Cria uma janela com o nome 'homomorphic', mostra o resultado filtrado nesta janela, e salva o resultado filtrado em arquivo.
 ```
     cv2.namedWindow('homomorphic', cv2.WINDOW_NORMAL)
     cv2.imshow("homomorphic", filtered)
-    cv2.resizeWindow("homomorphic", 600, 550)
+    cv2.imwrite("output/output.png", filtered * 255)
 ```
 \
-xxxxxxxxxxxxxxxxxxxxxxxx
+Função para atribuir valores ao 'yl', de origem da Trackbar, configurados pelo usuário durante a execução do programa. Há verificação para evitar que 'yl' tenha valor igual a zero ou que 'yl' seja maior que 'yh'. Após realiza a chamada para a função homomorphic().
 ```
 def setyl(y_track):
     global yl
-    yl = y_track
+    yl = y_track / 100.0
     if yl == 0:
-        yl = 1
+        yl = 0.1
     if yl > yh:
         yl = yh - 1
     homomorphic()
 ```
 \
-xxxxxxxxxxxxxxxxxxx
+Função para atribuir valores ao 'yh', de origem da Trackbar, configurados pelo usuário durante a execução do programa. Há verificação para evitar que 'yh' tenha valor igual a zero ou que 'yl' seja maior que 'yh'. Após realiza a chamada para a função homomorphic().
 ```
 def setyh(y_track):
     global yh
-    yh = y_track
+    yh = y_track / 100.0
     if yh == 0:
-        yh = 1
+        yh = 0.1
     if yl > yh:
         yh = yl + 1
     homomorphic()
 ```
 \
-xxxxxxxxxxxxxxxxxxxxx
+Função para atribuir valores ao 'c', de origem da Trackbar, configurados pelo usuário durante a execução do programa. Há verificação para evitar que 'c' tenha valor igual a zero. Após realiza a chamada para a função homomorphic().
 ```
 def setc(c_track):
     global c
@@ -244,7 +243,7 @@ def setc(c_track):
     homomorphic()
 ```
 \
-xxxxxxxxxxxxxxxxxxxxxxxxx
+Função para atribuir valores ao 'd0', de origem da Trackbar, configurados pelo usuário durante a execução do programa. Há verificação para evitar que 'd0' tenha valor igual a zero. Após realiza a chamada para a função homomorphic().
 ```
 def setd0(d0_track):
     global d0
@@ -259,56 +258,51 @@ Função principal do programa.
 def main():
 ```
 \
-A função ```copyMakeBorder()``` cria uma versão da imagem fornecida com uma borda preenchida com zeros e ajustada ao tamanho ótimo para cálculo da DFT, 
-conforme indicado pelo uso da função ```getOptimalDFTSize()```. Para uma imagem ```image``` fornecida, a saída é produzida na imagem ```padded```. 
-Perceba que, caso a imagem fornecida já possua dimensões apropriadas, a imagem de saída será igual à de entrada.
+A função ```copyMakeBorder()``` cria uma versão da imagem fornecida com uma borda preenchida com zeros e ajustada ao tamanho ótimo para cálculo da DFT, conforme indicado pelo uso da função ```getOptimalDFTSize()```. Para uma imagem ```image``` fornecida, a saída é produzida na imagem ```padded```. Caso a imagem fornecida já possua dimensões apropriadas, a imagem de saída será igual à de entrada.
 ```
     padded = cv2.copyMakeBorder(image, 0, dft_M - height, 0, dft_N - width, cv2.BORDER_CONSTANT, 0)
 ```
 \
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Realiza o logaritmo natural da imagem.
 ```
-    # +1 pra tratar log(0)
-    padded = np.log(padded + 1)
-```
-\
-xxxxxxxxxxxxxxx
-```
-    global complexImage
+    padded = np.log(padded + 1.0)
 ```
 \
-xxxxxxxxxxxxxxxxxxxxxxxxxx
+Tornando a variável 'complex_image' em escopo global. Realiza a Transformada Discreta de Fourier através da função do OpenCV ```cv2.dft()```. Como alternativa, também é possível utilizar a função do Numpy ```np.fft.fft2()```, está em comentário no código. O resultado da Transformada Discreta de Fourier é uma imagem complexa.
 ```
-    complexImage = cv2.dft(np.float32(padded) / 255.0, flags=cv2.DFT_COMPLEX_OUTPUT)
-```
-\
-xxxxxxxxxxxxxxxxxxxxxxxxx
-```
-    complexImage = np.fft.fftshift(complexImage)
+    global complex_image
+    complex_image = cv2.dft(np.float32(padded), flags=cv2.DFT_COMPLEX_OUTPUT)
+    # complex_image = np.fft.fft2(padded)
 ```
 \
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Função do Numpy que realiza a troca dos quadrantes da imagem complexa.
 ```
-    img = 20 * np.log(cv2.magnitude(complexImage[:, :, 0], complexImage[:, :, 1]))
+    complexImage = np.fft.fftshift(complex_image)
 ```
 \
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Calcula a magnitude do espectro para ser mostrado na tela, utilizando a função do OpenCV ```cv2.magnitude()```. Como alternativa, também é possível utilizar a função do Numpy ```np.abs()```, está em comentário no código.
+```
+    magnitude_spectrum = 15 * np.log(cv2.magnitude(complex_image[:, :, 0], complex_image[:, :, 1]))
+    # magnitude_spectrum = 15 * np.log(np.abs(complex_image))
+```
+\
+Cria uma janela com o nome 'Image', mostra a imagem original em tons de cinza nesta janela, salva em arquivo esta imagem. Para mostrar a imagem na janela, é realizado o ajuste de tamanho para 600 x 600.
 ```
     cv2.namedWindow('Image', cv2.WINDOW_NORMAL)
     cv2.imshow("Image", image)
-    cv2.imwrite("teste2.jpg", image)
-    cv2.resizeWindow("Image", 400, 400)
+    cv2.imwrite("output/original-gray.png", image)
+    cv2.resizeWindow("Image", 600, 600)
 ```
 \
-xxxxxxxxxxxxxxxxxxxxxxxxxxx
+Cria uma janela com o nome 'DFT', mostra a Transformada Discreta de Fourier da imagem, salva em arquivo esta imagem. Para mostrar a imagem na janela, é realizado o ajuste de tamanho para 600 x 600.
 ```
     cv2.namedWindow('DFT', cv2.WINDOW_NORMAL)
-    cv2.imshow("DFT", np.uint8(img))
-    cv2.imwrite("dft.jpg", np.uint8(img))
-    cv2.resizeWindow("DFT", 250, 250)
+    cv2.imshow("DFT", np.uint8(magnitude_spectrum))
+    cv2.imwrite("output/dft.png", np.uint8(magnitude_spectrum))
+    cv2.resizeWindow("DFT", 600, 600)
 ```
 \
-xxxxxxxxxxxxxxxxxxxxxxxxxxx
+Cria uma Trackbar na janela 'Image', com os parâmetros 'yl', 'yh', 'c' e 'd0', com seus respectivos valores de inicialização, limites máximos e chamadas as respectivas funções que validam e configuram os parâmetros.
 ```
     cv2.createTrackbar("YL", "Image", y_track, 100, setyl)
     cv2.createTrackbar("YH", "Image", y_track, 100, setyh)
@@ -316,13 +310,13 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxx
     cv2.createTrackbar("D0", "Image", d0_track, 100, setd0)
 ```
 \
-xxxxxxxxxxxxxxxxxxxxxxx
+Aguarda pressionar alguma tecla para encerrar o programa, fechando todas as janelas abertas e liberando os recursos utilizados.
 ```
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 ```
 \
-xxxxxxxxxxxxxxxxxxxx
+Entrypoint do programa.
 ```
 if __name__ == '__main__':
     main()
