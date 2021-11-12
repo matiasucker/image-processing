@@ -81,8 +81,7 @@ def setd0(d0_track):
 
 
 def main():
-    # copyMakeBorder(src, top, bottom, left, right, borderType[, dst[, value]])
-    # BORDER_CONSTANT = Pad the image with a constant value (i.e. black or 0)
+
     padded = cv2.copyMakeBorder(image, 0, dft_M - height, 0, dft_N - width, cv2.BORDER_CONSTANT, 0)
 
     padded = np.log(padded + 1.0)
