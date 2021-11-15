@@ -19,6 +19,10 @@ Desenvolvido em Python
 
 Imagem original      |     DFT      |    Filtro homomórfico
 :-------------------:|:------------:|:-----------------------:
+![](output/image0.png)| ![](output/dft-image0.png)| ![](output/output-image0.png)
+
+Imagem original      |     DFT      |    Filtro homomórfico
+:-------------------:|:------------:|:-----------------------:
 ![](output/image1.png)| ![](output/dft-image1.png)| ![](output/output-image1.png)
 
 Imagem original      |     DFT      |    Filtro homomórfico
@@ -163,7 +167,7 @@ Cria um array conforme o shape e o tipo passado como argumento.
     d = np.zeros(complex_image.shape, dtype=np.float32)
 ```
 \
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Filtro passa alto gaussiano.
 
 ```
     for u in range(dft_M):
