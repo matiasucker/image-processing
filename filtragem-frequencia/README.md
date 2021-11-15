@@ -118,7 +118,7 @@ Código equivalente:
 
 
 
-## Funcionamento do código
+# Funcionamento do código
 
 Importação das bibliotecas.
 ```
