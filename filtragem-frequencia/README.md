@@ -19,6 +19,10 @@ Desenvolvido em Python
 
 Imagem original      |     DFT      |    Filtro homomórfico
 :-------------------:|:------------:|:-----------------------:
+![](output/p2.png)| ![](output/dft-p2.png)| ![](output/output-p2.png)
+
+Imagem original      |     DFT      |    Filtro homomórfico
+:-------------------:|:------------:|:-----------------------:
 ![](output/image0.png)| ![](output/dft-image0.png)| ![](output/output-image0.png)
 
 Imagem original      |     DFT      |    Filtro homomórfico
@@ -141,6 +145,10 @@ Declaração e inicialização das variáveis globais, parâmetros do filtro que
 ```
 yh, yl, c, d0 = 0, 0, 0, 0
 ```
+yh - controla a filtragem das altas freqências.
+yl - controla a filtragem das baixas frequências.
+c - controla a inclinação da função à medida que ela realiza a transição entre yl e yh.
+d0 - é a frequência de corte.
 \
 Declaração e inicialização das variáveis globais, parâmetros que serão setados pelo usuário através das Trackbar.
 ```
@@ -188,6 +196,7 @@ Função do Numpy que posiciona os quadrantes das imagens nas suas posições or
 ```
     filtered = np.fft.ifftshift(filtered)
 ```
+![](resources/ishift.png)
 \
 Realiza a Transformada Discreta de Fourier Inversa
 ```
@@ -283,6 +292,7 @@ Função do Numpy que realiza a troca dos quadrantes da imagem complexa.
 ```
     complexImage = np.fft.fftshift(complex_image)
 ```
+![](resources/shift.png)
 \
 Calcula a magnitude do espectro para ser mostrado na tela, utilizando a função do OpenCV ```cv2.magnitude()```. Como alternativa, também é possível utilizar a função do Numpy ```np.abs()```, está em comentário no código.
 ```
@@ -326,7 +336,8 @@ if __name__ == '__main__':
     main()
 ```
 
-
+## Conclusão
+O programa consegue filtrar as baixas e altas frequências, apresentando resultados diferentes para as imagens dependendo da forma como a cena está iluminada, da posição e quantidade de luz. Algumas cenas conseguimos filtrar, mostrando quase todos os detalhes que estavam na escuridão.
 
 
 
