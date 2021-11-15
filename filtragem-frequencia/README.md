@@ -196,7 +196,9 @@ Função do Numpy que posiciona os quadrantes das imagens nas suas posições or
 ```
     filtered = np.fft.ifftshift(filtered)
 ```
-![](resources/ishift.png)
+![](resources/ishift.png)\
+
+
 \
 Realiza a Transformada Discreta de Fourier Inversa
 ```
@@ -266,7 +268,7 @@ def setd0(d0_track):
     homomorphic()
 ```
 \
-Função principal do programa.
+## Função principal do programa.
 ```
 def main():
 ```
@@ -292,7 +294,8 @@ Função do Numpy que realiza a troca dos quadrantes da imagem complexa.
 ```
     complexImage = np.fft.fftshift(complex_image)
 ```
-![](resources/shift.png)
+![](resources/shift.png)\
+
 \
 Calcula a magnitude do espectro para ser mostrado na tela, utilizando a função do OpenCV ```cv2.magnitude()```. Como alternativa, também é possível utilizar a função do Numpy ```np.abs()```, está em comentário no código.
 ```
