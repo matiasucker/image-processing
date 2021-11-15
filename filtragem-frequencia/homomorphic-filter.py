@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from math import exp, sqrt
 
-image = cv2.imread("resources/image1.png", 0)
+image = cv2.imread("resources/p1.jpg", 0)
 height, width = image.shape[:2]
 
 dft_M = cv2.getOptimalDFTSize(height)
