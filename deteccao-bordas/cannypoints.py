@@ -19,11 +19,18 @@ def setT1(t1):
     cv2.imwrite("output/canny.png", edges)
 
     cannypoints = points.copy()
+    """    
     for i in range(height):
         for j in range(width):
             if edges[i, j] != 0:
                 color = image[i, j]
                 cv2.circle(cannypoints, (j, i), RAIO, (int(color[0]), int(color[1]), int(color[2])), -1, cv2.LINE_AA)
+    """
+    edges_filter = np.where(edges != 0)
+    coordinates = zip(edges_filter[0], edges_filter[1])
+    for p in coordinates:
+        color = image[p]
+        cv2.circle(cannypoints, (p[1], p[0]), RAIO, (int(color[0]), int(color[1]), int(color[2])), -1, cv2.LINE_AA)
 
     cv2.imshow("cannypoints", cannypoints)
     cv2.imwrite("output/cannypoints.png", cannypoints)
