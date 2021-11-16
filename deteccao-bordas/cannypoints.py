@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from copy import copy
+
 TOP_SLIDER = 100
 TOP_SLIDER_MAX = 200
 T1 = 10
@@ -18,7 +18,7 @@ def setT1(t1):
     cv2.imshow("canny", edges)
     cv2.imwrite("output/canny.png", edges)
 
-    cannypoints = copy(points)
+    cannypoints = points.copy()
     for i in range(height):
         for j in range(width):
             if edges[i, j] != 0:
