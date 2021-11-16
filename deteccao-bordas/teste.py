@@ -31,20 +31,21 @@ def setT1(t1):
 image = cv2.imread("resources/img8.png", cv2.IMREAD_COLOR)
 height, width = image.shape[:2]
 
-xrange = np.arange(0, image.shape[0] - STEP, STEP) + STEP // 2
-yrange = np.arange(0, image.shape[1] - STEP, STEP) + STEP // 2
+def points(image):
+    xrange = np.arange(0, image.shape[0] - STEP, STEP) + STEP // 2
+    yrange = np.arange(0, image.shape[1] - STEP, STEP) + STEP // 2
 
-points = np.zeros(image.shape, dtype=np.uint8)
+    points = np.zeros(image.shape, dtype=np.uint8)
 
-np.random.shuffle(xrange)
+    np.random.shuffle(xrange)
 
-for i in xrange:
-    np.random.shuffle(yrange)
-    for j in yrange:
-        x = i + np.random.randint((2 * JITTER) - JITTER + 1)
-        y = j + np.random.randint((2 * JITTER) - JITTER + 1)
-        color = image[x, y]
-        points = cv2.circle(points, (y, x), RAIO, (int(color[0]), int(color[1]), int(color[2])), -1, cv2.LINE_AA)
+    for i in xrange:
+        np.random.shuffle(yrange)
+        for j in yrange:
+            x = i + np.random.randint((2 * JITTER) - JITTER + 1)
+            y = j + np.random.randint((2 * JITTER) - JITTER + 1)
+            color = image[x, y]
+            points = cv2.circle(points, (y, x), RAIO, (int(color[0]), int(color[1]), int(color[2])), -1, cv2.LINE_AA)
 
 cv2.imshow("points", points)
 
