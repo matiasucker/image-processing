@@ -27,15 +27,33 @@ Desenvolvido em Python
 
 ## Exemplos de entrada e saída
 
-Imagem original      |     DFT      |    Filtro homomórfico
+Imagem original      |     Canny      |    Cannypoints
 :-------------------:|:------------:|:-----------------------:
-![](output/p2.png)| ![](output/dft-p2.png)| ![](output/output-p2.png)
+![](resources/img8.png)| ![](output/canny-1.png)| ![](output/cannypoints-1.png)
+
+Imagem original      |     Canny      |    Cannypoints
+:-------------------:|:------------:|:-----------------------:
+![](resources/img8.png)| ![](output/canny-2.png)| ![](output/cannypoints-2.png)
+
+Imagem original      |     Canny      |    Cannypoints
+:-------------------:|:------------:|:-----------------------:
+![](resources/img8.png)| ![](output/canny-3.png)| ![](output/cannypoints-3.png)
+
+Imagem original      |     Canny      |    Cannypoints
+:-------------------:|:------------:|:-----------------------:
+![](resources/img9.png)| ![](output/canny-4.png)| ![](output/cannypoints-4.png)
+
+Imagem original      |     Canny      |    Cannypoints
+:-------------------:|:------------:|:-----------------------:
+![](resources/img9.png)| ![](output/canny-5.png)| ![](output/cannypoints-5.png)
+
+Imagem original      |     Canny      |    Cannypoints
+:-------------------:|:------------:|:-----------------------:
+![](resources/img9.png)| ![](output/canny-6.png)| ![](output/cannypoints-6.png)
 
 
 
-
-
-# Diagrama do filtro homomórfico
+# Diagrama 
 
 
 
