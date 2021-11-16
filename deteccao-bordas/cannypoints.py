@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-
+from copy import copy
 TOP_SLIDER = 100
 TOP_SLIDER_MAX = 200
 T1 = 10
@@ -18,11 +18,12 @@ def setT1(t1):
     cv2.imshow("canny", edges)
     cv2.imwrite("output/canny.png", edges)
 
+    cannypoints = copy(points)
     for i in range(height):
         for j in range(width):
             if edges[i, j] != 0:
                 color = image[i, j]
-                cannypoints = cv2.circle(points, (j, i), RAIO, (int(color[0]), int(color[1]), int(color[2])), -1, cv2.LINE_AA)
+                cv2.circle(cannypoints, (j, i), RAIO, (int(color[0]), int(color[1]), int(color[2])), -1, cv2.LINE_AA)
 
     cv2.imshow("cannypoints", cannypoints)
     cv2.imwrite("output/cannypoints.png", cannypoints)
@@ -44,7 +45,7 @@ for i in xrange:
         x = i + np.random.randint((2 * JITTER) - JITTER + 1)
         y = j + np.random.randint((2 * JITTER) - JITTER + 1)
         color = image[x, y]
-        points = cv2.circle(points, (y, x), RAIO, (int(color[0]), int(color[1]), int(color[2])), -1, cv2.LINE_AA)
+        cv2.circle(points, (y, x), RAIO, (int(color[0]), int(color[1]), int(color[2])), -1, cv2.LINE_AA)
 
 cv2.imshow("points", points)
 
