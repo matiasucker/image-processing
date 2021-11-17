@@ -27,31 +27,17 @@ Desenvolvido em Python
 
 ## Exemplos de entrada e saída
 
-Imagem original      |     Canny      |    Cannypoints
-:-------------------:|:------------:|:-----------------------:
-![](resources/img8.png)| ![](output/canny-1.png)| ![](output/cannypoints-1.png)
+Imagem original          |     Points               |    Canny            |      Cannypoints
+:-----------------------:|:------------------------:|:-------------------:|:------------------------------:
+![](resources/img1.png)  | ![](output/points1.png)  | ![](output/canny1)  | ![](output/cannypoints1.png)
 
-Imagem original      |     Canny      |    Cannypoints
-:-------------------:|:------------:|:-----------------------:
-![](resources/img8.png)| ![](output/canny-2.png)| ![](output/cannypoints-2.png)
+Imagem original          |     Points               |    Canny            |      Cannypoints
+:-----------------------:|:------------------------:|:-------------------:|:------------------------------:
+![](resources/img2.png)  | ![](output/points2.png)  | ![](output/canny2)  | ![](output/cannypoints2.png)
 
-Imagem original      |     Canny      |    Cannypoints
-:-------------------:|:------------:|:-----------------------:
-![](resources/img8.png)| ![](output/canny-3.png)| ![](output/cannypoints-3.png)
-
-Imagem original      |     Canny      |    Cannypoints
-:-------------------:|:------------:|:-----------------------:
-![](resources/img9.png)| ![](output/canny-4.png)| ![](output/cannypoints-4.png)
-
-Imagem original      |     Canny      |    Cannypoints
-:-------------------:|:------------:|:-----------------------:
-![](resources/img9.png)| ![](output/canny-5.png)| ![](output/cannypoints-5.png)
-
-Imagem original      |     Canny      |    Cannypoints
-:-------------------:|:------------:|:-----------------------:
-![](resources/img9.png)| ![](output/canny-6.png)| ![](output/cannypoints-6.png)
-
-
+Imagem original          |     Points               |    Canny            |      Cannypoints
+:-----------------------:|:------------------------:|:-------------------:|:------------------------------:
+![](resources/img3.png)  | ![](output/points3.png)  | ![](output/canny3)  | ![](output/cannypoints3.png)
 
 # Diagrama 
 
