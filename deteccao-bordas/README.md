@@ -27,29 +27,29 @@ Desenvolvido em Python
 
 ## Exemplos de entrada e saída
 
-Imagem original          |     Points               |    Canny            |      Cannypoints
-:-----------------------:|:------------------------:|:-------------------:|:------------------------------:
-![](resources/img1.png)  | ![](output/points1.png)  | ![](output/canny1)  | ![](output/cannypoints1.png)
+Imagem original          |     Points               |    Canny                |      Cannypoints
+:-----------------------:|:------------------------:|:-----------------------:|:------------------------------:
+![](resources/img1.png)  | ![](output/points1.png)  | ![](output/canny1.png)  | ![](output/cannypoints1.png)
 
-Imagem original          |     Points               |    Canny            |      Cannypoints
-:-----------------------:|:------------------------:|:-------------------:|:------------------------------:
-![](resources/img2.png)  | ![](output/points2.png)  | ![](output/canny2)  | ![](output/cannypoints2.png)
+Imagem original          |     Points               |    Canny                |      Cannypoints
+:-----------------------:|:------------------------:|:-----------------------:|:------------------------------:
+![](resources/img2.png)  | ![](output/points2.png)  | ![](output/canny2.png)  | ![](output/cannypoints2.png)
 
-Imagem original          |     Points               |    Canny            |      Cannypoints
-:-----------------------:|:------------------------:|:-------------------:|:------------------------------:
-![](resources/img3.png)  | ![](output/points3.png)  | ![](output/canny3)  | ![](output/cannypoints3.png)
+Imagem original          |     Points               |    Canny                |      Cannypoints
+:-----------------------:|:------------------------:|:-----------------------:|:------------------------------:
+![](resources/img3.png)  | ![](output/points3.png)  | ![](output/canny3.png)  | ![](output/cannypoints3.png)
 
-Imagem original          |     Points               |    Canny            |      Cannypoints
-:-----------------------:|:------------------------:|:-------------------:|:------------------------------:
-![](resources/img4.png)  | ![](output/points4.png)  | ![](output/canny4)  | ![](output/cannypoints4.png)
+Imagem original          |     Points               |    Canny                |      Cannypoints
+:-----------------------:|:------------------------:|:-----------------------:|:------------------------------:
+![](resources/img4.png)  | ![](output/points4.png)  | ![](output/canny4.png)  | ![](output/cannypoints4.png)
 
-Imagem original          |     Points               |    Canny            |      Cannypoints
-:-----------------------:|:------------------------:|:-------------------:|:------------------------------:
-![](resources/img5.png)  | ![](output/points5.png)  | ![](output/canny5)  | ![](output/cannypoints5.png)
+Imagem original          |     Points               |    Canny                |      Cannypoints
+:-----------------------:|:------------------------:|:-----------------------:|:------------------------------:
+![](resources/img5.png)  | ![](output/points5.png)  | ![](output/canny5.png)  | ![](output/cannypoints5.png)
 
-
-
-
+    
+    
+    
 # Diagrama 
 
 
