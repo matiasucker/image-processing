@@ -39,6 +39,17 @@ Imagem original          |     Points               |    Canny            |     
 :-----------------------:|:------------------------:|:-------------------:|:------------------------------:
 ![](resources/img3.png)  | ![](output/points3.png)  | ![](output/canny3)  | ![](output/cannypoints3.png)
 
+Imagem original          |     Points               |    Canny            |      Cannypoints
+:-----------------------:|:------------------------:|:-------------------:|:------------------------------:
+![](resources/img4.png)  | ![](output/points4.png)  | ![](output/canny4)  | ![](output/cannypoints4.png)
+
+Imagem original          |     Points               |    Canny            |      Cannypoints
+:-----------------------:|:------------------------:|:-------------------:|:------------------------------:
+![](resources/img5.png)  | ![](output/points5.png)  | ![](output/canny5)  | ![](output/cannypoints5.png)
+
+
+
+
 # Diagrama 
 
 
