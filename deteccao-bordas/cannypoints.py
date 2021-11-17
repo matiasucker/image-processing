@@ -36,7 +36,7 @@ def setT1(t1):
     cv2.imwrite("output/cannypoints.png", cannypoints)
 
 
-image = cv2.imread("resources/img8.png", cv2.IMREAD_COLOR)
+image = cv2.imread("resources/img5.png", cv2.IMREAD_COLOR)
 height, width = image.shape[:2]
 
 xrange = np.arange(0, image.shape[0] - STEP, STEP) + STEP // 2
@@ -55,8 +55,9 @@ for i in xrange:
         cv2.circle(points, (y, x), RAIO, (int(color[0]), int(color[1]), int(color[2])), -1, cv2.LINE_AA)
 
 cv2.imshow("points", points)
+cv2.imwrite("output/points.png", points)
 
-cv2.namedWindow("canny")
+cv2.namedWindow("canny", cv2.WINDOW_GUI_NORMAL)
 cv2.createTrackbar("T1", "canny", TOP_SLIDER, TOP_SLIDER_MAX, setT1)
 
 cv2.waitKey(0)
