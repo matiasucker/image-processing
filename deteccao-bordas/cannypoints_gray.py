@@ -24,13 +24,13 @@ def setT1(t1):
     coordinates = zip(edges_filter[0], edges_filter[1])
     for p in coordinates:
         color = cannypoints[p]
-        cv2.circle(cannypoints, (p[1], p[0]), RAIO//2, (int(color[0]), int(color[1]), int(color[2])), -1, cv2.LINE_AA)
+        cv2.circle(cannypoints, (p[1], p[0]), RAIO//2, int(color), -1, cv2.LINE_AA)
 
     cv2.imshow("cannypoints", cannypoints)
     cv2.imwrite("output/cannypoints.png", cannypoints)
 
 
-image = cv2.imread("resources/img5.png", cv2.IMREAD_COLOR)
+image = cv2.imread("resources/lenna.png", 0)
 height, width = image.shape[:2]
 
 xrange = np.arange(0, image.shape[0] - STEP, STEP) + STEP // 2
@@ -45,7 +45,7 @@ for i in xrange:
         x = i + np.random.randint((2 * JITTER) - JITTER + 1)
         y = j + np.random.randint((2 * JITTER) - JITTER + 1)
         color = image[x, y]
-        cv2.circle(points, (y, x), RAIO, (int(color[0]), int(color[1]), int(color[2])), -1, cv2.LINE_AA)
+        cv2.circle(points, (y, x), RAIO, int(color), -1, cv2.LINE_AA)
 
 cv2.imshow("points", points)
 cv2.imwrite("output/points.png", points)
