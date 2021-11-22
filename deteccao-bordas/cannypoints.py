@@ -29,7 +29,7 @@ def setT1(t1):
     cv2.imwrite("output/cannypoints.png", cannypoints)
 
 
-image = cv2.imread("resources/img7.png", cv2.IMREAD_COLOR)
+image = cv2.imread("resources/img1.png", cv2.IMREAD_COLOR)
 height, width = image.shape[:2]
 
 xrange = np.arange(0, image.shape[0] - STEP, STEP) + STEP // 2
