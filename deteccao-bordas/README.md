@@ -47,7 +47,25 @@ Imagem original          |     Points               |    Canny                | 
 :-----------------------:|:------------------------:|:-----------------------:|:------------------------------:
 ![](resources/img5.png)  | ![](output/points5.png)  | ![](output/canny5.png)  | ![](output/cannypoints5.png)
 
-    
+Imagem original          |     Points               |    Canny                |      Cannypoints
+:-----------------------:|:------------------------:|:-----------------------:|:------------------------------:
+![](resources/img6.png)  | ![](output/points6.png)  | ![](output/canny6.png)  | ![](output/cannypoints6.png)
+
+Imagem original          |     Points               |    Canny                |      Cannypoints
+:-----------------------:|:------------------------:|:-----------------------:|:------------------------------:
+![](resources/img7.png)  | ![](output/points7.png)  | ![](output/canny7.png)  | ![](output/cannypoints7.png)
+
+Imagem original          |     Points               |    Canny                |      Cannypoints
+:-----------------------:|:------------------------:|:-----------------------:|:------------------------------:
+![](resources/img8.png)  | ![](output/points8.png)  | ![](output/canny8.png)  | ![](output/cannypoints8.png)
+
+Imagem original          |     Points               |    Canny                |      Cannypoints
+:-----------------------:|:------------------------:|:-----------------------:|:------------------------------:
+![](resources/img9.png)  | ![](output/points9.png)  | ![](output/canny9.png)  | ![](output/cannypoints9.png)
+
+Imagem original          |     Points               |    Canny                |      Cannypoints
+:-----------------------:|:------------------------:|:-----------------------:|:------------------------------:
+![](resources/img10.png)  | ![](output/points10.png)  | ![](output/canny10.png)  | ![](output/cannypoints10.png)
     
     
 # Diagrama 
