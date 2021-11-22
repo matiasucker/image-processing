@@ -60,15 +60,15 @@ Imagem original          |     Points               |    Canny                | 
 
 Imagem original          |     Points               |    Canny                |      Cannypoints
 :-----------------------:|:------------------------:|:-----------------------:|:------------------------------:
-![](resources/img8.png)  | ![](output/points8.png)  | ![](output/canny8.png)  | ![](output/cannypoints8.png)
+![](resources/img7.png)  | ![](output/points8.png)  | ![](output/canny8.png)  | ![](output/cannypoints8.png)
 
 Imagem original          |     Points               |    Canny                |      Cannypoints
 :-----------------------:|:------------------------:|:-----------------------:|:------------------------------:
-![](resources/img9.png)  | ![](output/points9.png)  | ![](output/canny9.png)  | ![](output/cannypoints9.png)
+![](resources/lenna.png)  | ![](output/points9.png)  | ![](output/canny9.png)  | ![](output/cannypoints9.png)
 
 Imagem original          |     Points               |    Canny                |      Cannypoints
 :-----------------------:|:------------------------:|:-----------------------:|:------------------------------:
-![](resources/img10.png)  | ![](output/points10.png)  | ![](output/canny10.png)  | ![](output/cannypoints10.png)
+![](resources/lenna.png)  | ![](output/points10.png)  | ![](output/canny10.png)  | ![](output/cannypoints10.png)
     
     
 # Funcionamento do código
