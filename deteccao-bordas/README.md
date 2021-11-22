@@ -27,6 +27,7 @@ Desenvolvido em Python
 - A técnica utilizada consiste em reconstruir, ou melhorar uma imagem pontilhada. Como não temos uma imagem pontilhada, o programa descrito abaixo primeiro cria uma imagem pontilhada, podendo ser colorida executando o programa cannypoint.py, ou pode se em tons de cinza executando o programa cannypoints_gray.py. O resultado é uma imagem pontilhada, suas características podem ter algumas variações dependendo dos valores à serem carregados nas variáveis STEP, JITTER e RAIO. A alteração destes valores precisa ser sutil, pois grandes alterações geram uma imagem pontilhada quase que impossível de ser reconstruída ou melhorada, portanto, não foi criada Trackbar para controle destas variáveis, tendo o controle apenas dentro do código fonte. A variável STEP indica para o programa quantos pixels devem ser "escolhidos" para o espaço de criação de um ponto. A variável JITTER indica para o programa qual o desvio aleatório necessário de deslocamento do centro do ponto. A variável RAIO indica para o programa qual o valor do raio a ser utilizado na construção do ponto.
 - A partir da imagem pontilhada, o programa usa esta imagem para obter uma imagem apenas com as bordas, utilizando a função cv2.canny(). Como parâmetro para controlar a detecção das bordas, é utilizado a variável T1, esta variável recebe valores da Trackbar, para obter o melhor resultado de bordas da imagem.
 - Tendo a imagem pontilhada e a imagem das bordas, o próximo passo é percorrer a imagem das bordas "canny", e para cada posição da imagem que for diferente de zero, é buscado a cor na mesma posição da imagem pontilhada e desenhado um círculo menor para recompor a imagem, melhorando-a, até obter um resultado satisfatório, salvando em um arquivo chamado de cannypoints.png.
+- O melhor resultado é obtido com um valor intermidiário para a variável T1, pois os pares de argumentos da função ```cv2.Canny(img, T1, 3 * T1)``` borram a imagem com valor T1 muito baixo, e com bvalores altos não melhoram a imagem, deixando-a com os recortes em fundo preto, portanto a melhor imagem foi conseguida com valores intermediários para a variável T1.
 
 ## Exemplos de entrada e saída
 
@@ -92,7 +93,7 @@ STEP = 5
 JITTER = 3
 RAIO = 3
 ```
-\
+
 ## Função Trackbar
 Função que configura a variável T1 da Trackbar.
 ```
@@ -143,7 +144,7 @@ Neste ponto, é mostrado a imagem melhorada, e também salvo em arquivo.
     cv2.imshow("cannypoints", cannypoints)
     cv2.imwrite("output/cannypoints.png", cannypoints)
 ```
-\
+
 ## Entrypoint do programa
 Entrypoint do programa, onde a imagem é carregada.
 ```
