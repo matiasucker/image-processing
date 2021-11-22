@@ -4,15 +4,14 @@ import numpy as np
 TOP_SLIDER = 10
 TOP_SLIDER_MAX = 400
 T1 = 10
-edges = 0
 
 STEP = 5
 JITTER = 3
-RAIO = 4
+RAIO = 3
 
 
 def setT1(t1):
-    global T1, edges, points
+    global T1, points
     T1 = t1
     edges = cv2.Canny(points, T1, 3 * T1)
     cv2.imshow("canny", edges)
