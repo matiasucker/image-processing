@@ -23,7 +23,8 @@
 ## Programa cannypoints.py
 Desenvolvido em Python
 
-
+## Descrição
+A técnica utilizada consiste em reconstruir, ou melhorar uma imagem pontilhada. Como não temos uma imagem pontilhada, o programa descrito abaixo primeiro cria uma imagem pontilhada, podendo ser colorida executando o programa ```cannypoint.py```, ou pode se em tons de cinza executando o programa ```cannypoints_gray.py```. O resultado é uma imagem pontilhada, suas características podem ter algumas variações dependendo dos valores à serem carregados nas variáveis ```STEP```, ```JITTER``` e ```RAIO```. A alteração destes valores precisa ser sutil, pois grandes alterações geram uma imagem pontilhada quase que impossível de ser reconstruída ou melhorada, portanto, não foi criada Trackbar para controle destas variáveis, tendo o controle apenas dentro do código fonte. A variável ```STEP``` indica para o programa quantos pixels devem ser "escolhidos" para o espaço de criação de um ponto. A variável ```JITTER```indica para o programa qual o desvio aleatório necessário de deslocamento do centro do ponto. A variável ```RAIO``` indica para o programa qual o valor do raio a ser utilizado na construção do ponto.
 
 ## Exemplos de entrada e saída
 
