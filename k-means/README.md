@@ -18,33 +18,106 @@ Lorem ipsum......
 
 ## Exemplos de entrada e saída
 
-Imagem original          |
-:-----------------------:|
-![](resources/sushi.png) | 
+Imagem original           |
+:------------------------:|
+![](resources/sushi.png)  | 
 
 Rodada 1                  |      Rodada 2             |
 :------------------------:|:-------------------------:|
-![](output/k-means1.png)  | ![](output/k-means2.png)  |
+![](output/sushi1.png)    | ![](output/sushi2.png)    |
 
 Rodada 3                  |      Rodada 4             |
 :------------------------:|:-------------------------:|
-![](output/k-means3.png)  | ![](output/k-means4.png)  |
+![](output/sushi3.png)    | ![](output/sushi4.png)    |
 
 Rodada 5                  |      Rodada 6             |
 :------------------------:|:-------------------------:|
-![](output/k-means5.png)  | ![](output/k-means6.png)  |
+![](output/sushi5.png)    | ![](output/sushis6.png)   |
 
 Rodada 7                  |      Rodada 8             |
 :------------------------:|:-------------------------:|
-![](output/k-means7.png)  | ![](output/k-means8.png)  |
+![](output/sushi7.png)    | ![](output/sushi8.png)    |
 
 Rodada 9                  |      Rodada 10            |
 :------------------------:|:-------------------------:|
-![](output/k-means9.png)  | ![](output/k-means10.png) |
+![](output/sushi9.png)    | ![](output/sushi10.png)   |
 
 
-    
-    
+Imagem original           |
+:------------------------:|
+![](resources/leao.png)   | 
+
+Rodada 1                  |      Rodada 2             |
+:------------------------:|:-------------------------:|
+![](output/leao1.png)     | ![](output/leao2.png)     |
+
+Rodada 3                  |      Rodada 4             |
+:------------------------:|:-------------------------:|
+![](output/leao3.png)     | ![](output/leao4.png)     |
+
+Rodada 5                  |      Rodada 6             |
+:------------------------:|:-------------------------:|
+![](output/leao5.png)     | ![](output/leao6.png)     |
+
+Rodada 7                  |      Rodada 8             |
+:------------------------:|:-------------------------:|
+![](output/leao7.png)     | ![](output/leao8.png)     |
+
+Rodada 9                  |      Rodada 10            |
+:------------------------:|:-------------------------:|
+![](output/leao9.png)     | ![](output/leao10.png)    |
+
+
+Imagem original           |
+:------------------------:|
+![](resources/corais.png) | 
+
+Rodada 1                  |      Rodada 2             |
+:------------------------:|:-------------------------:|
+![](output/corais1.png)   | ![](output/corais2.png)   |
+
+Rodada 3                  |      Rodada 4             |
+:------------------------:|:-------------------------:|
+![](output/corais3.png)   | ![](output/corais4.png)   |
+
+Rodada 5                  |      Rodada 6             |
+:------------------------:|:-------------------------:|
+![](output/corais5.png)   | ![](output/corais6.png)   |
+
+Rodada 7                  |      Rodada 8             |
+:------------------------:|:-------------------------:|
+![](output/corais7.png)   | ![](output/corais8.png)   |
+
+Rodada 9                  |      Rodada 10            |
+:------------------------:|:-------------------------:|
+![](output/corais9.png)   | ![](output/corais10.png)  |
+
+
+Imagem original           |
+:------------------------:|
+![](resources/cidade.png) | 
+
+Rodada 1                  |      Rodada 2             |
+:------------------------:|:-------------------------:|
+![](output/cidade1.png)   | ![](output/cidade2.png)   |
+
+Rodada 3                  |      Rodada 4             |
+:------------------------:|:-------------------------:|
+![](output/cidade3.png)   | ![](output/cidade4.png)   |
+
+Rodada 5                  |      Rodada 6             |
+:------------------------:|:-------------------------:|
+![](output/cidade5.png)   | ![](output/cidade6.png)   |
+
+Rodada 7                  |      Rodada 8             |
+:------------------------:|:-------------------------:|
+![](output/cidade7.png)   | ![](output/cidade8.png)   |
+
+Rodada 9                  |      Rodada 10            |
+:------------------------:|:-------------------------:|
+![](output/cidade9.png)   | ![](output/cidade10.png)  |
+
+
 # Funcionamento do código
 
 Importação das bibliotecas.
