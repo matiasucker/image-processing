@@ -4,7 +4,7 @@ import numpy as np
 NCLUSTERS = 8
 NROUNDS = 1
 
-image = cv2.imread("resources/sushi.png", cv2.IMREAD_COLOR)
+image = cv2.imread("resources/cidade.png", cv2.IMREAD_COLOR)
 
 samples = image.reshape((-1, 3))
 samples = np.float32(samples)
