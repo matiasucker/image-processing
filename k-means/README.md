@@ -22,25 +22,25 @@ Imagem original          |
 :-----------------------:|
 ![](resources/sushi.png) | 
 
-Rodada 1                     |      Rodada 2             |
-:---------------------------:|:-------------------------:|
-![](resources/k-means1.png)  | ![](output/k-means2.png)  |
+Rodada 1                  |      Rodada 2             |
+:------------------------:|:-------------------------:|
+![](output/k-means1.png)  | ![](output/k-means2.png)  |
 
-Rodada 3                     |      Rodada 4             |
-:---------------------------:|:-------------------------:|
-![](resources/k-means3.png)  | ![](output/k-means4.png)  |
+Rodada 3                  |      Rodada 4             |
+:------------------------:|:-------------------------:|
+![](output/k-means3.png)  | ![](output/k-means4.png)  |
 
-Rodada 5                     |      Rodada 6             |
-:---------------------------:|:-------------------------:|
-![](resources/k-means5.png)  | ![](output/k-means6.png)  |
+Rodada 5                  |      Rodada 6             |
+:------------------------:|:-------------------------:|
+![](output/k-means5.png)  | ![](output/k-means6.png)  |
 
-Rodada 7                     |      Rodada 8             |
-:---------------------------:|:-------------------------:|
-![](resources/k-means7.png)  | ![](output/k-means8.png)  |
+Rodada 7                  |      Rodada 8             |
+:------------------------:|:-------------------------:|
+![](output/k-means7.png)  | ![](output/k-means8.png)  |
 
-Rodada 9                     |      Rodada 10            |
-:---------------------------:|:-------------------------:|
-![](resources/k-means9.png)  | ![](output/k-means10.png) |
+Rodada 9                  |      Rodada 10            |
+:------------------------:|:-------------------------:|
+![](output/k-means9.png)  | ![](output/k-means10.png) |
 
 
     
