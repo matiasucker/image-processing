@@ -32,7 +32,7 @@ Rodada 3                  |      Rodada 4             |
 
 Rodada 5                  |      Rodada 6             |
 :------------------------:|:-------------------------:|
-![](output/sushi5.png)    | ![](output/sushis6.png)   |
+![](output/sushi5.png)    | ![](output/sushi6.png)    |
 
 Rodada 7                  |      Rodada 8             |
 :------------------------:|:-------------------------:|
