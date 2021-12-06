@@ -13,11 +13,6 @@
 ## Programa cannypoints.py
 Desenvolvido em Python
 
-## Descrição
-Lorem ipsum......
-
-
-
 
 # Funcionamento do código
 
@@ -104,11 +99,16 @@ cv2.destroyAllWindows()
 ```
 ![](output/k-means.png)
 
-
-
-
 ## Conclusão
-Lorem ipsum....
+Quando o programa é executado, usando o parâmetro ```cv2.KMEANS_RANDOM_CENTERS```, esperamos que os resultados mudem a cada nova rodada, pois os centros inicializados aleatoriamente irão gerar diferentes amostras no espaço para cada execução, e criarão dados de clusters diferentes. Por este motivo, na quantização da imagem perceptiva, a imagem resultante deveria ser colorida de forma diferente a cada rodada.\
+No entato, não foi este o resultado observado na prática. O algoritmo não mostrou nenhuma aleatoriedade nos resultados quando aplicado o parâmetro ```cv2.KMEANS_RANDOM_CENTERS```. Não localizei informações suficientes que explicassem o problema ou algo diferente à se fazer.
+Existem muitas cores na imagem original e elas devem ser agrupadas de maneira diferente para diferentes execuções, foram realizadas diversas execuções, mas nenhuma aleatoriedade foi obtida.\
+Para fins de teste, foi aumentado o número de clusters, de forma que talvez quanto mais fronteiras tivesse, o algoritmo poderia ter resultados diferentes; e também foi reduzida a precisão nos critérios de parada, mas nada mostrou aleatoriedade nos resultados.
+Provavelmente esta falta de aleatoriedade se deve à falhas na implementação da biblioteca ou na sua documentação oficial online.\
+\
+Todas as execuções geraram sempre o mesmo array de centros, como pode ser visto na imagem abaixo, ou seja, não houve nenhuma aleatoriedade nas diversas execuções.
+![](output/centers-result.png)
+
 
 ## Exemplos de entrada e saída
 
@@ -233,10 +233,10 @@ ret, labels, centers = cv2.kmeans(samples,
 
 centers = np.uint8(centers)
 res = centers[labels.flatten()]
-res2 = res.reshape((image.shape))
+res = res.reshape((image.shape))
 
-cv2.imshow("k-means", res2)
-cv2.imwrite("output/k-means.png", res2)
+cv2.imshow("k-means", res)
+cv2.imwrite("output/k-means.png", res)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 ```
