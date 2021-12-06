@@ -138,12 +138,66 @@ Leitura da imagem que será usada para aplicação do algoritmo.
 image = cv2.imread("resources/sushi.png", cv2.IMREAD_COLOR)
 ```
 \
-Criação de uma matriz de amostras, para armazenar todas as cores dos pixels da imagem. A matriz samples possui um total de linhas igual ao total de pixels da imagem fornecida e apenas três colunas. cada coluna é concebida para armazenar cada uma das componentes de cor (R, G, B) dos pixels.
+Criação de uma matriz de amostras, para armazenar todas as cores dos pixels da imagem. A matriz samples possui um total de linhas igual ao total de pixels da imagem fornecida e apenas três colunas. Cada coluna é concebida para armazenar cada uma das componentes de cor (R, G, B) dos pixels.
 ```
 samples = image.reshape((-1, 3))
 ```
 ![](resources/samples.png)
-Resultado da impressão da matriz samples, com impressão no terminal do tamanho da matriz, sendo 307200 que equivale a totalidade dos pixes da imagem, o tipo da matriz e os valores da primeira e última posição da matriz, onde é possível visualizar as componentes (R, G, B).
+Resultado da impressão da matriz samples com valores inteiros, com impressão no terminal do tamanho da matriz, sendo 307200 que equivale a totalidade dos pixes da imagem, o tipo da matriz numpy.ndarray, e os valores da primeira e última posição da matriz, onde é possível visualizar as componentes (R, G, B).
+\
+Transformação dos valores inteiros da matriz samples em valores float. Valores inteiros podem afetar o cálculo do k-means .
+```
+samples = np.float32(samples)
+```
+![](resources/samples-float.png)
+Resultado da impressão da matriz samples com valores float, com impressão no terminal do tamanho da matriz, sendo 307200 que equivale a totalidade dos pixes da imagem, o tipo da matriz numpy.ndarray, e os valores da primeira e última posição da matriz, onde é possível visualizar as componentes (R, G, B).
+\
+A função kmeans retorna 3 resultados, dos quais usaremos apenas rótulos (labels) e centros (centers). Rótulos é como cada amostra de "amostras" é rotulada, de 0 a NCLUSTERS, e os centros é onde cada rótulo está centralizado no espaço. Os critérios que passamos são os critérios para interromper o algoritmo (tipo de terminação, n iterações, precisão).\
+Para o tipo de terminação, usamos cv2.TERM_CRITERIA_MAX_ITER | CV2.TERM_CRITERIA_EPS, o que significa que queremos que o algoritmo pare se a precisão for alcançada ou se o número de iterações tiver sido alcançado.\
+Para o argumento flags foi passado KMEANS_RANDOM_CENTERS, que seleciona os centros iniciais de forma aleatória em cada tentativa.
+```
+ret, labels, centers = cv2.kmeans(samples,
+                                  NCLUSTERS,
+                                  None,
+                                  (cv2.TERM_CRITERIA_MAX_ITER | cv2.TERM_CRITERIA_EPS, 10000, 0.0001),
+                                  NROUNDS,
+                                  cv2.KMEANS_RANDOM_CENTERS)
+```
+![](resources/labels.png)
+![](resources/centers.png)
+\
+
+
+
+
+Transformação dos centros para valores inteiros, afim de criar uma nova imagem.
+```
+centers = np.uint8(centers)
+```
+![](resources/centers-uint8.png)
+\
+
+Criação de uma matriz a partir dos centros e rótulos obtidos na execução do k-means.
+```
+res = centers[labels.flatten()]
+```
+![](resources/res.png)
+\
+Realizando o reshape da matriz, para que a imagem resultante tenha o mesmo shape da imagem original.
+```
+res = res.reshape((image.shape))
+```
+![](resources/res-reshape.png)
+\
+Mostra da imagem resultante em tela, gravação da imagem resultante em disco, e espera até que uma tecla seja pressionada para fechar a janela e encerrar a execução do programa.
+```
+cv2.imshow("k-means", res)
+cv2.imwrite("output/k-means.png", res)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+```
+
+
 
 
 
