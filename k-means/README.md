@@ -107,7 +107,7 @@ Quando o programa é executado, usando o parâmetro ```cv2.KMEANS_RANDOM_CENTERS
 No entato, não foi este o resultado observado na prática. O algoritmo não mostrou nenhuma aleatoriedade nos resultados quando aplicado o parâmetro ```cv2.KMEANS_RANDOM_CENTERS```. Não localizei informações suficientes que explicassem o problema ou algo diferente à se fazer.
 Existem muitas cores na imagem original e elas devem ser agrupadas de maneira diferente para diferentes execuções, foram realizadas diversas execuções, mas nenhuma aleatoriedade foi obtida.\
 Para fins de teste, foi aumentado o número de clusters, de forma que talvez quanto mais fronteiras tivesse, o algoritmo poderia ter resultados diferentes; e também foi reduzida a precisão nos critérios de parada, mas nada mostrou aleatoriedade nos resultados.
-Provavelmente esta falta de aleatoriedade se deve à falhas na implementação da biblioteca ou na sua documentação oficial online.\
+Talvez esta falta de aleatoriedade se deve à falhas na implementação da biblioteca ou na sua documentação oficial online.\
 \
 Todas as execuções geraram sempre o mesmo array de centros, como pode ser visto na imagem abaixo, ou seja, não houve nenhuma aleatoriedade nas diversas execuções.
 ![](resources/centers-result.png)
