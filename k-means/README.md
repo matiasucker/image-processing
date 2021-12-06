@@ -110,7 +110,7 @@ Para fins de teste, foi aumentado o número de clusters, de forma que talvez qua
 Provavelmente esta falta de aleatoriedade se deve à falhas na implementação da biblioteca ou na sua documentação oficial online.\
 \
 Todas as execuções geraram sempre o mesmo array de centros, como pode ser visto na imagem abaixo, ou seja, não houve nenhuma aleatoriedade nas diversas execuções.
-![](output/centers-result.png)
+![](resources/centers-result.png)
 
 
 ## Exemplos de entrada e saída
