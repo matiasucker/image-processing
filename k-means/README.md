@@ -102,7 +102,7 @@ cv2.imwrite("output/k-means.png", res)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 ```
-![](resources/k-means.png)
+![](output/k-means.png)
 
 
 
