@@ -126,7 +126,24 @@ import cv2
 import numpy as np
 ```
 \
-
+```NCLUSTRES = 8``` Configuração do número de clusters para o agrupamento do k-means, neste caso foram escolhidos 8 clusters, representando imagens de saída com 8 cores, um número maior de clusters gera um aimagem de saída com mais cores, e um número menor de clusters gera uma imagem de saída com menos cores.\
+```NROUNDS = 1``` Configuração das rodadas para ser apenas uma vez, o propósito deste trabalho é realizar 10 rodadas individuais.
+```
+NCLUSTERS = 8
+NROUNDS = 1
+```
+\
+Leitura da imagem que será usada para aplicação do algoritmo.
+```
+image = cv2.imread("resources/sushi.png", cv2.IMREAD_COLOR)
+```
+\
+Criação de uma matriz de amostras, para armazenar todas as cores dos pixels da imagem. A matriz samples possui um total de linhas igual ao total de pixels da imagem fornecida e apenas três colunas. cada coluna é concebida para armazenar cada uma das componentes de cor (R, G, B) dos pixels.
+```
+samples = image.reshape((-1, 3))
+```
+![](resources/samples.png)
+Resultado da impressão da matriz samples, com impressão no terminal do tamanho da matriz, sendo 307200 que equivale a totalidade dos pixes da imagem, o tipo da matriz e os valores da primeira e última posição da matriz, onde é possível visualizar as componentes (R, G, B).
 
 
 
