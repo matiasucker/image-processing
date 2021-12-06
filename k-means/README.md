@@ -43,15 +43,17 @@ Criação de uma matriz de amostras, para armazenar todas as cores dos pixels da
 ```
 samples = image.reshape((-1, 3))
 ```
+Abaixo está o resultado da impressão da matriz samples com valores inteiros. A impressão no terminal informa o tamanho da matriz, sendo 307200 que equivale a totalidade dos pixes da imagem, o tipo da matriz numpy.ndarray, e os valores da primeira e última posição da matriz, onde é possível visualizar as componentes (R, G, B).
 ![](resources/samples.png)
-Resultado da impressão da matriz samples com valores inteiros, com impressão no terminal do tamanho da matriz, sendo 307200 que equivale a totalidade dos pixes da imagem, o tipo da matriz numpy.ndarray, e os valores da primeira e última posição da matriz, onde é possível visualizar as componentes (R, G, B).\
 
+\
 Transformação dos valores inteiros da matriz samples em valores float. Valores inteiros podem afetar o cálculo do k-means .
 ```
 samples = np.float32(samples)
 ```
+Abaixo está o resultado da impressão da matriz samples com valores float. A impressão no terminal informa o tamanho da matriz, sendo 307200 que equivale a totalidade dos pixes da imagem, o tipo da matriz numpy.ndarray, e os valores da primeira e última posição da matriz, onde é possível visualizar as componentes (R, G, B).
 ![](resources/samples-float.png)
-Resultado da impressão da matriz samples com valores float, com impressão no terminal do tamanho da matriz, sendo 307200 que equivale a totalidade dos pixes da imagem, o tipo da matriz numpy.ndarray, e os valores da primeira e última posição da matriz, onde é possível visualizar as componentes (R, G, B).
+
 \
 A função kmeans retorna 3 resultados, dos quais usaremos apenas rótulos (labels) e centros (centers). Rótulos é como cada amostra de "amostras" é rotulada, de 0 a NCLUSTERS, e os centros é onde cada rótulo está centralizado no espaço. Os critérios que passamos são os critérios para interromper o algoritmo (tipo de terminação, n iterações, precisão).\
 Para o tipo de terminação, usamos cv2.TERM_CRITERIA_MAX_ITER | CV2.TERM_CRITERIA_EPS, o que significa que queremos que o algoritmo pare se a precisão for alcançada ou se o número de iterações tiver sido alcançado.\
@@ -64,26 +66,34 @@ ret, labels, centers = cv2.kmeans(samples,
                                   NROUNDS,
                                   cv2.KMEANS_RANDOM_CENTERS)
 ```
+Abaixo está o resultado da impressão dos rótulos "labels". A impressão no terminal informa o tamanho da matriz, sendo 307200 que equivale a totalidade dos pixes da imagem, o tipo da matriz numpy.ndarray, e os valores da primeira e última posição da matriz, onde é possível visualizar os rótulos de cada pixel.
 ![](resources/labels.png)
+
+\
+Abaixo está o resultado da impressão dos centros "centers". A impressão no terminal informa o tamanho da matriz, sendo 8 que equivale a NCLUSTERS, o tipo da matriz numpy.ndarray, e os valores onde é possível visualizar os centros de cada rótulo.
 ![](resources/centers.png)
+
 \
 Transformação dos centros para valores inteiros, afim de criar uma nova imagem.
 ```
 centers = np.uint8(centers)
 ```
 ![](resources/centers-uint8.png)
+
 \
 Criação de uma matriz a partir dos centros e rótulos obtidos na execução do k-means.
 ```
 res = centers[labels.flatten()]
 ```
 ![](resources/res.png)
+
 \
 Realizando o reshape da matriz, para que a imagem resultante tenha o mesmo shape da imagem original.
 ```
 res = res.reshape((image.shape))
 ```
 ![](resources/res-reshape.png)
+
 \
 Mostra da imagem resultante em tela, gravação da imagem resultante em disco, e espera até que uma tecla seja pressionada para fechar a janela e encerrar a execução do programa.
 ```
