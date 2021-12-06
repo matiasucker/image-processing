@@ -9,13 +9,19 @@
 6.  [Código final completo em Python](#código-final-completo-em-python)
 7.  [Código do exemplo em C plus plus](#código-do-exemplo-em-c-plus-plus)
 
+-----------------------------------------------------
+
 ## Requisitos
 - Python 3.8
 - OpenCV 4.5.3
 - Numpy
 
+-----------------------------------------------------
+
 ## Exercícios
 - Utilizando o programa kmeans.cpp como exemplo prepare um programa exemplo onde a execução do código se dê usando o parâmetro nRodadas=1 e inciar os centros de forma aleatória usando o parâmetro KMEANS_RANDOM_CENTERS ao invés de KMEANS_PP_CENTERS. Realize 10 rodadas diferentes do algoritmo e compare as imagens produzidas. Explique porque elas podem diferir tanto.
+
+-----------------------------------------------------
 
 ## Funcionamento do código cannypoints.py
 
@@ -102,6 +108,8 @@ cv2.destroyAllWindows()
 ```
 ![](output/k-means.png)
 
+-----------------------------------------------------
+
 ## Conclusão
 Quando o programa é executado, usando o parâmetro ```cv2.KMEANS_RANDOM_CENTERS```, esperamos que os resultados mudem a cada nova rodada, pois os centros inicializados aleatoriamente irão gerar diferentes amostras no espaço para cada execução, e criarão dados de clusters diferentes. Por este motivo, na quantização da imagem perceptiva, a imagem resultante deveria ser colorida de forma diferente a cada rodada.\
 No entato, não foi este o resultado observado na prática. O algoritmo não mostrou nenhuma aleatoriedade nos resultados quando aplicado o parâmetro ```cv2.KMEANS_RANDOM_CENTERS```. Não localizei informações suficientes que explicassem o problema ou algo diferente à se fazer.
@@ -112,6 +120,7 @@ Talvez esta falta de aleatoriedade se deve à falhas na implementação da bibli
 Todas as execuções geraram sempre o mesmo array de centros, como pode ser visto na imagem abaixo, ou seja, não houve nenhuma aleatoriedade nas diversas execuções.
 ![](resources/centers-result.png)
 
+-----------------------------------------------------
 
 ## Exemplos de entrada e saída
 
@@ -213,6 +222,8 @@ Rodada 7                  |      Rodada 8             |
 Rodada 9                  |      Rodada 10            |
 :------------------------:|:-------------------------:|
 ![](output/cidade9.png)   | ![](output/cidade10.png)  |
+
+-----------------------------------------------------
 
 ## Código final completo em Python
 ```
