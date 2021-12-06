@@ -9,19 +9,13 @@
 6.  [Código final completo em Python](#código-final-completo-em-python)
 7.  [Código do exemplo em C plus plus](#código-do-exemplo-em-c-plus-plus)
 
------------------------------------------------------
-
 ## Requisitos
 - Python 3.8
 - OpenCV 4.5.3
 - Numpy
 
------------------------------------------------------
-
 ## Exercícios
 - Utilizando o programa kmeans.cpp como exemplo prepare um programa exemplo onde a execução do código se dê usando o parâmetro nRodadas=1 e inciar os centros de forma aleatória usando o parâmetro KMEANS_RANDOM_CENTERS ao invés de KMEANS_PP_CENTERS. Realize 10 rodadas diferentes do algoritmo e compare as imagens produzidas. Explique porque elas podem diferir tanto.
-
------------------------------------------------------
 
 ## Funcionamento do código cannypoints.py
 
