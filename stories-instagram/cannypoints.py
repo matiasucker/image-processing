@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 
+points = 0
 
 def cannypoints():
 
@@ -30,7 +31,7 @@ def cannypoints():
         cv2.imshow("cannypoints", cannypoints)
         cv2.imwrite("output/cannypoints.png", cannypoints)
 
-    image = cv2.imread("resources/img1.png", cv2.IMREAD_COLOR)
+    image = cv2.imread("resources/image.png", cv2.IMREAD_COLOR)
     height, width = image.shape[:2]
 
     xrange = np.arange(0, image.shape[0] - STEP, STEP) + STEP // 2
