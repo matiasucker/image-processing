@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QLabel,
                              QPushButton, QCheckBox, QSpinBox, QDoubleSpinBox, QSlider, QFrame, QFileDialog,
                              QMessageBox, QHBoxLayout, QVBoxLayout, QAction)
 from PyQt5.QtGui import QPixmap, QImage
-from PyQt5 import QtCore
+from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import Qt
 
 style_sheet = """
@@ -29,6 +29,7 @@ class StoriesInstagram(QMainWindow):
         self.image_smoothing_checked = False
         self.edge_detection_checked = False
         self.points_checked = False
+        self.kmeans_checked = False
         self.setupWindow()
         self.setupMenu()
         self.show()
@@ -38,83 +39,161 @@ class StoriesInstagram(QMainWindow):
         self.image_label = QLabel()
         self.image_label.setObjectName("ImageLabel")
 
-        contrast_label = QLabel("Contrast [Range: 0.0:4.0]")
+        #contrast_label = QLabel("Contrast [Range: 0.0:4.0]")
         self.contrast_spinbox = QDoubleSpinBox()
         self.contrast_spinbox.setMinimumWidth(100)
         self.contrast_spinbox.setRange(0.0, 4.0)
         self.contrast_spinbox.setValue(1.0)
         self.contrast_spinbox.setSingleStep(.10)
-        self.contrast_spinbox.valueChanged.connect(self.adjustContrast)
+        self.contrast_cb = QCheckBox("Contrast [Range: 0.0:4.0]")
+        self.contrast_cb.stateChanged.connect(self.adjustContrast)
 
-        brightness_label = QLabel("Brightness [Range: -127:127]")
+        #brightness_label = QLabel("Brightness [Range: -127:127]")
         self.brightness_spinbox = QSpinBox()
         self.brightness_spinbox.setMinimumWidth(100)
         self.brightness_spinbox.setRange(-127, 127)
         self.brightness_spinbox.setValue(0)
         self.brightness_spinbox.setSingleStep(1)
-        self.brightness_spinbox.valueChanged.connect(self.adjustBrightness)
+        self.brightness_cb = QCheckBox("Brightness [Range: -127:127]")
+        self.brightness_cb.stateChanged.connect(self.adjustBrightness)
 
-        smoothing_label = QLabel("Image Smoothing Filters")
+        #smoothing_label = QLabel("Blur [Range: 3:21]")
         self.smoothing_spinbox = QSpinBox()
         self.smoothing_spinbox.setMinimumWidth(100)
-        self.smoothing_spinbox.setRange(3, 21)
+        self.smoothing_spinbox.setRange(3, 25)
         self.smoothing_spinbox.setValue(3)
         self.smoothing_spinbox.setSingleStep(2)
-        self.filter_2D_cb = QCheckBox("Blur")
+        self.filter_2D_cb = QCheckBox("Blur [Range: 3:25]")
         self.filter_2D_cb.stateChanged.connect(self.imageSmoothingFilter)
 
-        edges_label = QLabel("Detect Edges")
+        #edges_label = QLabel("Detector de Bordas [Range: 10:300]")
         self.edges_slider = QSlider()
-        self.edges_slider.setGeometry((QtCore.QRect(370, 340, 160, 19)))
+        self.edges_slider.setGeometry(QtCore.QRect(370, 340, 160, 19))
         self.edges_slider.setMinimumWidth(100)
         self.edges_slider.setRange(10, 300)
         self.edges_slider.setValue(10)
         self.edges_slider.setSingleStep(10)
         self.edges_slider.setOrientation(QtCore.Qt.Horizontal)
-        self.canny_cb = QCheckBox("Canny Edge Detector")
+        self.canny_cb = QCheckBox("Detector de Bordas [Range: 10:300]")
         self.canny_cb.stateChanged.connect(self.edgeDetection)
 
-        points_label = QLabel("Points")
-        self.points_cb = QCheckBox("Enable Points")
+        #points_label = QLabel("Points")
+        self.points_cb = QCheckBox("Pontilhismo")
         self.points_cb.stateChanged.connect(self.makePoints)
 
-        self.apply_process_button = QPushButton("Apply Processes")
+        #kmeans_label = QLabel("K-means [Range: 1:32]")
+        self.kmeans_spinbox = QSpinBox()
+        self.kmeans_spinbox.setMinimumWidth(100)
+        self.kmeans_spinbox.setRange(1, 32)
+        self.kmeans_spinbox.setValue(8)
+        self.kmeans_spinbox.setSingleStep(1)
+        self.kmeans_cb = QCheckBox("K-means [Range: 1:32]")
+        self.kmeans_cb.stateChanged.connect(self.kmeansFilter)
+
+        self.apply_process_button = QPushButton("Aplicar filtros")
         self.apply_process_button.setEnabled(False)
         self.apply_process_button.clicked.connect(self.applyImageProcessing)
 
-        reset_button = QPushButton("Reset Image Settings")
+        reset_button = QPushButton("Voltar imagem original")
         reset_button.clicked.connect(self.resetImageAndSettings)
+
+        self.line1 = QtWidgets.QFrame()
+        self.line1.setGeometry(QtCore.QRect(200, 420, 118, 3))
+        self.line1.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line1.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line1.setObjectName("line1")
+
+        self.line2 = QtWidgets.QFrame()
+        self.line2.setGeometry(QtCore.QRect(200, 420, 118, 3))
+        self.line2.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line2.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line2.setObjectName("line2")
+
+        self.line3 = QtWidgets.QFrame()
+        self.line3.setGeometry(QtCore.QRect(200, 420, 118, 3))
+        self.line3.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line3.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line3.setObjectName("line3")
+
+        self.line4 = QtWidgets.QFrame()
+        self.line4.setGeometry(QtCore.QRect(200, 420, 118, 3))
+        self.line4.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line4.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line4.setObjectName("line4")
+
+        self.line5 = QtWidgets.QFrame()
+        self.line5.setGeometry(QtCore.QRect(200, 420, 118, 3))
+        self.line5.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line5.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line5.setObjectName("line5")
+
+        self.line6 = QtWidgets.QFrame()
+        self.line6.setGeometry(QtCore.QRect(200, 420, 118, 3))
+        self.line6.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line6.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line6.setObjectName("line6")
+
+        self.line7 = QtWidgets.QFrame()
+        self.line7.setGeometry(QtCore.QRect(200, 420, 118, 3))
+        self.line7.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line7.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line7.setObjectName("line7")
+
+        self.line8 = QtWidgets.QFrame()
+        self.line8.setGeometry(QtCore.QRect(200, 420, 118, 3))
+        self.line8.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line8.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line8.setObjectName("line8")
 
         side_panel_v_box = QVBoxLayout()
         side_panel_v_box.setAlignment(Qt.AlignTop)
 
-        side_panel_v_box.addWidget(contrast_label)
+        side_panel_v_box.addWidget(self.contrast_cb)
         side_panel_v_box.addWidget(self.contrast_spinbox)
 
-        side_panel_v_box.addWidget(brightness_label)
+        side_panel_v_box.addSpacing(15)
+        side_panel_v_box.addWidget(self.line1)
+
+        side_panel_v_box.addWidget(self.brightness_cb)
         side_panel_v_box.addWidget(self.brightness_spinbox)
 
         side_panel_v_box.addSpacing(15)
+        side_panel_v_box.addWidget(self.line2)
 
-        side_panel_v_box.addWidget(smoothing_label)
-        side_panel_v_box.addWidget(self.smoothing_spinbox)
+        #side_panel_v_box.addWidget(smoothing_label)
         side_panel_v_box.addWidget(self.filter_2D_cb)
+        side_panel_v_box.addWidget(self.smoothing_spinbox)
 
-        side_panel_v_box.addWidget(edges_label)
-        side_panel_v_box.addWidget(self.edges_slider)
+        side_panel_v_box.addSpacing(15)
+        side_panel_v_box.addWidget(self.line3)
+
+        #side_panel_v_box.addWidget(edges_label)
         side_panel_v_box.addWidget(self.canny_cb)
+        side_panel_v_box.addWidget(self.edges_slider)
 
-        side_panel_v_box.addWidget(points_label)
+        side_panel_v_box.addSpacing(15)
+        side_panel_v_box.addWidget(self.line4)
+
+        #side_panel_v_box.addWidget(points_label)
         side_panel_v_box.addWidget(self.points_cb)
 
-        side_panel_v_box.addWidget(self.apply_process_button)
+        side_panel_v_box.addSpacing(15)
+        side_panel_v_box.addWidget(self.line5)
+
+        #side_panel_v_box.addWidget(kmeans_label)
+        side_panel_v_box.addWidget(self.kmeans_cb)
+        side_panel_v_box.addWidget(self.kmeans_spinbox)
 
         side_panel_v_box.addStretch(1)
+
+        side_panel_v_box.addWidget(self.line6)
+
+        side_panel_v_box.addWidget(self.apply_process_button)
 
         side_panel_v_box.addWidget(reset_button)
 
         side_panel_frame = QFrame()
-        side_panel_frame.setMinimumWidth(200)
+        side_panel_frame.setMinimumWidth(300)
         side_panel_frame.setFrameStyle(QFrame.WinPanel)
         side_panel_frame.setLayout(side_panel_v_box)
 
@@ -143,14 +222,18 @@ class StoriesInstagram(QMainWindow):
         file_menu.addAction(save_act)
 
 
-    def adjustContrast(self):
-        if self.image_label.pixmap() != None:
+    def adjustContrast(self, state):
+        if state == Qt.Checked and self.image_label.pixmap() != None:
             self.contrast_adjusted = True
+        elif state != Qt.Checked and self.image_label.pixmap() != None:
+            self.contrast_adjusted = False
 
 
-    def adjustBrightness(self):
-        if self.image_label.pixmap() != None:
+    def adjustBrightness(self, state):
+        if state == Qt.Checked and self.image_label.pixmap() != None:
             self.brightness_adjusted = True
+        elif state != Qt.Checked and self.image_label.pixmap() != None:
+            self.brightness_adjusted = False
 
 
     def imageSmoothingFilter(self, state):
@@ -174,8 +257,14 @@ class StoriesInstagram(QMainWindow):
             self.points_checked = False
 
 
-    def applyImageProcessing(self):
+    def kmeansFilter(self, state):
+        if state == Qt.Checked and self.image_label.pixmap() != None:
+            self.kmeans_checked = True
+        elif state != Qt.Checked and self.image_label.pixmap() != None:
+            self.kmeans_checked = False
 
+
+    def applyImageProcessing(self):
         if self.contrast_adjusted == True or self.brightness_adjusted == True:
             contrast = self.contrast_spinbox.value()
             brightness = self.brightness_spinbox.value()
@@ -190,28 +279,44 @@ class StoriesInstagram(QMainWindow):
             self.cv_image = cv2.Canny(self.cv_image, slider, 3 * slider)
 
         if self.points_checked == True:
-            xrange = np.arange(0, self.cv_image.shape[0] - 5, 5) + 5 // 2
-            yrange = np.arange(0, self.cv_image.shape[1] - 5, 5) + 5 // 2
-
+            STEP = 5
+            JITTER = 3
+            RAIO = 3
+            xrange = np.arange(0, self.cv_image.shape[0] - STEP, STEP) + STEP // 2
+            yrange = np.arange(0, self.cv_image.shape[1] - STEP, STEP) + STEP // 2
             points = np.zeros(self.cv_image.shape, dtype=np.uint8)
-
             np.random.shuffle(xrange)
             for i in xrange:
                 np.random.shuffle(yrange)
                 for j in yrange:
-                    x = i + np.random.randint((2 * 3) - 3 + 1)
-                    y = j + np.random.randint((2 * 3) - 3 + 1)
+                    x = i + np.random.randint((2 * JITTER) - JITTER + 1)
+                    y = j + np.random.randint((2 * JITTER) - JITTER + 1)
                     color = self.cv_image[x, y]
-                    cv2.circle(points, (y, x), 3, (int(color[0]), int(color[1]), int(color[2])), -1, cv2.LINE_AA)
+                    cv2.circle(points, (y, x), RAIO, (int(color[0]), int(color[1]), int(color[2])), -1, cv2.LINE_AA)
             self.cv_image = points.copy()
+
+        if self.kmeans_checked == True:
+            NCLUSTERS = self.kmeans_spinbox.value()
+            NROUNDS = 10
+            samples = self.cv_image.reshape((-1, 3))
+            samples = np.float32(samples)
+            ret, labels, centers = cv2.kmeans(samples,
+                                              NCLUSTERS,
+                                              None,
+                                              (cv2.TERM_CRITERIA_MAX_ITER | cv2.TERM_CRITERIA_EPS, 10, 1),
+                                              NROUNDS,
+                                              cv2.KMEANS_RANDOM_CENTERS)
+            centers = np.uint8(centers)
+            res = centers[labels.flatten()]
+            self.cv_image = res.reshape((self.cv_image.shape))
 
         self.convertCVToQImage(self.cv_image)
         self.image_label.repaint()
 
 
     def resetImageAndSettings(self):
-        answer = QMessageBox.information(self, "Reset Image",
-                                         "Are you sure you want to reset the image settings?",
+        answer = QMessageBox.information(self, "Voltar imagem original",
+                                         "Você tem certeza de que deseja voltar a imagem original?",
                                          QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if answer == QMessageBox.No:
             pass
@@ -221,11 +326,17 @@ class StoriesInstagram(QMainWindow):
             self.convertCVToQImage(self.copy_cv_image)
 
     def resetWidgetValues(self):
+        self.contrast_cb.setChecked(False)
         self.contrast_spinbox.setValue(1.0)
+        self.brightness_cb.setChecked(False)
         self.brightness_spinbox.setValue(0)
         self.filter_2D_cb.setChecked(False)
+        self.smoothing_spinbox.setValue(3)
         self.canny_cb.setChecked(False)
+        self.edges_slider.setValue(10)
         self.points_cb.setChecked(False)
+        self.kmeans_cb.setChecked(False)
+        self.kmeans_spinbox.setValue(8)
 
     def openImageFile(self):
         image_file, _ = QFileDialog.getOpenFileName(self, "Abrir imagem",
