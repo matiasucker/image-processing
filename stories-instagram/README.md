@@ -2,12 +2,12 @@
 
 ## Sumário
 1.  [Requisitos](#requisitos)
-2.  [Funcionalidade](#funcionalidade)
-3.  [Funcionamento do código](#funcionamento-do-código)
-4.  [Conclusão](#conclusão)
-5.  [Exemplos de entrada e saída](#exemplos-de-entrada-e-saída)
-6.  [Código final completo em Python](#código-final-completo-em-python)
-7.  [Código do exemplo em C plus plus](#código-do-exemplo-em-c-plus-plus)
+2.  [Funcionamento](#funcionamento)
+3.  [Técnicas / funções](#tecnicas)
+4.  [Funcionamento do código](#funcionamento-do-código)
+5.  [Conclusão](#conclusão)
+6.  [Exemplos de entrada e saída](#exemplos-de-entrada-e-saída)
+7.  [Código final completo em Python](#código-final-completo-em-python)
 
 ## Requisitos
 - Python 3.8
@@ -17,10 +17,124 @@
 - PyQt5
 - PyQt5 tools
 
-## Funcionamento
+## Funcionamento do programa
 O programa carrega uma interface bem simples para o usuário, onde é possível carregar fotos ou vídeos para edição. Ao carregar uma foto ou um vídeo, o usuário tem a opção de utilizar diversos filtros, como o ajuste de contraste, brilho, blur, tons de cinza, detector de borrdas canny, negativo, pontilhismo, k-means, adicionar stickers e texto.
 
 Após montar o ambiente virtual, instalar as bibliotecas e ter realizado o git clone, basta executar o código na IDE para começar a usar.
+
+## Técnicas / funções
+
+### Brilho e contraste
+Para ajuste de brilho e contraste, foi utilizada a função convertScaleAbs() para ajustar a imagem conforme os parâmetros passados leo usuário.
+```
+        if self.contrast_adjusted == True or self.brightness_adjusted == True:
+            contrast = self.contrast_spinbox.value()
+            brightness = self.brightness_spinbox.value()
+            self.cv_image = cv2.convertScaleAbs(self.cv_image, self.processed_cv_image, contrast, brightness)
+```
+\
+### Blur
+Para causar o efeito de blur na imagem, foi utilizada a função GaussianBlur(), passando o tamanho do kernel como parâmetros da função, quanto maior, maior o efeito do blur na imagem.
+```
+        if self.image_smoothing_checked == True:
+            blur = self.smoothing_spinbox.value()
+            self.cv_image = cv2.GaussianBlur(self.cv_image, (blur, blur), 0)
+```
+\
+### Gray - Tons de cinza
+Para transformar a imagem colorida em tons de cinza, foi utilizada a função cvtColor(), passando o parâmetro COLOR_BGR2GRAY.
+```
+        if self.gray_checked == True:
+            if len(self.cv_image.shape) == 3:
+                self.cv_image = cv2.cvtColor(self.cv_image, cv2.COLOR_BGR2GRAY)
+            else:
+                pass
+```
+\
+### Detector de bordas canny
+Para detectar as bordas de uma imagem foi utilizada a função Canny(), passando como parâmetro o valor do slider definido pelo usuário.
+```
+        if self.edge_detection_checked == True:
+            slider = self.edges_slider.value()
+            self.cv_image = cv2.Canny(self.cv_image, slider, 3 * slider)
+```
+\
+### Negativo da imagem
+Para transformar a imagem em seu negativo, foi utilizado a função bitwise_not(), que inverte os bits de cada pixel da imagem.
+```
+        if self.negative_checked == True:
+            self.cv_image = cv2.bitwise_not(self.cv_image)
+```
+\
+### Pontilhismo
+Para criar o efeito de pontilhismo na imagem, foi utilizada a função circle(), que desenha círculos na nova imagem gerada com as cores da imagem original, antes de aplicar esta técnica, é utilizado funções para randomizar a distância dos centros de cada círculo com as bibliotecas do Numpy.
+```
+        if self.points_checked == True:
+            STEP = 5
+            JITTER = 3
+            RAIO = 3
+            xrange = np.arange(0, self.cv_image.shape[0] - STEP, STEP) + STEP // 2
+            yrange = np.arange(0, self.cv_image.shape[1] - STEP, STEP) + STEP // 2
+            points = np.zeros(self.cv_image.shape, dtype=np.uint8)
+            np.random.shuffle(xrange)
+            for i in xrange:
+                np.random.shuffle(yrange)
+                for j in yrange:
+                    x = i + np.random.randint((2 * JITTER) - JITTER + 1)
+                    y = j + np.random.randint((2 * JITTER) - JITTER + 1)
+                    color = self.cv_image[x, y]
+                    cv2.circle(points, (y, x), RAIO, (int(color[0]), int(color[1]), int(color[2])), -1, cv2.LINE_AA)
+            self.cv_image = points.copy()
+```
+### K-means
+Para clusterizar a imagem conforme o número de cores definido pelo usuário, foi utilizada a função kmeans(), passando como argumento o número de clusters de que se deseja.
+```
+        if self.kmeans_checked == True:
+            NCLUSTERS = self.kmeans_spinbox.value()
+            NROUNDS = 10
+            samples = self.cv_image.reshape((-1, 3))
+            samples = np.float32(samples)
+            ret, labels, centers = cv2.kmeans(samples,
+                                              NCLUSTERS,
+                                              None,
+                                              (cv2.TERM_CRITERIA_MAX_ITER | cv2.TERM_CRITERIA_EPS, 10, 1),
+                                              NROUNDS,
+                                              cv2.KMEANS_RANDOM_CENTERS)
+            centers = np.uint8(centers)
+            res = centers[labels.flatten()]
+            self.cv_image = res.reshape((self.cv_image.shape))
+```
+### Stickers
+Para adicionar stickers, foi utilizada as funções threshold(), bitwise_not(), bitwise_and() e add() para criação da máscara e adição do sticker à imagem.
+```
+    def overlaySticker(self):
+        self.size = self.stickers_spinbox.value()
+        self.axis_x = self.stickers_horizontal_slider.value()
+        self.axis_y = self.stickers_vertical_slider.value()
+        self.sticker = imutils.resize(self.sticker, width=(self.cv_image.shape[0] // self.size))
+        (rows, cols) = self.sticker.shape[:2]
+        roi = self.cv_image[self.axis_y:rows, self.axis_x:cols]
+        self.sticker_gray = cv2.cvtColor(self.sticker, cv2.COLOR_BGR2GRAY)
+        ret, mask = cv2.threshold(self.sticker_gray, 10, 255, cv2.THRESH_BINARY)
+        mask_inv = cv2.bitwise_not(mask)
+        self.cv_image_bg = cv2.bitwise_and(roi, roi, mask=mask_inv)
+        self.sticker_fg = cv2.bitwise_and(self.sticker, self.sticker, mask=mask)
+        dst = cv2.add(self.cv_image_bg, self.sticker_fg)
+        self.cv_image[self.axis_y:rows, self.axis_x:cols] = dst
+```
+\
+### Texto
+Para adicionar texto, foi utilizada a função putText(), onde o usuário poderá inserir o texto, e este texto é adicionado an imagem.
+```
+        if self.text_checked == True:
+            text = self.textQLine.text()
+            font = cv2.FONT_HERSHEY_SIMPLEX
+            org = (400, 400)
+            fontScale = 1
+            color = (0, 0, 255)
+            thickness = 2
+            self.cv_image = cv2.putText(self.cv_image, text, org, font, fontScale, color, thickness, cv2.LINE_AA, False)
+```
 
 
 
@@ -719,62 +833,7 @@ if __name__ == '__main__':
 
 
 \
-Transformação dos valores inteiros da matriz samples em valores float. Valores inteiros podem afetar o cálculo do k-means .
-```
-samples = np.float32(samples)
-```
-Abaixo está o resultado da impressão da matriz samples com valores float. A impressão no terminal informa o tamanho da matriz, sendo 307200 que equivale a totalidade dos pixes da imagem, o tipo da matriz numpy.ndarray, e os valores da primeira e última posição da matriz, onde é possível visualizar as componentes (R, G, B).
-![](resources/samples-float.png)
 
-\
-A função kmeans retorna 3 resultados, dos quais usaremos apenas rótulos (labels) e centros (centers). Rótulos é como cada amostra de "amostras" é rotulada, de 0 a NCLUSTERS, e os centros é onde cada rótulo está centralizado no espaço. Os critérios que passamos são os critérios para interromper o algoritmo (tipo de terminação, n iterações, precisão).\
-Para o tipo de terminação, usamos cv2.TERM_CRITERIA_MAX_ITER | CV2.TERM_CRITERIA_EPS, o que significa que queremos que o algoritmo pare se a precisão for alcançada ou se o número de iterações tiver sido alcançado.\
-Para o argumento flags foi passado KMEANS_RANDOM_CENTERS, que seleciona os centros iniciais de forma aleatória em cada tentativa.
-```
-ret, labels, centers = cv2.kmeans(samples,
-                                  NCLUSTERS,
-                                  None,
-                                  (cv2.TERM_CRITERIA_MAX_ITER | cv2.TERM_CRITERIA_EPS, 10000, 0.0001),
-                                  NROUNDS,
-                                  cv2.KMEANS_RANDOM_CENTERS)
-```
-Abaixo está o resultado da impressão dos rótulos "labels". A impressão no terminal informa o tamanho da matriz, sendo 307200 que equivale a totalidade dos pixes da imagem, o tipo da matriz numpy.ndarray, e os valores da primeira e última posição da matriz, onde é possível visualizar os rótulos de cada pixel.
-![](resources/labels.png)
-
-\
-Abaixo está o resultado da impressão dos centros "centers". A impressão no terminal informa o tamanho da matriz, sendo 8 que equivale a NCLUSTERS, o tipo da matriz numpy.ndarray, e os valores onde é possível visualizar os centros de cada rótulo.
-![](resources/centers.png)
-
-\
-Transformação dos centros para valores inteiros, afim de criar uma nova imagem.
-```
-centers = np.uint8(centers)
-```
-![](resources/centers-uint8.png)
-
-\
-Criação de uma matriz a partir dos centros e rótulos obtidos na execução do k-means.
-```
-res = centers[labels.flatten()]
-```
-![](resources/res.png)
-
-\
-Realizando o reshape da matriz, para que a imagem resultante tenha o mesmo shape da imagem original.
-```
-res = res.reshape((image.shape))
-```
-![](resources/res-reshape.png)
-
-\
-Mostra da imagem resultante em tela, gravação da imagem resultante em disco, e espera até que uma tecla seja pressionada para fechar a janela e encerrar a execução do programa.
-```
-cv2.imshow("k-means", res)
-cv2.imwrite("output/k-means.png", res)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-```
-![](output/k-means.png)
 
 -----------------------------------------------------
 
@@ -796,100 +855,7 @@ Imagem original           |
 :------------------------:|
 ![](resources/sushi.png)  | 
 
-Rodada 1                  |      Rodada 2             |
-:------------------------:|:-------------------------:|
-![](output/sushi1.png)    | ![](output/sushi2.png)    |
 
-Rodada 3                  |      Rodada 4             |
-:------------------------:|:-------------------------:|
-![](output/sushi3.png)    | ![](output/sushi4.png)    |
-
-Rodada 5                  |      Rodada 6             |
-:------------------------:|:-------------------------:|
-![](output/sushi5.png)    | ![](output/sushi6.png)    |
-
-Rodada 7                  |      Rodada 8             |
-:------------------------:|:-------------------------:|
-![](output/sushi7.png)    | ![](output/sushi8.png)    |
-
-Rodada 9                  |      Rodada 10            |
-:------------------------:|:-------------------------:|
-![](output/sushi9.png)    | ![](output/sushi10.png)   |
-
-
-Imagem original           |
-:------------------------:|
-![](resources/leao.png)   | 
-
-Rodada 1                  |      Rodada 2             |
-:------------------------:|:-------------------------:|
-![](output/leao1.png)     | ![](output/leao2.png)     |
-
-Rodada 3                  |      Rodada 4             |
-:------------------------:|:-------------------------:|
-![](output/leao3.png)     | ![](output/leao4.png)     |
-
-Rodada 5                  |      Rodada 6             |
-:------------------------:|:-------------------------:|
-![](output/leao5.png)     | ![](output/leao6.png)     |
-
-Rodada 7                  |      Rodada 8             |
-:------------------------:|:-------------------------:|
-![](output/leao7.png)     | ![](output/leao8.png)     |
-
-Rodada 9                  |      Rodada 10            |
-:------------------------:|:-------------------------:|
-![](output/leao9.png)     | ![](output/leao10.png)    |
-
-
-Imagem original           |
-:------------------------:|
-![](resources/corais.png) | 
-
-Rodada 1                  |      Rodada 2             |
-:------------------------:|:-------------------------:|
-![](output/corais1.png)   | ![](output/corais2.png)   |
-
-Rodada 3                  |      Rodada 4             |
-:------------------------:|:-------------------------:|
-![](output/corais3.png)   | ![](output/corais4.png)   |
-
-Rodada 5                  |      Rodada 6             |
-:------------------------:|:-------------------------:|
-![](output/corais5.png)   | ![](output/corais6.png)   |
-
-Rodada 7                  |      Rodada 8             |
-:------------------------:|:-------------------------:|
-![](output/corais7.png)   | ![](output/corais8.png)   |
-
-Rodada 9                  |      Rodada 10            |
-:------------------------:|:-------------------------:|
-![](output/corais9.png)   | ![](output/corais10.png)  |
-
-
-Imagem original           |
-:------------------------:|
-![](resources/cidade.png) | 
-
-Rodada 1                  |      Rodada 2             |
-:------------------------:|:-------------------------:|
-![](output/cidade1.png)   | ![](output/cidade2.png)   |
-
-Rodada 3                  |      Rodada 4             |
-:------------------------:|:-------------------------:|
-![](output/cidade3.png)   | ![](output/cidade4.png)   |
-
-Rodada 5                  |      Rodada 6             |
-:------------------------:|:-------------------------:|
-![](output/cidade5.png)   | ![](output/cidade6.png)   |
-
-Rodada 7                  |      Rodada 8             |
-:------------------------:|:-------------------------:|
-![](output/cidade7.png)   | ![](output/cidade8.png)   |
-
-Rodada 9                  |      Rodada 10            |
-:------------------------:|:-------------------------:|
-![](output/cidade9.png)   | ![](output/cidade10.png)  |
 
 -----------------------------------------------------
 
