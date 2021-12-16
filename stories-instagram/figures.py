@@ -1,4 +1,4 @@
-import sys, os, cv2
+import sys, os, cv2, imutils
 import numpy as np
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QLabel,
                              QPushButton, QCheckBox, QSpinBox, QDoubleSpinBox, QSlider, QFrame, QFileDialog,
@@ -431,28 +431,37 @@ class StoriesInstagram(QMainWindow):
 
 
         if self.stickers_checked == True:
-            if self.radioButton.isEnabled():
+            if self.radioButton.isChecked():
                 self.mask = cv2.imread("assets/capitao.png", cv2.IMREAD_COLOR)
-                cv2.imshow('mask', self.mask)
+                self.size = self.stickers_spinbox.value()
+                mask = imutils.resize(self.mask, width=(self.cv_image.shape[0] // self.size))
+                cv2.imshow('mask', mask)
 
-            elif self.radioButton2.isEnabled():
+                #self.cv_image[0:mask.shape[0], 0:mask.shape[1]] = self.mask
+
+            elif self.radioButton2.isChecked():
                 self.mask = cv2.imread("assets/cerveja.png", cv2.IMREAD_COLOR)
+                self.mask = imutils.resize(self.mask, width=100)
                 cv2.imshow('mask', self.mask)
 
-            elif self.radioButton3.isEnabled():
+            elif self.radioButton3.isChecked():
                 self.mask = cv2.imread("assets/onibus.png", cv2.IMREAD_COLOR)
+                self.mask = imutils.resize(self.mask, width=100)
                 cv2.imshow('mask', self.mask)
 
-            elif self.radioButton4.isEnabled():
+            elif self.radioButton4.isChecked():
                 self.mask = cv2.imread("assets/lasvegas.png", cv2.IMREAD_COLOR)
+                self.mask = imutils.resize(self.mask, width=100)
                 cv2.imshow('mask', self.mask)
 
-            elif self.radioButton5.isEnabled():
+            elif self.radioButton5.isChecked():
                 self.mask = cv2.imread("assets/morte.png", cv2.IMREAD_COLOR)
+                self.mask = imutils.resize(self.mask, width=100)
                 cv2.imshow('mask', self.mask)
 
-            elif self.radioButton6.isEnabled():
+            elif self.radioButton6.isChecked():
                 self.mask = cv2.imread("assets/batman.png", cv2.IMREAD_COLOR)
+                self.mask = imutils.resize(self.mask, width=100)
                 cv2.imshow('mask', self.mask)
 
 
