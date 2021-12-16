@@ -2,16 +2,16 @@
 
 ## Sumário
 1.  [Requisitos](#requisitos)
-2.  [Funcionamento](#funcionamento)
-3.  [Técnicas / funções](#tecnicas)
-    3.1  [Brilho e contraste](#brilho-e-contraste)
-    3.2  [Blur](#blur)
-    3.3  [Gray](#gray)
-    3.4  [Detector de bordas canny](#detector-de-bordas-canny)
-    3.5  [Negativo da imagem](#negativo-da-imagem)
-    3.6  [Pontilhismo](#pontilhismo)
-    3.7  [K-means](#k-means)
-    3.8  [Stickers](#stickers)
+2.  [Funcionamento](#funcionamento-do-programa)
+3.  [Técnicas e funções](#tecnicas-e-funcoes)\
+    3.1  [Brilho e contraste](#brilho-e-contraste)\
+    3.2  [Blur](#blur)\
+    3.3  [Gray](#gray-tons-de-cinza)\
+    3.4  [Detector de bordas canny](#detector-de-bordas-canny)\
+    3.5  [Negativo da imagem](#negativo-da-imagem)\
+    3.6  [Pontilhismo](#pontilhismo)\
+    3.7  [K-means](#k-means)\
+    3.8  [Stickers](#stickers)\
     3.9  [Texto](#texto)
 4.  [Funcionamento do código](#funcionamento-do-código)
 5.  [Conclusão](#conclusão)
@@ -31,7 +31,7 @@ O programa carrega uma interface bem simples para o usuário, onde é possível 
 
 Após montar o ambiente virtual, instalar as bibliotecas e ter realizado o git clone, basta executar o código na IDE para começar a usar.
 
-## Técnicas / funções
+## Técnicas e funções
 
 ### Brilho e contraste
 Para ajuste de brilho e contraste, foi utilizada a função convertScaleAbs() para ajustar a imagem conforme os parâmetros passados leo usuário.
@@ -50,7 +50,7 @@ Para causar o efeito de blur na imagem, foi utilizada a função GaussianBlur(),
             self.cv_image = cv2.GaussianBlur(self.cv_image, (blur, blur), 0)
 ```
 \
-### Gray - Tons de cinza
+### Gray Tons de cinza
 Para transformar a imagem colorida em tons de cinza, foi utilizada a função cvtColor(), passando o parâmetro COLOR_BGR2GRAY.
 ```
         if self.gray_checked == True:
