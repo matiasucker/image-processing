@@ -32,6 +32,7 @@ class StoriesInstagram(QMainWindow):
         self.points_checked = False
         self.kmeans_checked = False
         self.negative_checked = False
+        self.stickers_checked = False
         self.setupWindow()
         self.setupMenu()
         self.show()
@@ -40,6 +41,9 @@ class StoriesInstagram(QMainWindow):
     def setupWindow(self):
         self.image_label = QLabel()
         self.image_label.setObjectName("ImageLabel")
+
+        self.desktop = cv2.imread("assets/stories-do-instagram.png")
+        self.convertCVToQImage(self.desktop)
 
         self.contrast_spinbox = QDoubleSpinBox()
         self.contrast_spinbox.setMinimumWidth(100)
@@ -92,7 +96,8 @@ class StoriesInstagram(QMainWindow):
         self.kmeans_cb = QCheckBox("K-means [Range: 1:32]")
         self.kmeans_cb.stateChanged.connect(self.kmeansFilter)
 
-        figures_label = QLabel("Figurinhas personalisadas")
+        self.stickers_cb = QCheckBox("Adicionar stickers")
+        self.stickers_cb.stateChanged.connect(self.addStickers)
 
         self.radioButton = QtWidgets.QRadioButton()
         self.radioButton.setGeometry(QtCore.QRect(380, 200, 95, 20))
@@ -118,12 +123,37 @@ class StoriesInstagram(QMainWindow):
         self.radioButton6.setGeometry(QtCore.QRect(380, 200, 95, 20))
         self.radioButton6.setText("Batman")
 
+        self.stickers_horizontal_slider = QSlider()
+        self.stickers_horizontal_slider.setGeometry(QtCore.QRect(370, 340, 160, 19))
+        self.stickers_horizontal_slider.setMinimumWidth(100)
+        self.stickers_horizontal_slider.setRange(10, 300)
+        self.stickers_horizontal_slider.setValue(10)
+        self.stickers_horizontal_slider.setSingleStep(10)
+        self.stickers_horizontal_slider.setOrientation(QtCore.Qt.Horizontal)
+
+        self.stickers_vertical_slider = QSlider()
+        self.stickers_vertical_slider.setGeometry(QtCore.QRect(370, 340, 19, 160))
+        self.stickers_vertical_slider.setMinimumHeight(200)
+        self.stickers_vertical_slider.setInvertedAppearance(True)
+        self.stickers_vertical_slider.setRange(10, 300)
+        self.stickers_vertical_slider.setValue(10)
+        self.stickers_vertical_slider.setSingleStep(10)
+        self.stickers_vertical_slider.setOrientation(QtCore.Qt.Vertical)
+
+        self.stickersLabel = QLabel("Tamanho do sticker [Range: 1:5")
+        self.stickers_spinbox = QSpinBox()
+        self.stickers_spinbox.setMinimumWidth(100)
+        self.stickers_spinbox.setRange(1, 5)
+        self.stickers_spinbox.setValue(5)
+        self.stickers_spinbox.setSingleStep(1)
+
         self.apply_process_button = QPushButton("Aplicar filtros")
         self.apply_process_button.setEnabled(False)
         self.apply_process_button.clicked.connect(self.applyImageProcessing)
 
-        reset_button = QPushButton("Voltar imagem original")
-        reset_button.clicked.connect(self.resetImageAndSettings)
+        self.reset_button = QPushButton("Voltar imagem original")
+        self.reset_button.setEnabled(False)
+        self.reset_button.clicked.connect(self.resetImageAndSettings)
 
         self.line1 = QtWidgets.QFrame()
         self.line1.setGeometry(QtCore.QRect(200, 420, 118, 3))
@@ -226,7 +256,7 @@ class StoriesInstagram(QMainWindow):
 
         side_panel_v_box.addSpacing(15)
         side_panel_v_box.addWidget(self.line8)
-        side_panel_v_box.addWidget(figures_label)
+        side_panel_v_box.addWidget(self.stickers_cb)
 
         side_panel_v_box.addWidget(self.radioButton)
         side_panel_v_box.addWidget(self.radioButton2)
@@ -235,22 +265,32 @@ class StoriesInstagram(QMainWindow):
         side_panel_v_box.addWidget(self.radioButton5)
         side_panel_v_box.addWidget(self.radioButton6)
 
-        side_panel_v_box.addStretch(1)
+        side_panel_v_box.addWidget(self.stickers_horizontal_slider)
+        side_panel_v_box.addWidget(self.stickers_vertical_slider)
+        side_panel_v_box.addWidget(self.stickersLabel)
+        side_panel_v_box.addWidget(self.stickers_spinbox)
+
+        side_panel_v_box.addSpacing(100)
 
         side_panel_v_box.addWidget(self.line9)
 
         side_panel_v_box.addWidget(self.apply_process_button)
 
-        side_panel_v_box.addWidget(reset_button)
+        side_panel_v_box.addWidget(self.reset_button)
 
         side_panel_frame = QFrame()
-        side_panel_frame.setMinimumWidth(300)
+        side_panel_frame.setMinimumWidth(250)
         side_panel_frame.setFrameStyle(QFrame.WinPanel)
         side_panel_frame.setLayout(side_panel_v_box)
 
+        scrollArea = QtWidgets.QScrollArea()
+        scrollArea.setMinimumWidth(300)
+        scrollArea.setWidgetResizable(True)
+        scrollArea.setWidget(side_panel_frame)
+
         main_h_box = QHBoxLayout()
         main_h_box.addWidget(self.image_label, 1)
-        main_h_box.addWidget(side_panel_frame)
+        main_h_box.addWidget(scrollArea)
 
         container = QWidget()
         container.setLayout(main_h_box)
@@ -328,6 +368,11 @@ class StoriesInstagram(QMainWindow):
         elif state != Qt.Checked and self.image_label.pixmap() != None:
             self.kmeans_checked = False
 
+    def addStickers(self, state):
+        if state == Qt.Checked and self.image_label.pixmap() != None:
+            self.stickers_checked = True
+        elif state != Qt.Checked and self.image_label.pixmap() != None:
+            self.stickers_checked = False
 
     def applyImageProcessing(self):
         if self.contrast_adjusted == True or self.brightness_adjusted == True:
@@ -384,6 +429,33 @@ class StoriesInstagram(QMainWindow):
             res = centers[labels.flatten()]
             self.cv_image = res.reshape((self.cv_image.shape))
 
+
+        if self.stickers_checked == True:
+            if self.radioButton.isEnabled():
+                self.mask = cv2.imread("assets/capitao.png", cv2.IMREAD_COLOR)
+                cv2.imshow('mask', self.mask)
+
+            elif self.radioButton2.isEnabled():
+                self.mask = cv2.imread("assets/cerveja.png", cv2.IMREAD_COLOR)
+                cv2.imshow('mask', self.mask)
+
+            elif self.radioButton3.isEnabled():
+                self.mask = cv2.imread("assets/onibus.png", cv2.IMREAD_COLOR)
+                cv2.imshow('mask', self.mask)
+
+            elif self.radioButton4.isEnabled():
+                self.mask = cv2.imread("assets/lasvegas.png", cv2.IMREAD_COLOR)
+                cv2.imshow('mask', self.mask)
+
+            elif self.radioButton5.isEnabled():
+                self.mask = cv2.imread("assets/morte.png", cv2.IMREAD_COLOR)
+                cv2.imshow('mask', self.mask)
+
+            elif self.radioButton6.isEnabled():
+                self.mask = cv2.imread("assets/batman.png", cv2.IMREAD_COLOR)
+                cv2.imshow('mask', self.mask)
+
+
         self.convertCVToQImage(self.cv_image)
         self.image_label.repaint()
 
@@ -399,6 +471,7 @@ class StoriesInstagram(QMainWindow):
             self.cv_image = self.copy_cv_image
             self.convertCVToQImage(self.copy_cv_image)
 
+
     def resetWidgetValues(self):
         self.contrast_cb.setChecked(False)
         self.contrast_spinbox.setValue(1.0)
@@ -413,6 +486,8 @@ class StoriesInstagram(QMainWindow):
         self.points_cb.setChecked(False)
         self.kmeans_cb.setChecked(False)
         self.kmeans_spinbox.setValue(8)
+        self.stickers_cb.setChecked(False)
+        self.stickers_spinbox.setValue(5)
 
     def openImageFile(self):
         image_file, _ = QFileDialog.getOpenFileName(self, "Abrir imagem",
@@ -420,6 +495,7 @@ class StoriesInstagram(QMainWindow):
         if image_file:
             self.resetWidgetValues()
             self.apply_process_button.setEnabled(True)
+            self.reset_button.setEnabled(True)
             self.cv_image = cv2.imread(image_file)
             self.copy_cv_image = self.cv_image
 

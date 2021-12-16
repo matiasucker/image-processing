@@ -32,6 +32,7 @@ class StoriesInstagram(QMainWindow):
         self.points_checked = False
         self.kmeans_checked = False
         self.negative_checked = False
+        self.figuresLabel_checked = False
         self.setupWindow()
         self.setupMenu()
         self.show()
@@ -40,6 +41,9 @@ class StoriesInstagram(QMainWindow):
     def setupWindow(self):
         self.image_label = QLabel()
         self.image_label.setObjectName("ImageLabel")
+
+        self.desktop = cv2.imread("assets/stories-do-instagram.png")
+        self.convertCVToQImage(self.desktop)
 
         self.contrast_spinbox = QDoubleSpinBox()
         self.contrast_spinbox.setMinimumWidth(100)
@@ -92,7 +96,7 @@ class StoriesInstagram(QMainWindow):
         self.kmeans_cb = QCheckBox("K-means [Range: 1:32]")
         self.kmeans_cb.stateChanged.connect(self.kmeansFilter)
 
-        figures_label = QLabel("Figurinhas personalisadas")
+        self.figuresLabel_cb = QCheckBox("Figurinhas personalisadas")
 
         self.radioButton = QtWidgets.QRadioButton()
         self.radioButton.setGeometry(QtCore.QRect(380, 200, 95, 20))
@@ -122,8 +126,8 @@ class StoriesInstagram(QMainWindow):
         self.apply_process_button.setEnabled(False)
         self.apply_process_button.clicked.connect(self.applyImageProcessing)
 
-        reset_button = QPushButton("Voltar imagem original")
-        reset_button.clicked.connect(self.resetImageAndSettings)
+        self.reset_button = QPushButton("Voltar imagem original")
+        self.reset_button.clicked.connect(self.resetImageAndSettings)
 
         self.line1 = QtWidgets.QFrame()
         self.line1.setGeometry(QtCore.QRect(200, 420, 118, 3))
@@ -226,7 +230,7 @@ class StoriesInstagram(QMainWindow):
 
         side_panel_v_box.addSpacing(15)
         side_panel_v_box.addWidget(self.line8)
-        side_panel_v_box.addWidget(figures_label)
+        side_panel_v_box.addWidget(self.figuresLabel_cb)
 
         side_panel_v_box.addWidget(self.radioButton)
         side_panel_v_box.addWidget(self.radioButton2)
@@ -241,16 +245,21 @@ class StoriesInstagram(QMainWindow):
 
         side_panel_v_box.addWidget(self.apply_process_button)
 
-        side_panel_v_box.addWidget(reset_button)
+        side_panel_v_box.addWidget(self.reset_button)
 
         side_panel_frame = QFrame()
-        side_panel_frame.setMinimumWidth(300)
+        side_panel_frame.setMinimumWidth(250)
         side_panel_frame.setFrameStyle(QFrame.WinPanel)
         side_panel_frame.setLayout(side_panel_v_box)
 
+        scrollArea = QtWidgets.QScrollArea()
+        scrollArea.setMinimumWidth(300)
+        scrollArea.setWidgetResizable(True)
+        scrollArea.setWidget(side_panel_frame)
+
         main_h_box = QHBoxLayout()
         main_h_box.addWidget(self.image_label, 1)
-        main_h_box.addWidget(side_panel_frame)
+        main_h_box.addWidget(scrollArea)
 
         container = QWidget()
         container.setLayout(main_h_box)
@@ -413,6 +422,7 @@ class StoriesInstagram(QMainWindow):
         self.points_cb.setChecked(False)
         self.kmeans_cb.setChecked(False)
         self.kmeans_spinbox.setValue(8)
+        self.figuresLabel_cb.setChecked(False)
 
     def openImageFile(self):
         image_file, _ = QFileDialog.getOpenFileName(self, "Abrir imagem",
