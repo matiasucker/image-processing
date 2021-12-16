@@ -51,7 +51,7 @@ class StoriesInstagram(QMainWindow):
         self.contrast_spinbox.setRange(0.0, 4.0)
         self.contrast_spinbox.setValue(1.0)
         self.contrast_spinbox.setSingleStep(.10)
-        self.contrast_cb = QCheckBox("Contrast [Range: 0.0:4.0]")
+        self.contrast_cb = QCheckBox("Contraste [Range: 0.0:4.0]")
         self.contrast_cb.stateChanged.connect(self.adjustContrast)
 
         self.brightness_spinbox = QSpinBox()
@@ -59,7 +59,7 @@ class StoriesInstagram(QMainWindow):
         self.brightness_spinbox.setRange(-127, 127)
         self.brightness_spinbox.setValue(0)
         self.brightness_spinbox.setSingleStep(1)
-        self.brightness_cb = QCheckBox("Brightness [Range: -127:127]")
+        self.brightness_cb = QCheckBox("Brilho [Range: -127:127]")
         self.brightness_cb.stateChanged.connect(self.adjustBrightness)
 
         self.smoothing_spinbox = QSpinBox()
