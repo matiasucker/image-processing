@@ -1,4 +1,4 @@
-# k-means
+# Stories Instagram
 
 ## Sumário
 1.  [Requisitos](#requisitos)
