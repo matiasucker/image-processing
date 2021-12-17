@@ -55,7 +55,14 @@ Para ajuste de brilho e contraste, foi utilizada a função convertScaleAbs() pa
             brightness = self.brightness_spinbox.value()
             self.cv_image = cv2.convertScaleAbs(self.cv_image, self.processed_cv_image, contrast, brightness)
 ```
+#### Contraste
+![](assets/tela-imagem-contraste.png)
+#### Brilho positivo
 ![](assets/tela-imagem-brilho-mais.png)
+#### Brilho negativo
+![](assets/tela-imagem-brilho-menos.png)
+
+
 ### Blur
 Para causar o efeito de blur na imagem, foi utilizada a função GaussianBlur(), passando o tamanho do kernel como parâmetros da função, quanto maior, maior o efeito do blur na imagem.
 ```
@@ -63,7 +70,10 @@ Para causar o efeito de blur na imagem, foi utilizada a função GaussianBlur(),
             blur = self.smoothing_spinbox.value()
             self.cv_image = cv2.GaussianBlur(self.cv_image, (blur, blur), 0)
 ```
-\
+#### Blur
+![](assets/tela-imagem-blur.png)
+
+
 ### Gray Tons de cinza
 Para transformar a imagem colorida em tons de cinza, foi utilizada a função cvtColor(), passando o parâmetro COLOR_BGR2GRAY.
 ```
@@ -73,7 +83,10 @@ Para transformar a imagem colorida em tons de cinza, foi utilizada a função cv
             else:
                 pass
 ```
-\
+#### Tons de cinza
+![](assets/tela-imagem-cinza.png)
+
+
 ### Detector de bordas canny
 Para detectar as bordas de uma imagem foi utilizada a função Canny(), passando como parâmetro o valor do slider definido pelo usuário.
 ```
@@ -81,14 +94,20 @@ Para detectar as bordas de uma imagem foi utilizada a função Canny(), passando
             slider = self.edges_slider.value()
             self.cv_image = cv2.Canny(self.cv_image, slider, 3 * slider)
 ```
-\
+#### Detecção de boras com canny
+![](assets/tela-imagem-canny.png)
+
+
 ### Negativo da imagem
 Para transformar a imagem em seu negativo, foi utilizado a função bitwise_not(), que inverte os bits de cada pixel da imagem.
 ```
         if self.negative_checked == True:
             self.cv_image = cv2.bitwise_not(self.cv_image)
 ```
-\
+#### Negativo da imagem
+![](assets/tela-imagem-negativo.png)
+
+
 ### Pontilhismo
 Para criar o efeito de pontilhismo na imagem, foi utilizada a função circle(), que desenha círculos na nova imagem gerada com as cores da imagem original, antes de aplicar esta técnica, é utilizado funções para randomizar a distância dos centros de cada círculo com as bibliotecas do Numpy.
 ```
@@ -109,6 +128,10 @@ Para criar o efeito de pontilhismo na imagem, foi utilizada a função circle(),
                     cv2.circle(points, (y, x), RAIO, (int(color[0]), int(color[1]), int(color[2])), -1, cv2.LINE_AA)
             self.cv_image = points.copy()
 ```
+#### Pontilhismo
+![](assets/tela-imagem-pontilhismo.png)
+
+
 ### K-means
 Para clusterizar a imagem conforme o número de cores definido pelo usuário, foi utilizada a função kmeans(), passando como argumento o número de clusters de que se deseja.
 ```
@@ -127,6 +150,10 @@ Para clusterizar a imagem conforme o número de cores definido pelo usuário, fo
             res = centers[labels.flatten()]
             self.cv_image = res.reshape((self.cv_image.shape))
 ```
+#### K-means
+![](assets/tela-imagem-kmeans.png)
+
+
 ### Stickers
 Para adicionar stickers, foi utilizada as funções threshold(), bitwise_not(), bitwise_and() e add() para criação da máscara e adição do sticker à imagem.
 ```
@@ -146,6 +173,9 @@ Para adicionar stickers, foi utilizada as funções threshold(), bitwise_not(), 
         self.cv_image[self.axis_y:rows, self.axis_x:cols] = dst
 ```
 \
+#### Elementos stickers
+![](assets/tela-imagem-stickers.png)
+
 ### Texto
 Para adicionar texto, foi utilizada a função putText(), onde o usuário poderá inserir o texto, e este texto é adicionado an imagem.
 ```
@@ -158,7 +188,13 @@ Para adicionar texto, foi utilizada a função putText(), onde o usuário poder�
             thickness = 2
             self.cv_image = cv2.putText(self.cv_image, text, org, font, fontScale, color, thickness, cv2.LINE_AA, False)
 ```
+#### Adição de texto
+![](assets/tela-imagem-texto.png)
 
+### Resultado da imagem processada
+Imagem processada com vários elementos.
+#### Imagem processada com vários elementos
+![](assets/tela-imagem-processada.png)
 
 
 ## Funcionamento do código
