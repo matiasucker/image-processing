@@ -570,6 +570,8 @@ class StoriesInstagram(QMainWindow):
         self.radioButton6.setChecked(False)
         self.stickers_horizontal_slider.setValue(0)
         self.stickers_vertical_slider.setValue(0)
+        self.text_cb.setChecked(False)
+        self.textQLine.setText("")
 
     def openImageFile(self):
         image_file, _ = QFileDialog.getOpenFileName(self, "Abrir imagem",
