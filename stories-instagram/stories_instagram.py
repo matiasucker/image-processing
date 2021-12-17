@@ -398,34 +398,37 @@ class StoriesInstagram(QMainWindow):
         elif state != Qt.Checked and self.image_label.pixmap() != None:
             self.stickers_checked = False
 
-    def overlaySticker(self):
-        self.size = self.stickers_spinbox.value()
-        self.axis_x = self.stickers_horizontal_slider.value()
-        print(self.axis_x)
-        self.axis_y = self.stickers_vertical_slider.value()
-        print(self.axis_y)
-        self.sticker = imutils.resize(self.sticker, width=(self.cv_image.shape[0] // self.size))
-        # pass
-        (rows, cols) = self.sticker.shape[:2]
-        roi = self.cv_image[self.axis_y:rows, self.axis_x:cols]
-        # pass
-        self.sticker_gray = cv2.cvtColor(self.sticker, cv2.COLOR_BGR2GRAY)
-        ret, mask = cv2.threshold(self.sticker_gray, 10, 255, cv2.THRESH_BINARY)
-        mask_inv = cv2.bitwise_not(mask)
-        # pass
-        self.cv_image_bg = cv2.bitwise_and(roi, roi, mask=mask_inv)
-        # no pass
-        print("Até aqui")
-        self.sticker_fg = cv2.bitwise_and(self.sticker, self.sticker, mask=mask)
-
-        dst = cv2.add(self.cv_image_bg, self.sticker_fg)
-        self.cv_image[self.axis_y:rows, self.axis_x:cols] = dst
-
     def addText(self, state):
         if state == Qt.Checked and self.image_label.pixmap() != None:
             self.text_checked = True
         elif state != Qt.Checked and self.image_label.pixmap() != None:
             self.text_checked = False
+
+    def overlaySticker(self):
+        self.stickers_horizontal_slider.setRange(0, self.cv_image.shape[1])
+        self.stickers_vertical_slider.setRange(0, self.cv_image.shape[0])
+
+        self.size = self.stickers_spinbox.value()
+        self.axis_x = self.stickers_horizontal_slider.value()
+        self.axis_y = self.stickers_vertical_slider.value()
+        self.sticker = imutils.resize(self.sticker, width=(self.cv_image.shape[0] // self.size))
+        (rows, cols) = self.sticker.shape[:2]
+
+        if (self.axis_y + rows) > self.cv_image.shape[0]:
+            self.axis_y = self.cv_image.shape[0] - rows
+
+        if (self.axis_x + cols) > self.cv_image.shape[1]:
+            self.axis_x = self.cv_image.shape[1] - cols
+
+        roi = self.cv_image[self.axis_y:(self.axis_y + rows), self.axis_x:(self.axis_x + cols)]
+        self.sticker_gray = cv2.cvtColor(self.sticker, cv2.COLOR_BGR2GRAY)
+        ret, mask = cv2.threshold(self.sticker_gray, 10, 255, cv2.THRESH_BINARY)
+        mask_inv = cv2.bitwise_not(mask)
+        self.cv_image_bg = cv2.bitwise_and(roi, roi, mask=mask_inv)
+        self.sticker_fg = cv2.bitwise_and(self.sticker, self.sticker, mask=mask)
+        dst = cv2.add(self.cv_image_bg, self.sticker_fg)
+        self.cv_image[self.axis_y:(self.axis_y + rows), self.axis_x:(self.axis_x + cols)] = dst
+
 
     def applyImageProcessing(self):
         if self.contrast_adjusted == True or self.brightness_adjusted == True:
@@ -530,7 +533,6 @@ class StoriesInstagram(QMainWindow):
         elif answer == QMessageBox.Yes and self.image_label.pixmap() != None:
             self.resetWidgetValues()
             self.cv_image = self.copy_cv_image
-            cv2.imshow('teste', self.cv_image)
             self.convertCVToQImage(self.copy_cv_image)
 
 
@@ -611,11 +613,9 @@ class StoriesInstagram(QMainWindow):
                                                     os.getenv('HOME'),
                                                     "AVI (*.avi)")
         if self.output_video_file and self.image_label.pixmap() != None:
-
             capture = cv2.VideoCapture(self.input_video_file)
-
             fourcc = cv2.VideoWriter_fourcc(*'XVID')
-            out = cv2.VideoWriter('output/teste.avi', fourcc, 24, (self.width, self.height))
+            out = cv2.VideoWriter(self.output_video_file, fourcc, 24, (self.width, self.height))
             while True:
                 exist_frame, frame = capture.read()
                 if not exist_frame:
