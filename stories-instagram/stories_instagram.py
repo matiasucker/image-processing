@@ -540,6 +540,7 @@ class StoriesInstagram(QMainWindow):
         if answer == QMessageBox.No:
             pass
         elif answer == QMessageBox.Yes and self.image_label.pixmap() != None:
+            self.cv_image = self.copy_cv_image.copy()
             self.resetWidgetValues()
             self.convertCVToQImage(self.copy_cv_image)
             self.image_label.repaint()
