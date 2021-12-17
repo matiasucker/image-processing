@@ -411,9 +411,18 @@ class StoriesInstagram(QMainWindow):
         self.size = self.stickers_spinbox.value()
         self.axis_x = self.stickers_horizontal_slider.value()
         self.axis_y = self.stickers_vertical_slider.value()
-        self.sticker = imutils.resize(self.sticker, width=(self.cv_image.shape[0] // self.size))
-        (rows, cols) = self.sticker.shape[:2]
 
+        self.sticker = imutils.resize(self.sticker, width=(self.cv_image.shape[0] // self.size))
+        while True:
+            if self.sticker.shape[1] <= self.cv_image.shape[1]:
+                if self.sticker.shape[0] <= self.cv_image.shape[0]:
+                    break
+                else:
+                    self.sticker = imutils.resize(self.sticker, height=(self.cv_image.shape[0] // 2))
+            else:
+                self.sticker = imutils.resize(self.sticker, width=(self.cv_image.shape[1] // 2))
+
+        (rows, cols) = self.sticker.shape[:2]
         if (self.axis_y + rows) > self.cv_image.shape[0]:
             self.axis_y = self.cv_image.shape[0] - rows
 
