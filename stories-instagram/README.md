@@ -17,20 +17,21 @@ A aplicação deve permitir ao usuário:
 ## Sumário
 1.  [Requisitos](#requisitos)
 2.  [Funcionamento](#funcionamento-do-programa)
-3.  [Técnicas e funções](#técnicas-e-funções)\
-    3.1  [Brilho e contraste](#brilho-e-contraste)\
-    3.2  [Blur](#blur)\
-    3.3  [Gray](#gray-tons-de-cinza)\
-    3.4  [Detector de bordas canny](#detector-de-bordas-canny)\
-    3.5  [Negativo da imagem](#negativo-da-imagem)\
-    3.6  [Pontilhismo](#pontilhismo)\
-    3.7  [K-means](#k-means)\
-    3.8  [Stickers](#stickers)\
-    3.9  [Texto](#texto)
-4.  [Funcionamento do código](#funcionamento-do-código)
-5.  [Conclusão](#conclusão)
-6.  [Exemplos de entrada e saída](#exemplos-de-entrada-e-saída)
-7.  [Código final completo em Python](#código-final-completo-em-python)
+3.  [Funções utilizadas da biblioteca OpenCV](#Funções-utilizadas-da-biblioteca-OpenCV)
+4.  [Técnicas e funções](#técnicas-e-funções)\
+    4.1  [Brilho e contraste](#brilho-e-contraste)\
+    4.2  [Blur](#blur)\
+    4.3  [Gray](#gray-tons-de-cinza)\
+    4.4  [Detector de bordas canny](#detector-de-bordas-canny)\
+    4.5  [Negativo da imagem](#negativo-da-imagem)\
+    4.6  [Pontilhismo](#pontilhismo)\
+    4.7  [K-means](#k-means)\
+    4.8  [Stickers](#stickers)\
+    4.9  [Texto](#texto)
+5.  [Funcionamento do código](#funcionamento-do-código)
+6.  [Conclusão](#conclusão)
+7.  [Exemplos de entrada e saída](#exemplos-de-entrada-e-saída)
+8.  [Código final completo em Python](#código-final-completo-em-python)
 
 ## Requisitos
 - Python 3.8
@@ -41,9 +42,36 @@ A aplicação deve permitir ao usuário:
 - PyQt5 tools
 
 ## Funcionamento do programa
-O programa carrega uma interface bem simples para o usuário, onde é possível carregar fotos ou vídeos para edição. Ao carregar uma foto ou um vídeo, o usuário tem a opção de utilizar diversos filtros, como o ajuste de contraste, brilho, blur, tons de cinza, detector de borrdas canny, negativo, pontilhismo, k-means, adicionar stickers e texto.
+O programa carrega uma interface bem simples para o usuário, onde é possível carregar fotos ou vídeos para edição. Ao carregar uma foto ou um vídeo, o usuário tem a opção de utilizar diversos filtros, dentre eles o ajuste de contraste, brilho, blur, tons de cinza, detector de bordas canny, negativo, pontilhismo, k-means, adicionar stickers e também texto.
 
-Após montar o ambiente virtual, instalar as bibliotecas e ter realizado o git clone, basta executar o código na IDE para começar a usar.
+Para utilizar é necessário seguir estes passos:
+- Criar o ambiente virtual para execução do código, instalando os pacotes conforme os requisitos acima.
+- Realizar o comando git clone para clonar o repositório, ou copiar somente a pasta stories-instagram para a pasta do seu projeto.
+- Executar o arquivo stories_instagram.py para iniciar a aplicação.
+
+## Funções utilizadas da biblioteca OpenCV
+- cvtColor()
+- threshold()
+- bitwise_not()
+- bitwise_and()
+- add()
+- convertScaleAbs()
+- GaussianBlur()
+- Canny()
+- circle()
+- kmeans()
+- imread()
+- putText()
+- imwrite()
+- VideoCapture()
+- VideoWriter_fourcc()
+- VideoWriter()
+
+## Tela inicial
+![](assets/tela-inicio.png)
+
+## Tela com uma imagem de exemplo carregada.
+![](assets/tela-imagem-carregada.png)
 
 ## Técnicas e funções
 
