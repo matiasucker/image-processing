@@ -496,19 +496,19 @@ class StoriesInstagram(QMainWindow):
                 self.overlaySticker()
 
             elif self.radioButton3.isChecked():
-                self.sticker = cv2.imread("assets/onibus.png", cv2.IMREAD_COLOR)
+                self.sticker = cv2.imread("assets/onibus.png")
                 self.overlaySticker()
 
             elif self.radioButton4.isChecked():
-                self.sticker = cv2.imread("assets/lasvegas.png", cv2.IMREAD_COLOR)
+                self.sticker = cv2.imread("assets/lasvegas.png")
                 self.overlaySticker()
 
             elif self.radioButton5.isChecked():
-                self.sticker = cv2.imread("assets/morte.png", cv2.IMREAD_COLOR)
+                self.sticker = cv2.imread("assets/morte.png")
                 self.overlaySticker()
 
             elif self.radioButton6.isChecked():
-                self.sticker = cv2.imread("assets/batman.png", cv2.IMREAD_COLOR)
+                self.sticker = cv2.imread("assets/batman.png")
                 self.overlaySticker()
 
         if self.text_checked == True:
@@ -532,8 +532,8 @@ class StoriesInstagram(QMainWindow):
             pass
         elif answer == QMessageBox.Yes and self.image_label.pixmap() != None:
             self.resetWidgetValues()
-            self.cv_image = self.copy_cv_image
             self.convertCVToQImage(self.copy_cv_image)
+            self.image_label.repaint()
 
 
     def resetWidgetValues(self):
@@ -567,8 +567,7 @@ class StoriesInstagram(QMainWindow):
             self.apply_process_button.setEnabled(True)
             self.reset_button.setEnabled(True)
             self.cv_image = cv2.imread(image_file)
-            self.copy_cv_image = self.cv_image
-
+            self.copy_cv_image = self.cv_image.copy()
             self.processed_cv_image = np.zeros(self.cv_image.shape, self.cv_image.dtype)
             self.convertCVToQImage(self.cv_image)
         else:
@@ -593,14 +592,13 @@ class StoriesInstagram(QMainWindow):
             self.resetWidgetValues()
             self.apply_process_button.setEnabled(True)
             self.reset_button.setEnabled(True)
-
             capture = cv2.VideoCapture(self.input_video_file)
             exist_frame, frame = capture.read()
             self.height, self.width = frame.shape[:2]
             if exist_frame:
                 frame = cv2.cvtColor(frame, cv2.IMREAD_COLOR)
                 self.cv_image = cv2.cvtColor(frame, cv2.IMREAD_COLOR)
-                self.copy_cv_image = self.cv_image
+                self.copy_cv_image = self.cv_image.copy()
 
                 self.processed_cv_image = np.zeros(self.cv_image.shape, self.cv_image.dtype)
                 self.convertCVToQImage(self.cv_image)
