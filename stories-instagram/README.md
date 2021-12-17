@@ -1,4 +1,18 @@
-# Stories Instagram
+# Stories do Instagram
+Este projeto tem como objetivo desenvolver uma pequena aplicação que simule os efeitos e funcionalidades ao estilo Instagram.
+
+A aplicação deve permitir ao usuário:
+- Carregar uma imagem ou vídeo
+- Aplicar diferentes filtros (você deve oferecer pelo menos 4 opções diferentes)
+- Adicionar stickers (figurinhas predefinidas)
+- Adicionar outro elemento a sua escolha (gif, texto, temperatura, local, selfie, etc...)
+- Salvar a foto ou vídeo editado
+- Interação por teclado e/ou mouse
+
+<img src="assets/stories-do-instagram.png" width="400" />
+
+
+
 
 ## Sumário
 1.  [Requisitos](#requisitos)
@@ -41,7 +55,7 @@ Para ajuste de brilho e contraste, foi utilizada a função convertScaleAbs() pa
             brightness = self.brightness_spinbox.value()
             self.cv_image = cv2.convertScaleAbs(self.cv_image, self.processed_cv_image, contrast, brightness)
 ```
-\
+![](assets/tela-imagem-brilho-mais.png)
 ### Blur
 Para causar o efeito de blur na imagem, foi utilizada a função GaussianBlur(), passando o tamanho do kernel como parâmetros da função, quanto maior, maior o efeito do blur na imagem.
 ```
