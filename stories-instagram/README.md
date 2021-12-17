@@ -3,7 +3,7 @@
 ## Sumário
 1.  [Requisitos](#requisitos)
 2.  [Funcionamento](#funcionamento-do-programa)
-3.  [Técnicas e funções](#tecnicas-e-funcoes)\
+3.  [Técnicas e funções](#técnicas-e-funções)\
     3.1  [Brilho e contraste](#brilho-e-contraste)\
     3.2  [Blur](#blur)\
     3.3  [Gray](#gray-tons-de-cinza)\
