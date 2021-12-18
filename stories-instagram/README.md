@@ -227,13 +227,13 @@ Imagem processada com vários elementos.
 ## Exemplo de edição de vídeo
 
 ### Negativo do vídeo
-![](assets/telavideo-negativo.png)
+![](assets/tela-video-negativo.png)
 
 ### Sticker no vídeo
-![](asstes/tela-video-onibus.png)
+![](assets/tela-video-onibus.png)
 
 ### Sticker no vídeo
-![](asstes/tela-video-cerveja.png)
+![](assets/tela-video-cerveja.png)
 
 
 ## Funcionamento do código
