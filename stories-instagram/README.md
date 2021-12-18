@@ -183,22 +183,41 @@ Para clusterizar a imagem conforme o número de cores definido pelo usuário, fo
 
 
 ### Stickers
-Para adicionar stickers, foi utilizada as funções threshold(), bitwise_not(), bitwise_and() e add() para criação da máscara e adição do sticker à imagem.
+Para adicionar stickers, foi utilizada as funções threshold(), bitwise_not(), bitwise_and() e add() para criação da máscara e adição do sticker à imagem. Os sliders funcionam, facilitando o posicionamento do sticker em qualquer lugar na imagem, assim como também a função para modificar o tamanho do sticker.
 ```
     def overlaySticker(self):
+        self.stickers_horizontal_slider.setRange(0, self.cv_image.shape[1])
+        self.stickers_vertical_slider.setRange(0, self.cv_image.shape[0])
+
         self.size = self.stickers_spinbox.value()
         self.axis_x = self.stickers_horizontal_slider.value()
         self.axis_y = self.stickers_vertical_slider.value()
+
         self.sticker = imutils.resize(self.sticker, width=(self.cv_image.shape[0] // self.size))
+        while True:
+            if self.sticker.shape[1] <= self.cv_image.shape[1]:
+                if self.sticker.shape[0] <= self.cv_image.shape[0]:
+                    break
+                else:
+                    self.sticker = imutils.resize(self.sticker, height=(self.cv_image.shape[0] // 2))
+            else:
+                self.sticker = imutils.resize(self.sticker, width=(self.cv_image.shape[1] // 2))
+
         (rows, cols) = self.sticker.shape[:2]
-        roi = self.cv_image[self.axis_y:rows, self.axis_x:cols]
+        if (self.axis_y + rows) > self.cv_image.shape[0]:
+            self.axis_y = self.cv_image.shape[0] - rows
+
+        if (self.axis_x + cols) > self.cv_image.shape[1]:
+            self.axis_x = self.cv_image.shape[1] - cols
+
+        roi = self.cv_image[self.axis_y:(self.axis_y + rows), self.axis_x:(self.axis_x + cols)]
         self.sticker_gray = cv2.cvtColor(self.sticker, cv2.COLOR_BGR2GRAY)
         ret, mask = cv2.threshold(self.sticker_gray, 10, 255, cv2.THRESH_BINARY)
         mask_inv = cv2.bitwise_not(mask)
         self.cv_image_bg = cv2.bitwise_and(roi, roi, mask=mask_inv)
         self.sticker_fg = cv2.bitwise_and(self.sticker, self.sticker, mask=mask)
         dst = cv2.add(self.cv_image_bg, self.sticker_fg)
-        self.cv_image[self.axis_y:rows, self.axis_x:cols] = dst
+        self.cv_image[self.axis_y:(self.axis_y + rows), self.axis_x:(self.axis_x + cols)] = dst
 ```
 \
 #### Elementos stickers
@@ -220,7 +239,7 @@ Para adicionar texto, foi utilizada a função putText(), onde o usuário poder�
 ![](assets/tela-imagem-texto.png)
 
 ### Resultado da imagem processada
-Imagem processada com vários elementos.
+
 #### Imagem processada com vários elementos
 ![](assets/tela-imagem-processada.png)
 
