@@ -28,9 +28,10 @@ A aplicação deve permitir ao usuário:
     4.7  [K-means](#k-means)\
     4.8  [Stickers](#stickers)\
     4.9  [Texto](#texto)
-5.  [Funcionamento do código](#funcionamento-do-código)
-6.  [Conclusão](#conclusão)
-7.  [Código final completo em Python](#código-final-completo-em-python)
+5.  [Exemplo de edição de vídeo](#Exemplo-de-edição-de-vídeo)
+6.  [Funcionamento do código](#funcionamento-do-código)
+7.  [Conclusão](#conclusão)
+8.  [Código final completo em Python](#código-final-completo-em-python)
 
 ## Requisitos
 - Python 3.8
@@ -222,6 +223,17 @@ Para adicionar texto, foi utilizada a função putText(), onde o usuário poder�
 Imagem processada com vários elementos.
 #### Imagem processada com vários elementos
 ![](assets/tela-imagem-processada.png)
+
+## Exemplo de edição de vídeo
+
+### Negativo do vídeo
+![](assets/telavideo-negativo.png)
+
+### Sticker no vídeo
+![](asstes/tela-video-onibus.png)
+
+### Sticker no vídeo
+![](asstes/tela-video-cerveja.png)
 
 
 ## Funcionamento do código
