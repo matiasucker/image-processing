@@ -30,8 +30,7 @@ A aplicação deve permitir ao usuário:
     4.9  [Texto](#texto)
 5.  [Funcionamento do código](#funcionamento-do-código)
 6.  [Conclusão](#conclusão)
-7.  [Exemplos de entrada e saída](#exemplos-de-entrada-e-saída)
-8.  [Código final completo em Python](#código-final-completo-em-python)
+7.  [Código final completo em Python](#código-final-completo-em-python)
 
 ## Requisitos
 - Python 3.8
@@ -42,7 +41,7 @@ A aplicação deve permitir ao usuário:
 - PyQt5 tools
 
 ## Funcionamento do programa
-O programa carrega uma interface bem simples para o usuário, onde é possível carregar fotos ou vídeos para edição. Ao carregar uma foto ou um vídeo, o usuário tem a opção de utilizar diversos filtros, dentre eles o ajuste de contraste, brilho, blur, tons de cinza, detector de bordas canny, negativo, pontilhismo, k-means, adicionar stickers e também texto.
+O programa carrega uma interface bem simples para o usuário, onde é possível carregar fotos ou vídeos para edição. Ao carregar uma foto ou um vídeo, o usuário tem a opção de utilizar diversos filtros, dentre eles o ajuste de contraste, brilho, blur, tons de cinza, detector de bordas canny, negativo, pontilhismo, k-means, adicionar stickers e também texto. O objetivo é proporcionar uma experiência agradável para o usuário editar imagens e vídeos, gerando um resultado satisfatório.
 
 Para utilizar é necessário seguir estes passos:
 - Criar o ambiente virtual para execução do código, instalando os pacotes conforme os requisitos acima.
@@ -116,13 +115,13 @@ Para transformar a imagem colorida em tons de cinza, foi utilizada a função cv
 
 
 ### Detector de bordas canny
-Para detectar as bordas de uma imagem foi utilizada a função Canny(), passando como parâmetro o valor do slider definido pelo usuário.
+Para detectar as bordas de uma imagem, foi utilizada a função Canny(), passando como parâmetro o valor do slider definido pelo usuário.
 ```
         if self.edge_detection_checked == True:
             slider = self.edges_slider.value()
             self.cv_image = cv2.Canny(self.cv_image, slider, 3 * slider)
 ```
-#### Detecção de boras com canny
+#### Detecção de bordas com canny
 ![](assets/tela-imagem-canny.png)
 
 
@@ -550,7 +549,6 @@ Função para renderizar as componentes gráficas
         container = QWidget()
         container.setLayout(main_h_box)
         self.setCentralWidget(container)
-
 ```
 \
 Função para renderizar o menu superior.
@@ -580,7 +578,7 @@ Função para renderizar o menu superior.
         file_menu.addAction(save_video_act)
 ```
 \
-Funções para identificar o estado das alterações em cada função FILTRO.
+Funções para identificar o estado de ativação das alterações para cada função FILTRO.
 ```
     def adjustContrast(self, state):
         if state == Qt.Checked and self.image_label.pixmap() != None:
@@ -650,30 +648,41 @@ Funções para identificar o estado das alterações em cada função FILTRO.
             self.text_checked = False
 ```
 \
-Função para adicionar um sticker à uma imagem.
+Função para adicionar um sticker à uma imagem, os sliders funcionam em toda a sua região, é possível adicionar um sticker em qualquer área da imagem, e ainda selecionar o tamanho deste sticker.
 ```
     def overlaySticker(self):
+        self.stickers_horizontal_slider.setRange(0, self.cv_image.shape[1])
+        self.stickers_vertical_slider.setRange(0, self.cv_image.shape[0])
+
         self.size = self.stickers_spinbox.value()
         self.axis_x = self.stickers_horizontal_slider.value()
-        print(self.axis_x)
         self.axis_y = self.stickers_vertical_slider.value()
-        print(self.axis_y)
+
         self.sticker = imutils.resize(self.sticker, width=(self.cv_image.shape[0] // self.size))
-        # pass
+        while True:
+            if self.sticker.shape[1] <= self.cv_image.shape[1]:
+                if self.sticker.shape[0] <= self.cv_image.shape[0]:
+                    break
+                else:
+                    self.sticker = imutils.resize(self.sticker, height=(self.cv_image.shape[0] // 2))
+            else:
+                self.sticker = imutils.resize(self.sticker, width=(self.cv_image.shape[1] // 2))
+
         (rows, cols) = self.sticker.shape[:2]
-        roi = self.cv_image[self.axis_y:rows, self.axis_x:cols]
-        # pass
+        if (self.axis_y + rows) > self.cv_image.shape[0]:
+            self.axis_y = self.cv_image.shape[0] - rows
+
+        if (self.axis_x + cols) > self.cv_image.shape[1]:
+            self.axis_x = self.cv_image.shape[1] - cols
+
+        roi = self.cv_image[self.axis_y:(self.axis_y + rows), self.axis_x:(self.axis_x + cols)]
         self.sticker_gray = cv2.cvtColor(self.sticker, cv2.COLOR_BGR2GRAY)
         ret, mask = cv2.threshold(self.sticker_gray, 10, 255, cv2.THRESH_BINARY)
         mask_inv = cv2.bitwise_not(mask)
-        # pass
         self.cv_image_bg = cv2.bitwise_and(roi, roi, mask=mask_inv)
-        # no pass
-        print("Até aqui")
         self.sticker_fg = cv2.bitwise_and(self.sticker, self.sticker, mask=mask)
-
         dst = cv2.add(self.cv_image_bg, self.sticker_fg)
-        self.cv_image[self.axis_y:rows, self.axis_x:cols] = dst
+        self.cv_image[self.axis_y:(self.axis_y + rows), self.axis_x:(self.axis_x + cols)] = dst
 
 ```
 \
@@ -745,19 +754,19 @@ Função para aplicar os filtros escolhidos na imagem.
                 self.overlaySticker()
 
             elif self.radioButton3.isChecked():
-                self.sticker = cv2.imread("assets/onibus.png", cv2.IMREAD_COLOR)
+                self.sticker = cv2.imread("assets/onibus.png")
                 self.overlaySticker()
 
             elif self.radioButton4.isChecked():
-                self.sticker = cv2.imread("assets/lasvegas.png", cv2.IMREAD_COLOR)
+                self.sticker = cv2.imread("assets/lasvegas.png")
                 self.overlaySticker()
 
             elif self.radioButton5.isChecked():
-                self.sticker = cv2.imread("assets/morte.png", cv2.IMREAD_COLOR)
+                self.sticker = cv2.imread("assets/morte.png")
                 self.overlaySticker()
 
             elif self.radioButton6.isChecked():
-                self.sticker = cv2.imread("assets/batman.png", cv2.IMREAD_COLOR)
+                self.sticker = cv2.imread("assets/batman.png")
                 self.overlaySticker()
 
         if self.text_checked == True:
@@ -782,9 +791,10 @@ Função para cancelar os filtros, limpar os checkbox de seleção e voltar a im
         if answer == QMessageBox.No:
             pass
         elif answer == QMessageBox.Yes and self.image_label.pixmap() != None:
+            self.cv_image = self.copy_cv_image.copy()
             self.resetWidgetValues()
-            self.cv_image = self.copy_cv_image
             self.convertCVToQImage(self.copy_cv_image)
+            self.image_label.repaint()
 
 
     def resetWidgetValues(self):
@@ -809,6 +819,10 @@ Função para cancelar os filtros, limpar os checkbox de seleção e voltar a im
         self.radioButton4.setChecked(False)
         self.radioButton5.setChecked(False)
         self.radioButton6.setChecked(False)
+        self.stickers_horizontal_slider.setValue(0)
+        self.stickers_vertical_slider.setValue(0)
+        self.text_cb.setChecked(False)
+        self.textQLine.setText("")
 ```
 \
 Função para abrir uma imagem.
@@ -821,8 +835,7 @@ Função para abrir uma imagem.
             self.apply_process_button.setEnabled(True)
             self.reset_button.setEnabled(True)
             self.cv_image = cv2.imread(image_file)
-            self.copy_cv_image = self.cv_image
-
+            self.copy_cv_image = self.cv_image.copy()
             self.processed_cv_image = np.zeros(self.cv_image.shape, self.cv_image.dtype)
             self.convertCVToQImage(self.cv_image)
         else:
@@ -851,14 +864,13 @@ Função para abrir um vídeo.
             self.resetWidgetValues()
             self.apply_process_button.setEnabled(True)
             self.reset_button.setEnabled(True)
-
             capture = cv2.VideoCapture(self.input_video_file)
             exist_frame, frame = capture.read()
             self.height, self.width = frame.shape[:2]
             if exist_frame:
                 frame = cv2.cvtColor(frame, cv2.IMREAD_COLOR)
                 self.cv_image = cv2.cvtColor(frame, cv2.IMREAD_COLOR)
-                self.copy_cv_image = self.cv_image
+                self.copy_cv_image = self.cv_image.copy()
 
                 self.processed_cv_image = np.zeros(self.cv_image.shape, self.cv_image.dtype)
                 self.convertCVToQImage(self.cv_image)
@@ -873,11 +885,9 @@ Função para salvar um vídeo.
                                                     os.getenv('HOME'),
                                                     "AVI (*.avi)")
         if self.output_video_file and self.image_label.pixmap() != None:
-
             capture = cv2.VideoCapture(self.input_video_file)
-
             fourcc = cv2.VideoWriter_fourcc(*'XVID')
-            out = cv2.VideoWriter('output/teste.avi', fourcc, 24, (self.width, self.height))
+            out = cv2.VideoWriter(self.output_video_file, fourcc, 24, (self.width, self.height))
             while True:
                 exist_frame, frame = capture.read()
                 if not exist_frame:
@@ -916,32 +926,13 @@ if __name__ == '__main__':
     window = StoriesInstagram()
     sys.exit(app.exec_())
 ```
-
-
-
 \
 
 
 -----------------------------------------------------
 
 ## Conclusão
-Quando o programa é executado, usando o parâmetro ```cv2.KMEANS_RANDOM_CENTERS```, esperamos que os resultados mudem a cada nova rodada, pois os centros inicializados aleatoriamente irão gerar diferentes amostras no espaço para cada execução, e criarão dados de clusters diferentes. Por este motivo, na quantização da imagem perceptiva, a imagem resultante deveria ser colorida de forma diferente a cada rodada.\
-No entato, não foi este o resultado observado na prática. O algoritmo não mostrou nenhuma aleatoriedade nos resultados quando aplicado o parâmetro ```cv2.KMEANS_RANDOM_CENTERS```. Não localizei informações suficientes que explicassem o problema ou algo diferente à se fazer.
-Existem muitas cores na imagem original e elas devem ser agrupadas de maneira diferente para diferentes execuções, foram realizadas diversas execuções, mas nenhuma aleatoriedade foi obtida.\
-Para fins de teste, foi aumentado o número de clusters, de forma que talvez quanto mais fronteiras tivesse, o algoritmo poderia ter resultados diferentes; e também foi reduzida a precisão nos critérios de parada, mas nada mostrou aleatoriedade nos resultados.
-Talvez esta falta de aleatoriedade se deve à falhas na implementação da biblioteca ou na sua documentação oficial online.\
-\
-Todas as execuções geraram sempre o mesmo array de centros, como pode ser visto na imagem abaixo, ou seja, não houve nenhuma aleatoriedade nas diversas execuções.
-![](resources/centers-result.png)
-
------------------------------------------------------
-
-## Exemplos de entrada e saída
-
-Imagem original           |
-:------------------------:|
-![](resources/sushi.png)  | 
-
+O programa desenvolvido apresentou bons resultados tanto na edição de imagem, quanto na edição de vídeo, o usuário é capaz de carregar um arquivo de imagem ou vídeo, escolher o filtro desejado, aplicar mais de um filtro, e depois salvar, também é possível desfazer os filtros e voltar a imagem original para recomeçar com outros filtros.. A interação do usuário através da interface gráfica utilizando o PyQt5, também se torna mais atrativa durante a edição.
 
 
 -----------------------------------------------------
@@ -1001,7 +992,7 @@ class StoriesInstagram(QMainWindow):
         self.contrast_spinbox.setRange(0.0, 4.0)
         self.contrast_spinbox.setValue(1.0)
         self.contrast_spinbox.setSingleStep(.10)
-        self.contrast_cb = QCheckBox("Contrast [Range: 0.0:4.0]")
+        self.contrast_cb = QCheckBox("Contraste [Range: 0.0:4.0]")
         self.contrast_cb.stateChanged.connect(self.adjustContrast)
 
         self.brightness_spinbox = QSpinBox()
@@ -1009,7 +1000,7 @@ class StoriesInstagram(QMainWindow):
         self.brightness_spinbox.setRange(-127, 127)
         self.brightness_spinbox.setValue(0)
         self.brightness_spinbox.setSingleStep(1)
-        self.brightness_cb = QCheckBox("Brightness [Range: -127:127]")
+        self.brightness_cb = QCheckBox("Brilho [Range: -127:127]")
         self.brightness_cb.stateChanged.connect(self.adjustBrightness)
 
         self.smoothing_spinbox = QSpinBox()
@@ -1348,34 +1339,46 @@ class StoriesInstagram(QMainWindow):
         elif state != Qt.Checked and self.image_label.pixmap() != None:
             self.stickers_checked = False
 
-    def overlaySticker(self):
-        self.size = self.stickers_spinbox.value()
-        self.axis_x = self.stickers_horizontal_slider.value()
-        print(self.axis_x)
-        self.axis_y = self.stickers_vertical_slider.value()
-        print(self.axis_y)
-        self.sticker = imutils.resize(self.sticker, width=(self.cv_image.shape[0] // self.size))
-        # pass
-        (rows, cols) = self.sticker.shape[:2]
-        roi = self.cv_image[self.axis_y:rows, self.axis_x:cols]
-        # pass
-        self.sticker_gray = cv2.cvtColor(self.sticker, cv2.COLOR_BGR2GRAY)
-        ret, mask = cv2.threshold(self.sticker_gray, 10, 255, cv2.THRESH_BINARY)
-        mask_inv = cv2.bitwise_not(mask)
-        # pass
-        self.cv_image_bg = cv2.bitwise_and(roi, roi, mask=mask_inv)
-        # no pass
-        print("Até aqui")
-        self.sticker_fg = cv2.bitwise_and(self.sticker, self.sticker, mask=mask)
-
-        dst = cv2.add(self.cv_image_bg, self.sticker_fg)
-        self.cv_image[self.axis_y:rows, self.axis_x:cols] = dst
-
     def addText(self, state):
         if state == Qt.Checked and self.image_label.pixmap() != None:
             self.text_checked = True
         elif state != Qt.Checked and self.image_label.pixmap() != None:
             self.text_checked = False
+
+    def overlaySticker(self):
+        self.stickers_horizontal_slider.setRange(0, self.cv_image.shape[1])
+        self.stickers_vertical_slider.setRange(0, self.cv_image.shape[0])
+
+        self.size = self.stickers_spinbox.value()
+        self.axis_x = self.stickers_horizontal_slider.value()
+        self.axis_y = self.stickers_vertical_slider.value()
+
+        self.sticker = imutils.resize(self.sticker, width=(self.cv_image.shape[0] // self.size))
+        while True:
+            if self.sticker.shape[1] <= self.cv_image.shape[1]:
+                if self.sticker.shape[0] <= self.cv_image.shape[0]:
+                    break
+                else:
+                    self.sticker = imutils.resize(self.sticker, height=(self.cv_image.shape[0] // 2))
+            else:
+                self.sticker = imutils.resize(self.sticker, width=(self.cv_image.shape[1] // 2))
+
+        (rows, cols) = self.sticker.shape[:2]
+        if (self.axis_y + rows) > self.cv_image.shape[0]:
+            self.axis_y = self.cv_image.shape[0] - rows
+
+        if (self.axis_x + cols) > self.cv_image.shape[1]:
+            self.axis_x = self.cv_image.shape[1] - cols
+
+        roi = self.cv_image[self.axis_y:(self.axis_y + rows), self.axis_x:(self.axis_x + cols)]
+        self.sticker_gray = cv2.cvtColor(self.sticker, cv2.COLOR_BGR2GRAY)
+        ret, mask = cv2.threshold(self.sticker_gray, 10, 255, cv2.THRESH_BINARY)
+        mask_inv = cv2.bitwise_not(mask)
+        self.cv_image_bg = cv2.bitwise_and(roi, roi, mask=mask_inv)
+        self.sticker_fg = cv2.bitwise_and(self.sticker, self.sticker, mask=mask)
+        dst = cv2.add(self.cv_image_bg, self.sticker_fg)
+        self.cv_image[self.axis_y:(self.axis_y + rows), self.axis_x:(self.axis_x + cols)] = dst
+
 
     def applyImageProcessing(self):
         if self.contrast_adjusted == True or self.brightness_adjusted == True:
@@ -1443,19 +1446,19 @@ class StoriesInstagram(QMainWindow):
                 self.overlaySticker()
 
             elif self.radioButton3.isChecked():
-                self.sticker = cv2.imread("assets/onibus.png", cv2.IMREAD_COLOR)
+                self.sticker = cv2.imread("assets/onibus.png")
                 self.overlaySticker()
 
             elif self.radioButton4.isChecked():
-                self.sticker = cv2.imread("assets/lasvegas.png", cv2.IMREAD_COLOR)
+                self.sticker = cv2.imread("assets/lasvegas.png")
                 self.overlaySticker()
 
             elif self.radioButton5.isChecked():
-                self.sticker = cv2.imread("assets/morte.png", cv2.IMREAD_COLOR)
+                self.sticker = cv2.imread("assets/morte.png")
                 self.overlaySticker()
 
             elif self.radioButton6.isChecked():
-                self.sticker = cv2.imread("assets/batman.png", cv2.IMREAD_COLOR)
+                self.sticker = cv2.imread("assets/batman.png")
                 self.overlaySticker()
 
         if self.text_checked == True:
@@ -1478,10 +1481,10 @@ class StoriesInstagram(QMainWindow):
         if answer == QMessageBox.No:
             pass
         elif answer == QMessageBox.Yes and self.image_label.pixmap() != None:
+            self.cv_image = self.copy_cv_image.copy()
             self.resetWidgetValues()
-            self.cv_image = self.copy_cv_image
-            cv2.imshow('teste', self.cv_image)
             self.convertCVToQImage(self.copy_cv_image)
+            self.image_label.repaint()
 
 
     def resetWidgetValues(self):
@@ -1506,6 +1509,10 @@ class StoriesInstagram(QMainWindow):
         self.radioButton4.setChecked(False)
         self.radioButton5.setChecked(False)
         self.radioButton6.setChecked(False)
+        self.stickers_horizontal_slider.setValue(0)
+        self.stickers_vertical_slider.setValue(0)
+        self.text_cb.setChecked(False)
+        self.textQLine.setText("")
 
     def openImageFile(self):
         image_file, _ = QFileDialog.getOpenFileName(self, "Abrir imagem",
@@ -1515,8 +1522,7 @@ class StoriesInstagram(QMainWindow):
             self.apply_process_button.setEnabled(True)
             self.reset_button.setEnabled(True)
             self.cv_image = cv2.imread(image_file)
-            self.copy_cv_image = self.cv_image
-
+            self.copy_cv_image = self.cv_image.copy()
             self.processed_cv_image = np.zeros(self.cv_image.shape, self.cv_image.dtype)
             self.convertCVToQImage(self.cv_image)
         else:
@@ -1541,14 +1547,13 @@ class StoriesInstagram(QMainWindow):
             self.resetWidgetValues()
             self.apply_process_button.setEnabled(True)
             self.reset_button.setEnabled(True)
-
             capture = cv2.VideoCapture(self.input_video_file)
             exist_frame, frame = capture.read()
             self.height, self.width = frame.shape[:2]
             if exist_frame:
                 frame = cv2.cvtColor(frame, cv2.IMREAD_COLOR)
                 self.cv_image = cv2.cvtColor(frame, cv2.IMREAD_COLOR)
-                self.copy_cv_image = self.cv_image
+                self.copy_cv_image = self.cv_image.copy()
 
                 self.processed_cv_image = np.zeros(self.cv_image.shape, self.cv_image.dtype)
                 self.convertCVToQImage(self.cv_image)
@@ -1561,11 +1566,9 @@ class StoriesInstagram(QMainWindow):
                                                     os.getenv('HOME'),
                                                     "AVI (*.avi)")
         if self.output_video_file and self.image_label.pixmap() != None:
-
             capture = cv2.VideoCapture(self.input_video_file)
-
             fourcc = cv2.VideoWriter_fourcc(*'XVID')
-            out = cv2.VideoWriter('output/teste.avi', fourcc, 24, (self.width, self.height))
+            out = cv2.VideoWriter(self.output_video_file, fourcc, 24, (self.width, self.height))
             while True:
                 exist_frame, frame = capture.read()
                 if not exist_frame:
@@ -1599,7 +1602,6 @@ if __name__ == '__main__':
     app.setStyleSheet(style_sheet)
     window = StoriesInstagram()
     sys.exit(app.exec_())
-
 ```
 
 
